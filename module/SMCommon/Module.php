@@ -10,10 +10,13 @@ use SMCommon\Doctrine\EntityManagerAwareInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\Log\Logger;
 use Zend\Log\Writer\Stream;
+use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
+use SMCommon\View\Helper\FormatDate;
 
 class Module implements AutoloaderProviderInterface, 
 						ControllerProviderInterface,
-						ServiceProviderInterface
+						ServiceProviderInterface,
+						ViewHelperProviderInterface
 {
 	public function getConfig()
 	{
@@ -63,6 +66,22 @@ class Module implements AutoloaderProviderInterface,
 					return $log;
 				},
 			),
+		);
+	}
+	
+	public function getViewHelperConfig()
+	{
+		return array(
+			'invokables' => array(
+				'pageHeader' 	=> 'SMCommon\View\Helper\PageHeader',
+				'table'			=> 'SMCommon\View\Helper\Table',
+			),
+			'factories' => array(
+				'formatDate' => function ($sm) {
+					$appConfig = $sm->getServiceLocator()->get('config');
+					return new FormatDate(isset($appConfig['formatdate']) ? $appConfig['formatdate'] : array());
+				},
+			)
 		);
 	}
 	
