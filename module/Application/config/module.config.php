@@ -112,6 +112,13 @@ return array(
 	    			'Application\Entity' => 'application_entities'
 	    		)
             )
+        ),
+        'configuration' => array(
+        	'orm_default' => array(
+        		'types' => array(
+        			'utcdatetime' => 'SMCommon\Doctrine\DBAL\Types\UTCDateTimeType',
+        		)
+        	)
         )
     )
 );
