@@ -75,6 +75,7 @@ class Module implements AutoloaderProviderInterface,
 			'invokables' => array(
 				'pageHeader' 	=> 'SMCommon\View\Helper\PageHeader',
 				'table'			=> 'SMCommon\View\Helper\Table',
+				'objectUrl'		=> 'SMCommon\View\Helper\ObjectUrl',
 			),
 			'factories' => array(
 				'formatDate' => function ($sm) {
