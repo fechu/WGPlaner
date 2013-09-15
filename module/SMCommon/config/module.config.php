@@ -13,5 +13,19 @@ return array(
 		 * This specifies the format used by FormatDate to format a time.
 		 */
 		'time-format' => 'G:i'
-	)	
+	),
+	
+	// Doctrine configuration for added types and filters
+	'doctrine' => array(
+		'configuration' => array(
+			'orm_default' => array(
+				'types' => array(
+					'utcdatetime' => 'SMCommon\Doctrine\DBAL\Types\UTCDateTimeType',
+				),
+				'filters' => array(
+					'soft_delete' => 'SMCommon\Doctrine\Filter\DeleteFilter',
+				),
+			)
+		)
+	)
 );
