@@ -68,4 +68,13 @@ abstract class AbstractActionController extends ZendActionController implements 
 		
 		return $id;
 	}
+	
+	/**
+	 * Shorthand to get the configuration.
+	 * Equal to $this->getServiceLocator()->get('config')
+	 */
+	public function getConfig()
+	{
+		return $this->getServiceLocator()->get('config');
+	}
 }
