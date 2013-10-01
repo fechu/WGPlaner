@@ -1,7 +1,13 @@
 <?php 
 return array(
 	'smuser' => array(
-		
+		/**
+		 * This key has to be overwritten by the application that uses SMUser. 
+		 * 
+		 * The repository needs to be a service in the service locator. You can specify
+		 * the key that is used to get the service. 
+		 */
+		'user_repository_service' => 'smuser.user_repository'
 	),
 	
 	// Routes
