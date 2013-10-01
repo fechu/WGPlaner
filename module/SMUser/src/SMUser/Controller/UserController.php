@@ -7,7 +7,6 @@
  
 namespace SMUser\Controller;
 
-use SMCommon\Controller\AbstractActionController;
 
 class UserController extends AbstractActionController
 {
@@ -16,15 +15,13 @@ class UserController extends AbstractActionController
 	 */
 	public function indexAction()
 	{
-		$configuration = $this->getConfig();
-		$smuserConfiguration = isset($configuration['smuser']) ? $configuration['smuser'] : array();
-		$userRepoServiceKey = $smuserConfiguration['user_repository_service'];
-		
 		/* @var $repo \SMUser\Entity\Repository\UserRepositoryInterface */
-		$repo = $this->getServiceLocator()->get($userRepoServiceKey);
+		$repo = $this->getUserRepository();
 		
 		return array(
 			'users' => $repo->findAll(),
 		);
 	}
+	
+	
 }
