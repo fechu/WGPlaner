@@ -1,10 +1,10 @@
 <?php
 namespace SMUser\Form;
 
-use Zend\Form\Form;
 use SMUser\Form\Fieldset\UserFieldset;
+use SMCommon\Form\AbstractForm;
 
-class UserForm extends Form
+class UserForm extends AbstractForm
 {
 	public function __construct()
 	{
