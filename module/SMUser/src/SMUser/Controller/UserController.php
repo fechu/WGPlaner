@@ -8,6 +8,7 @@
 namespace SMUser\Controller;
 
 
+use SMUser\Form\UserForm;
 class UserController extends AbstractActionController
 {
 	/**
@@ -41,8 +42,18 @@ class UserController extends AbstractActionController
 	 * Create a user
 	 */
 	public function createAction()
-	{
+	{	
+		$form = new UserForm();
 		
+		/* @var $request \Zend\Http\Request */
+		$request = $this->getRequest();
+		if ($request->isPost()) {
+			
+		}
+		
+		return array(
+			'form' => $form
+		);
 	}
 	
 	/**

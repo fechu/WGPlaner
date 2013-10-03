@@ -10,6 +10,7 @@ use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use Zend\Form\ElementInterface;
+use Zend\Validator\StringLength;
 
 class UserFieldset extends Fieldset implements InputFilterProviderInterface
 {
