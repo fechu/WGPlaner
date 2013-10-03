@@ -13,7 +13,7 @@ use SMUser\Entity\Repository\UserRepositoryInterface;
 abstract class AbstractActionController extends SMCommonAbstractActioncontroller
 {
 	/**
-	 * @return The user repository that has to be defined as a service.
+	 * @return \SMUser\Entity\Repository\UserRepositoryInterface The user repository that has to be defined as a service.
 	 */
 	protected function getUserRepository()
 	{

@@ -9,6 +9,7 @@ namespace SMUser\Controller;
 
 
 use SMUser\Form\UserForm;
+use Application\Entity\User;
 class UserController extends AbstractActionController
 {
 	/**
@@ -48,6 +49,20 @@ class UserController extends AbstractActionController
 		/* @var $request \Zend\Http\Request */
 		$request = $this->getRequest();
 		if ($request->isPost()) {
+			$user = $this->getUserRepository()->createNewUser();
+			$form->bind($user);
+			
+			// Set the data
+			$form->setData($request->getPost());
+			
+			if ($form->isValid()) {
+				// Valid new user! Save!
+				$this->getUserRepository()->saveUser($user);
+				
+				// And redirect!
+				// To to the user overview
+				return $this->redirect()->toRoute('user');
+			}
 			
 		}
 		

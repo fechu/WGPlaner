@@ -45,7 +45,7 @@ class User extends AbstractEntity implements UserInterface
 	/**
 	 * The email address
 	 * 
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", nullable=true)
 	 */
 	protected $emailAdress;
 	

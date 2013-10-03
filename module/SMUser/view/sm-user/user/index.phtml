@@ -13,7 +13,7 @@ $table->addColumn(array(
 	'headTitle' 	=> 'Email',
 	'dataMethod'	=> function(User $user) {
 		$email = $user->getEmailAddress();
-		return '<a href="mailto:<Sandro>'. $email .'">' . $email . '</a>';
+		return '<a href="mailto:'. $email .'">' . $email . '</a>';
 	}
 ));
 
