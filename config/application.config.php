@@ -5,6 +5,8 @@ return array(
     	'DoctrineModule', 
     	'DoctrineORMModule',
     	'ZendDeveloperTools',
+    	'Zucchi',
+    	'ZucchiBootstrap',
     	'SMCommon',
     	'SMUser',
         'Application',
