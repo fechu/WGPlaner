@@ -23,5 +23,36 @@ class UserController extends AbstractActionController
 		);
 	}
 	
+	/**
+	 * Edit a user.
+	 */
+	public function editAction()
+	{
+		// We require an id.
+		if (!$id = $this->requireId()) {
+			return;
+		}
+		
+		
+		
+	}
 	
+	/**
+	 * Create a user
+	 */
+	public function createAction()
+	{
+		
+	}
+	
+	/**
+	 * Change the password of a user.
+	 */
+	public function changePasswordAction()
+	{
+		// We require an id
+		if (!$id = $this->requireId()) {
+			return;
+		}
+	}
 }

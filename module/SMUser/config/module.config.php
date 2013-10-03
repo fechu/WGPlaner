@@ -25,13 +25,25 @@ return array(
 				),
 				'may_terminate' => true,
 				'child_routes' => array(
-					'default' => array(
+					'id_action' => array(
 						'type'    => 'Segment',
 						'options' => array(
-							'route'    => '[/:action[/:id]]',
+							'route'		=> '[/:id/:action][/]',
 							'constraints' => array(
 								'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
-								'id'		=> '[0-9]*',	
+								'id'		=> '[0-9]+',	
+							),
+							'defaults' => array(
+								'controller'	=> 'User',
+							),
+						),
+					),
+					'only_action' => array(
+						'type'    => 'Segment',
+						'options' => array(
+							'route'		=> '[/:action][/]',
+							'constraints' => array(
+								'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
 							),
 							'defaults' => array(
 								'controller'	=> 'User',
