@@ -9,6 +9,7 @@ namespace SMUser\Form\Fieldset;
 use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\Stdlib\Hydrator\ClassMethods;
+use Zend\Form\ElementInterface;
 
 class UserFieldset extends Fieldset implements InputFilterProviderInterface
 {
@@ -135,6 +136,29 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
 		}
 		else if ($flag == false && $this->has('verify-password')) {
 			$this->remove('verify-password');
+		}
+	}
+	
+	/**
+	 * This function removes all non login elements. 
+	 * Only the username and the password field will remain. 
+	 * 
+	 * @warning Once you executed this method there's no way to undo this. You have to 
+	 * 			create a new instance if you need the other elements.
+	 */
+	public function removeNonLoginElements()
+	{
+		$loginElements = array(
+			'username',
+			'password'
+		);
+		
+		$elements = $this->getElements();
+		foreach ($elements as $element) {
+			/* @var $element \Zend\Form\ElementInterface */
+			if (!in_array($element->getName(), $loginElements)) {
+				$this->remove($element->getName());
+			} 
 		}
 	}
 	

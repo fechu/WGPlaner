@@ -44,4 +44,19 @@ class UserFieldsetTest extends \PHPUnit_Framework_TestCase
 		
 		$this->assertFalse($this->fieldset->has('verify-password'), 'Should not have verify password field anymore.');
 	}
+	
+	public function testHasOnly2ElementsWhenNonLoginElementsRemoved()
+	{
+		$this->fieldset->removeNonLoginElements();
+		
+		$this->assertCount(2, $this->fieldset, 'Should only have 2 fields left.');
+	}
+	
+	public function testFieldsetWithLoginElementsHasUsernameAndPasswordField()
+	{
+		$this->fieldset->removeNonLoginElements();
+		
+		$this->assertTrue($this->fieldset->has('username'), 'Should have username field');
+		$this->assertTrue($this->fieldset->has('password'), 'Should have password field');
+	}
 }
