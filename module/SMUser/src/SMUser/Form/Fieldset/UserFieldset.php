@@ -11,14 +11,17 @@ use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use Zend\Form\ElementInterface;
 use Zend\Validator\StringLength;
+use Zend\Form\Element\Password;
 
 class UserFieldset extends Fieldset implements InputFilterProviderInterface
 {
+	
 	public function __construct()
 	{
 		parent::__construct('user');
 		
-		$this->setHydrator(new ClassMethods(false));
+		$hydrator = new ClassMethods(false);
+		$this->setHydrator($hydrator);
 		
 		// Username field
 		$this->add(
@@ -48,23 +51,11 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
 		
 		// Email field
 		$this->add(array(
-			'name' => 'email',
+			'name' => 'emailAddress',
 			'type' => 'email',
 			'options' => array(
 				'label' => 'Email'
 			),
-		));
-		
-		// Passwort
-		$this->add(array(
-			'name' => 'password',
-			'type' => 'password',
-			'options' => array(
-				'label' => 'Passwort',
-			),
-			'attributes' => array(
-				'required' => 'required',
-			)
 		));
 	}
 	
@@ -80,13 +71,14 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
 			'email' => array(
 				'required' => false
 			),
+			
 			'password' => array(
 				'required' => true,
 				'validators' => array(
 					new StringLength(array('min' => 6)),
 				)
 			),
-				
+			
 			'verify-password' => array(
 				'required' => true,
 				'validators' => array(
@@ -118,48 +110,36 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
 		return $finalFilters;
 	}
 	
-
-	/**
-	 * If this is set to true, A second field for the password will be added that has to match
-	 * the first password field.
-	 * @param $flag boolean
-	 */
-	public function showVerifyPasswordField($flag)
+	public function setShowPasswordField($show)
 	{
-		if ($flag == true && (! $this->has('verify-password'))) {
-			$this->add(array(
-				'name' => 'verify-password',
-				'type' => 'password',
-				'options' => array(
-					'label' => 'Password verifizieren',
-				)
+		if (!$this->has('password') && $show) {
+			// Password field
+			$passwordField = new Password();
+			$passwordField->setName('password');
+			$passwordField->setOptions(array(
+				'label' => 'Passwort'
 			));
+			$passwordField->setAttribute('required', true);
+			$this->add($passwordField);
 		}
-		else if ($flag == false && $this->has('verify-password')) {
-			$this->remove('verify-password');
+		else if ($this->has('password') && !$show) {
+			$this->remove('password');
 		}
 	}
 	
-	/**
-	 * This function removes all non login elements. 
-	 * Only the username and the password field will remain. 
-	 * 
-	 * @warning Once you executed this method there's no way to undo this. You have to 
-	 * 			create a new instance if you need the other elements.
-	 */
-	public function removeNonLoginElements()
+	public function setShowVerifyPasswordField($show)
 	{
-		$loginElements = array(
-			'username',
-			'password'
-		);
-		
-		$elements = $this->getElements();
-		foreach ($elements as $element) {
-			/* @var $element \Zend\Form\ElementInterface */
-			if (!in_array($element->getName(), $loginElements)) {
-				$this->remove($element->getName());
-			} 
+		if (!$this->has('verify-password') && $show) {
+			// Verify field (not added by default
+			$verifyField = new Password();
+			$verifyField->setName('verify-password');
+			$verifyField->setOptions(array(
+				'label' => 'Passwort verifizieren'
+			));
+			$this->add($verifyField);
+		}
+		else if ($this->has('verify-password') && $show) {
+			$this->remove('verify-password');
 		}
 	}
 	

@@ -22,41 +22,48 @@ class UserFieldsetTest extends \PHPUnit_Framework_TestCase
 		$this->assertNotNull($this->fieldset, 'Fieldset was not created!');
 	}
 	
-	public function testHasNoVerifyPasswordFieldByDefault()
+	public function testHasUsernameField()	
 	{
-		$this->assertFalse($this->fieldset->has('verify-password'), 'Should not contain verify password field by default');
+		$this->assertTrue($this->fieldset->has('username'), 'Has no username field');
 	}
 	
-	public function testAddVerifyPasswordField()
+	public function testHasFullnameField()	
 	{
-		$this->fieldset->showVerifyPasswordField(true);
-		
-		$this->assertTrue($this->fieldset->has('verify-password'), 'Should now have a verify password field');
+		$this->assertTrue($this->fieldset->has('fullname'), 'Has no fullname field');
+	}
+	
+	public function testHasEmailField()
+	{
+		$this->assertTrue($this->fieldset->has('emailAddress'), 'Has no email field');
+	}
+	
+	public function testHasNoPasswordField()
+	{
+		$this->assertFalse($this->fieldset->has('password'), 'Should not have password field by default');
+	}
+	
+	public function testHasNoVerifyPasswordField()	
+	{
+		$this->assertFalse($this->fieldset->has('verify-password'), 'Should not have verify password field by default');
 	}
 	
 	/**
-	 * @depends testAddVerifyPasswordField
+	 * @depends testHasNoPasswordField
 	 */
-	public function testRemoveVerifyPasswordField()
+	public function testAddPasswordField()
 	{
-		$this->fieldset->showVerifyPasswordField(true);
-		$this->fieldset->showVerifyPasswordField(false);
+		$this->fieldset->setShowPasswordField(true);
 		
-		$this->assertFalse($this->fieldset->has('verify-password'), 'Should not have verify password field anymore.');
+		$this->assertTrue($this->fieldset->has('password'), 'Should now have password field');
 	}
 	
-	public function testHasOnly2ElementsWhenNonLoginElementsRemoved()
+	/**
+	 * @depends testHasNoVerifyPasswordField
+	 */
+	public function testAddPasswordVerifyField()	
 	{
-		$this->fieldset->removeNonLoginElements();
+		$this->fieldset->setShowVerifyPasswordField(true);
 		
-		$this->assertCount(2, $this->fieldset, 'Should only have 2 fields left.');
-	}
-	
-	public function testFieldsetWithLoginElementsHasUsernameAndPasswordField()
-	{
-		$this->fieldset->removeNonLoginElements();
-		
-		$this->assertTrue($this->fieldset->has('username'), 'Should have username field');
-		$this->assertTrue($this->fieldset->has('password'), 'Should have password field');
+		$this->assertTrue($this->fieldset->has('verify-password'), 'Should now have a verify password field');
 	}
 }

@@ -35,8 +35,37 @@ class UserController extends AbstractActionController
 			return;
 		}
 		
+		// Load the user
+		$repo = $this->getUserRepository();
+		$user = $repo->findOneById($id);
+		if (!$user) {
+			$this->response->setStatusCode(404);
+			return;
+		}
 		
-		
+		$form = new UserForm();
+		$form->bind($user);
+				
+		/* @var $request \Zend\Http\Request */
+		$request = $this->getRequest();
+		if ($request->isPost()) {
+
+				
+			// Set the data
+			$form->setData($request->getPost());
+						
+			if ($form->isValid()) {
+				// Valid data! Save!
+				$repo->saveUser($user);
+				
+				// And redirect!
+				return $this->redirect()->toRoute('user');
+			}
+		}
+				
+		return array(
+			'form' => $form
+		);	
 	}
 	
 	/**
@@ -45,6 +74,7 @@ class UserController extends AbstractActionController
 	public function createAction()
 	{	
 		$form = new UserForm();
+		$form->setShowPasswordFields(true);
 		
 		/* @var $request \Zend\Http\Request */
 		$request = $this->getRequest();

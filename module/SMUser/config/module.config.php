@@ -25,10 +25,10 @@ return array(
 				),
 				'may_terminate' => true,
 				'child_routes' => array(
-					'id_action' => array(
+					'action' => array(
 						'type'    => 'Segment',
 						'options' => array(
-							'route'		=> '[/:id/:action][/]',
+							'route'		=> '[/:id][/:action][/]',
 							'constraints' => array(
 								'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
 								'id'		=> '[0-9]+',	
@@ -38,6 +38,7 @@ return array(
 							),
 						),
 					),
+					/*
 					'only_action' => array(
 						'type'    => 'Segment',
 						'options' => array(
@@ -50,6 +51,7 @@ return array(
 							),
 						),
 					),
+					*/
 				),
 			),
 		),
