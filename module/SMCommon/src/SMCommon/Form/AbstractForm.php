@@ -10,6 +10,7 @@ namespace SMCommon\Form;
 use Zend\Form\Form;
 use Zend\Form\Annotation\InputFilter;
 use SMCommon\Form\Collection\ActionsCollection;
+use Zend\Stdlib\Hydrator\ClassMethods;
 
 abstract class AbstractForm extends Form
 {
@@ -23,6 +24,8 @@ abstract class AbstractForm extends Form
 		parent::__construct($name, $options);
 		
 		$this->setAttribute('method', 'post');
+		
+		$this->setHydrator(new ClassMethods(false));
 		
 		// Initialize the action collection
 		$this->actionCollection = new ActionsCollection();

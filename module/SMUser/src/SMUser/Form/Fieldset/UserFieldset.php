@@ -68,7 +68,7 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
 			'fullname' => array(
 				'required' => true,
 			),
-			'email' => array(
+			'emailAddress' => array(
 				'required' => false
 			),
 			

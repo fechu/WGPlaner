@@ -79,7 +79,7 @@ class User extends AbstractEntity implements UserInterface
 		return $this->fullname;
 	}
 
-	public function setEmailAdress($emailAdress)
+	public function setEmailAddress($emailAdress)
 	{
 		if (is_string($emailAdress)) {
 			$this->emailAdress = $emailAdress;

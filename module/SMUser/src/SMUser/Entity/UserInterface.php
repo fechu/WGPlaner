@@ -41,7 +41,7 @@ interface UserInterface
 	 *
 	 * @param	 string	$emailAddress		
 	 */
-	public function setEmailAdress($emailAdress);
+	public function setEmailAddress($emailAdress);
 	
 	/**
 	 * @return	 string		The email address		

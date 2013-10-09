@@ -11,11 +11,13 @@ use Zend\Form\Element\Password;
 use Zend\Validator\StringLength;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use Zend\Form\Form;
+use SMCommon\Form\Collection\ActionsCollection;
+use SMCommon\Form\AbstractForm;
 
 /**
  * Form that contains password and verify password fieldset. 
  */
-class PasswordForm extends Form implements InputFilterProviderInterface
+class PasswordForm extends AbstractForm implements InputFilterProviderInterface
 {
 	/**
 	 * Password field.
@@ -108,6 +110,14 @@ class PasswordForm extends Form implements InputFilterProviderInterface
 			}
 		}
 		return $finalFilters;
+	}
+	
+	/**
+	 * @return string|null	The password entered in the form or null if there was not entered a valid passowrd.
+	 */
+	public function getPassword()
+	{
+		return $this->isValid ? $this->get('password')->getValue() : NULL;
 	}
 	
 }

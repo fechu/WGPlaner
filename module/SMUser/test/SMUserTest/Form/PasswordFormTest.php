@@ -56,8 +56,37 @@ class PasswordFormTest extends \PHPUnit_Framework_TestCase
 		// Make sure it has no field
 		$this->form->showVerifyPasswordField(false);
 		
+		$oldCount = count($this->form);
+		
 		$this->form->showVerifyPasswordField(true);
 		$this->assertTrue($this->form->has('verify-password'), 'Should have verify password field');
-		$this->assertCount(2, $this->form, 'Should now have 2 fields');
+		$this->assertCount($oldCount + 1, $this->form, 'Should now have 2 fields');
+	}
+	
+	public function testInvalidInputDoesNotReturnPassword()	
+	{
+		$data = array('password' => ' ');	// Invalid password
+		$this->form->setData($data);
+		$this->assertFalse($this->form->isValid());
+		
+		$this->assertNull($this->form->getPassword(), 'Password should be null if form is not valid.');
+	}
+	
+	public function testDoesNotReturnPasswortWithoutValidation()
+	{
+		$this->assertNull($this->form->getPassword(), 'Password should not be returned if form was not validated.');
+	}
+	
+	public function testGetPassword()	
+	{
+		$password ='StrongValidPassword';
+		$data = array(
+			'password' => $password,
+			'verify-password' => $password
+		);
+		$this->form->setData($data);
+		
+		$this->assertTrue($this->form->isValid(), 'Should be valid password');
+		$this->assertEquals($password, $this->form->getPassword(), 'Should return validated password');
 	}
 }

@@ -10,6 +10,7 @@ namespace SMUser\Controller;
 
 use SMUser\Form\UserForm;
 use Application\Entity\User;
+use SMUser\Form\PasswordForm;
 class UserController extends AbstractActionController
 {
 	/**
@@ -56,6 +57,7 @@ class UserController extends AbstractActionController
 						
 			if ($form->isValid()) {
 				// Valid data! Save!
+				var_dump($form->getData());
 				$repo->saveUser($user);
 				
 				// And redirect!
@@ -110,5 +112,33 @@ class UserController extends AbstractActionController
 		if (!$id = $this->requireId()) {
 			return;
 		}
+		
+		// Load that user
+		/* @var $user \SMUser\Entity\UserInterface */
+		$user = $this->getUserRepository()->findOneById($id);
+		
+		$form = new PasswordForm();
+		
+		/* @var $request \Zend\Http\Request */
+		$request = $this->getRequest();
+		if ($request->isPost()) {
+			$form->setData($request->getPost());
+			
+			if ($form->isValid()) {
+				$password = $form->getPassword();
+				
+				$user->setPassword($password);
+				
+				$this->getUserRepository()->saveUser($user);
+				
+				// Forward to the user list
+				return $this->redirect()->toRoute('user');
+			}
+		}
+		
+		return array(
+			'form' => $form,
+			'user' => $user,
+		);
 	}
 }
