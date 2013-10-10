@@ -1,0 +1,13 @@
+<?php 
+/* @var $this SMCommon\View\Renderer\PhpRenderer */
+echo $this->pageHeader('Benutzer Löschen', $this->user->getFullname());
+?>
+
+<div class="alert alert-block alert-error">
+<h4>Warning!</h4>
+Do you really want to delete the user "<?php echo $this->user->getFullname();?>"? This cannot be undone.
+</div>
+
+<?php
+echo $this->bootstrapForm($this->form, 'horizontal');
+?>

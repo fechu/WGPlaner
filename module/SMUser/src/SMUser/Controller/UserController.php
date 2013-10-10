@@ -11,6 +11,8 @@ namespace SMUser\Controller;
 use SMUser\Form\UserForm;
 use Application\Entity\User;
 use SMUser\Form\PasswordForm;
+use SMCommon\Form\DeleteForm;
+
 class UserController extends AbstractActionController
 {
 	/**
@@ -135,6 +137,42 @@ class UserController extends AbstractActionController
 				return $this->redirect()->toRoute('user');
 			}
 		}
+		
+		return array(
+			'form' => $form,
+			'user' => $user,
+		);
+	}
+	
+	
+	/**
+	 * Delete a user
+	 */
+	public function deleteAction()
+	{
+		if (!$id = $this->requireId()) {
+			return;
+		}
+		
+		$form = new DeleteForm();
+		
+		// Load the user
+		$user = $this->getUserRepository()->findOneById($id);
+		if (!$user) {
+			// User does not exist
+			$this->response->setStatusCode(404);
+			return;
+		}
+		
+		/* @var $request \Zend\Http\Request */
+		$request = $this->getRequest();
+		if ($request->isPost()) {
+			// Delete the user
+			$this->getUserRepository()->removeUser($user);
+			
+			return $this->redirect()->toRoute('user');
+		}
+		
 		
 		return array(
 			'form' => $form,

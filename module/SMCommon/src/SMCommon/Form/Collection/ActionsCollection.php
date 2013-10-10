@@ -35,4 +35,27 @@ class ActionsCollection extends Collection
 			)
 		));
 	}
+	
+	/**
+	 * Set the title of the submit button.
+	 * 
+	 * @param string $title The title you want to give to the button. 
+	 */
+	public function setSubmitButtonTitle($title)
+	{
+		$button = $this->get('submit');
+		$button->setAttribute('value', $title);
+	}
+	
+	/**
+	 * Set the type of the submit button. 
+	 * 
+	 * @param string $type The type of the button. For example primary.'
+	 * @see Twitter Bootstrap 2.x documentation about available button types.
+	 */
+	public function setSubmitButtonType($type) 
+	{
+		$button = $this->get('submit');
+		$button->setAttribute('class', 'btn btn-' . $type);
+	}
 }
