@@ -20,6 +20,13 @@ class Module implements AutoloaderProviderInterface, ServiceProviderInterface
 		$eventManager = $e->getApplication()->getEventManager();
 		$moduleRouteListener = new ModuleRouteListener();
 		$moduleRouteListener->attach($eventManager);
+		
+		$serviceManager = $e->getApplication()->getServiceManager();
+		/* @var $entityManager \Doctrine\ORM\EntityManager */
+		$entityManager = $serviceManager->get('doctrine.entitymanager.orm_default');
+		
+		// Enable the soft delete filter by default. If you want the delete objects to, you have to manually disable this filter.
+		$entityManager->getFilters()->enable('soft_delete');
 	}
 	
 	public function getConfig()
