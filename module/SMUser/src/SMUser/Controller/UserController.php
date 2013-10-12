@@ -59,7 +59,6 @@ class UserController extends AbstractActionController
 						
 			if ($form->isValid()) {
 				// Valid data! Save!
-				var_dump($form->getData());
 				$repo->saveUser($user);
 				
 				// And redirect!
