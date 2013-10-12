@@ -21,11 +21,27 @@ $table->addColumn(array(
 $table->addColumn(array(
 	'headTitle' 	=> 'Aktionen',
 	'dataMethod'	=> function(User $user){
+		// Edit button
 		$editURL = $this->url('user/action', array('action' => 'edit', 'id' => $user->getId()));
-		return $this->prettyprint()->button($editURL, 'Edit');
+		$result = $this->prettyprint()->button($editURL, 'Bearbeiten');
+		
+		// Change Password button
+		$changePasswordUrl = $this->url('user/action', array('action' => 'change-password', 'id' => $user->getId()));
+		$result .= $this->prettyprint()->button($changePasswordUrl, 'Passwort ändern');
+		
+		// delete button
+		$deleteUrl = $this->url('user/action', array('action' => 'delete', 'id' => $user->getId()));
+		$result .= $this->prettyprint()->button($deleteUrl, 'Löschen', 'danger');
+		
+		return $result;
 	}
 ));
 
 echo $table;
-
 ?>
+<span class="pull-right">
+	<?php
+	$createUrl = $this->url('user/action', array('action' => 'create'));
+	echo $this->prettyprint()->button($createUrl, 'Neuer Benutzer erstellen');
+	?>
+</span>

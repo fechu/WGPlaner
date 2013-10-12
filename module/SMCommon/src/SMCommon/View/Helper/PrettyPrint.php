@@ -54,7 +54,7 @@ class PrettyPrint extends AbstractHelper
 		else {
 			$classAttribute = '';
 		}
-		return '<a href="'. $url .'" class="'. $class .'">' . $title . '</a>'; 
+		return '<a href="'. $url .'" class="'. $class .'">' . $title . '</a> '; 
 	}
 }
 

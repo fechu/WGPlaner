@@ -1,4 +1,7 @@
-<?php echo $this->doctype(); ?>
+<?php 
+/* @var $this SMCommon\View\Renderer\PhpRenderer */
+echo $this->doctype(); 
+?>
 
 <html lang="en">
    <head>
@@ -40,7 +43,10 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a href="" class="brand">WGPlaner</a>
+                    <a href="/" class="brand">WGPlaner</a>
+                    <ul class="nav">
+                    	<li><a href="<?php $this->url('user');?>">Benutzerverwaltung</a></li>
+                    </ul>
 				</div>
             </div>
         </div> <!-- Navbar -->
