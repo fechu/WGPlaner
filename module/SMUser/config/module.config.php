@@ -62,5 +62,42 @@ return array(
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),
-	)
+	),
+	
+	// Navigation
+	'navigation' => array(
+         'default' => array(
+             array(
+                 'label' => 'Benutzer',
+                 'route' => 'user',
+                 'pages' => array(
+                     array(
+                         'label' 	=> 'Bearbeiten',
+                         'route' 	=> 'user/action',
+                     	 'action'	=> 'edit',
+                     	 'visible' 	=> false,
+                     ),
+                 	array(
+                 		'label' 	=> 'Passwort ändern',
+                 		'route' 	=> 'user/action',
+                 		'action'	=> 'change-password',
+                 		'visible' 	=> false,
+                 	),
+                 	array(
+                 		'label'		=> 'Erstellen',
+                 		'route'		=> 'user/action',
+                 		'action'	=> 'create',
+                 		'visible' 	=> false
+                 	)
+                 ),
+             ),
+         ),
+     ),
+	
+	
+     'service_manager' => array(
+         'factories' => array(
+             'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
+         ),
+     ),
 );

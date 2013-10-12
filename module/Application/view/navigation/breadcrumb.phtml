@@ -1,0 +1,20 @@
+<?php if (count($this->pages) > 0) : ?>
+<ul class="breadcrumb">
+	<?php 
+	/* @var $page \Zend\Navigation\Page\Mvc */
+	
+	$pageCount = count($this->pages);
+	for ($i = 0; $i < $pageCount; $i++) :
+		$page = $this->pages[$i];
+	
+		$label = $page->getLabel();
+		$href = $page->getHref();
+		if ($i != $pageCount - 1) :
+	?>
+		<li><a href="<?php echo $href; ?>"><?php echo $label; ?></a><span class="divider">/</span></li>
+		<?php else : ?>
+		<li><?php echo $label; ?></li> 
+		<?php endif;?>
+	<?php endfor; ?>
+</ul>
+<?php endif;?>

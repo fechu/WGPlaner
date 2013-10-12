@@ -44,13 +44,21 @@ echo $this->doctype();
                         <span class="icon-bar"></span>
                     </a>
                     <a href="/" class="brand">WGPlaner</a>
-                    <ul class="nav">
-                    	<li><a href="<?php $this->url('user');?>">Benutzerverwaltung</a></li>
-                    </ul>
+                    <?php
+         			/* @var $navigation \Zend\View\Helper\Navigation\Menu */
+		        	$navigation = $this->navigation('navigation')->menu();
+		        	$navigation->setUlClass('nav');
+		        	echo $navigation;
+		        	?>
 				</div>
             </div>
         </div> <!-- Navbar -->
         <div class="container">
+        <?php echo $this->navigation('navigation')
+        				->breadcrumbs()
+        				->setRenderInvisible(true)
+        				->setPartial('navigation/breadcrumb'); 
+        ?>
         <?php echo $this->content; ?>
         </div> <!-- /container -->
         </div>
