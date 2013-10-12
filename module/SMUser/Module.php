@@ -3,8 +3,9 @@
 namespace SMUser;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ControllerProviderInterface;
+use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 
-class Module implements AutoloaderProviderInterface, ControllerProviderInterface
+class Module implements AutoloaderProviderInterface, ControllerProviderInterface, ViewHelperProviderInterface
 {
 	public function getConfig()
 	{
@@ -26,8 +27,18 @@ class Module implements AutoloaderProviderInterface, ControllerProviderInterface
 	{
 		return array(
 			'invokables' => array(
-				'SMUser\Controller\User' => 'SMUser\Controller\UserController',	
+				'SMUser\Controller\User' 				=> 'SMUser\Controller\UserController',	
+				'SMUser\Controller\Authentification' 	=> 'SMUser\Controller\AuthentificationController',	
 			)
+		);
+	}
+	
+	public function getViewHelperConfig()
+	{
+		return array(
+			'factories' => array(
+				'identity' => 'SMUser\View\Helper\Service\IdentityFactory',
+			),
 		);
 	}
 	

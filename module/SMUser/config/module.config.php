@@ -38,22 +38,22 @@ return array(
 							),
 						),
 					),
-					/*
-					'only_action' => array(
-						'type'    => 'Segment',
-						'options' => array(
-							'route'		=> '[/:action][/]',
-							'constraints' => array(
-								'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
-							),
-							'defaults' => array(
-								'controller'	=> 'User',
-							),
-						),
-					),
-					*/
 				),
 			),
+			'auth' => array(
+				'type'    => 'Segment',
+				'options' => array(
+					'route'    => '/auth[/:action][/]',
+					'defaults' => array(
+						'__NAMESPACE__' => 'SMUser\Controller',
+						'controller'    => 'Authentification',
+						'action'        => 'login',
+					),
+					'constraints'	=> array(
+						'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+					),
+				),					
+			)
 		),
 	),
 	
@@ -96,8 +96,14 @@ return array(
 	
 	
      'service_manager' => array(
-         'factories' => array(
-             'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
-         ),
+     	'alias' => array(
+     		'smuser.auth_service' => 'Zend\Authentication\AuthenticationService',
+     	),
+     	'invokables' => array(
+     		'Zend\Authentication\AuthenticationService' => 'Zend\Authentication\AuthenticationService',
+     	),
+        'factories' => array(
+            'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
+        ),
      ),
 );

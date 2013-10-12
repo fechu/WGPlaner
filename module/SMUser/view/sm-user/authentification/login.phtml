@@ -1,0 +1,26 @@
+<?php 
+// Merge all messages 
+$messages = $this->messages;
+foreach ($this->form->getMessages() as $element) {
+	$messages = array_merge($messages, array_values($element));
+}
+?>
+<div class="row">
+    <div class="span4 offset4">
+      <div class="well">
+        <legend>WGPlaner Login</legend>
+        <form method="POST" action="" accept-charset="UTF-8">
+        	<?php foreach ($messages as $message) :?>
+           	<div class="alert alert-error">
+                <a class="close" data-dismiss="alert" href="#">x</a><?php echo $message; ?>
+            </div>
+            <?php endforeach;?>
+            <center>
+	            <input class="span3" placeholder="Benutzername" type="text" name="username">
+	            <input class="span3" placeholder="Passwort" type="password" name="password"> 
+	            <button class="btn-info btn" type="submit">Login</button>      
+            </center>
+        </form>    
+      </div>
+    </div>
+</div>

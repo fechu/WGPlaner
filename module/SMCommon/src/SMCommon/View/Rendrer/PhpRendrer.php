@@ -15,5 +15,6 @@ namespace SMCommon\View\Renderer;
  * @method string								formatDate($date, $parts = Application\View\Helper\FormatDate::FORMAT_BOTH)
  * @method SMCommon\View\Helper\Table			table()								
  * @method SMCommon\View\Helper\PrettyPrint		prettyprint()
+ * @method SMUser\Entity\UserInterface			identity()
  */
 class PhpRenderer extends \Zend\View\Renderer\PhpRenderer {}

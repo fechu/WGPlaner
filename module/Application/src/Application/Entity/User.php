@@ -10,6 +10,7 @@ namespace Application\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use SMUser\Entity\UserInterface;
 use SMCommon\Entity\AbstractEntity;
+use Zend\Crypt\Password\Bcrypt;
 
 /**
  * A user
@@ -97,7 +98,8 @@ class User extends AbstractEntity implements UserInterface
 	public function setPassword($password)
 	{
 		if (is_string($password)) {
-			$this->password = $password;
+			$bcrypt = new Bcrypt();
+			$this->password = $bcrypt->create($password);
 		}
 		else {
 			throw new \InvalidArgumentException("Password has to be a string. Received " . gettype($password));
@@ -109,4 +111,9 @@ class User extends AbstractEntity implements UserInterface
 		return $this->password;
 	}
 	
+	public function isCorrectPassword($password)
+	{
+		$bcrypt = new Bcrypt();
+		return $bcrypt->verify($password, $this->getPassword());
+	}
 }

@@ -50,6 +50,11 @@ echo $this->doctype();
 		        	$navigation->setUlClass('nav');
 		        	echo $navigation;
 		        	?>
+		        	<?php if ($this->identity()) : ?>
+		        	<ul class="nav pull-right">
+		        		<li><a href=""><?php echo $this->identity()->getFullname(); ?></a></li>
+		        	</ul>
+		        	<?php endif;?>
 				</div>
             </div>
         </div> <!-- Navbar -->

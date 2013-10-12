@@ -59,4 +59,10 @@ interface UserInterface
 	 * @return string The hash of the password.
 	 */
 	public function getPassword();
+	
+	/**
+	 * Function that chcks if the password supplied is correct.
+	 * @return boolean 
+	 */
+	public function isCorrectPassword($password);
 }
