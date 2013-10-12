@@ -7,7 +7,12 @@ return array(
 		 * The repository needs to be a service in the service locator. You can specify
 		 * the key that is used to get the service. 
 		 */
-		'user_repository_service' => 'smuser.user_repository'
+		'user_repository_service' => 'smuser.user_repository',
+		
+		/**
+		 * Should the SMUser module redirect every request to the login page that is not authenticated?
+		 */
+		'redirect_without_authentication' => true,
 	),
 	
 	// Routes
