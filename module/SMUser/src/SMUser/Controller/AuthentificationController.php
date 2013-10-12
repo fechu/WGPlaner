@@ -54,6 +54,9 @@ class AuthentificationController extends AbstractActionController
 	
 	public function logoutAction()
 	{
+		$authService = $this->getServiceLocator()->get('smuser.auth_service');
+		$authService->clearIdentity();
 		
+		return $this->redirect()->toRoute('auth');
 	}
 }

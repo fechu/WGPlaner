@@ -96,14 +96,14 @@ return array(
 	
 	
      'service_manager' => array(
-     	'alias' => array(
-     		'smuser.auth_service' => 'Zend\Authentication\AuthenticationService',
-     	),
      	'invokables' => array(
      		'Zend\Authentication\AuthenticationService' => 'Zend\Authentication\AuthenticationService',
      	),
         'factories' => array(
             'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
         ),
+     	'aliases' => array(
+     		'smuser.auth_service' => 'Zend\Authentication\AuthenticationService',
+     	),
      ),
 );
