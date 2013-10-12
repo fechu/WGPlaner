@@ -13,7 +13,16 @@ $table->addColumn(array(
 	'headTitle' 	=> 'Email',
 	'dataMethod'	=> function(User $user) {
 		$email = $user->getEmailAddress();
-		return '<a href="mailto:'. $email .'">' . $email . '</a>';
+		return $this->prettyprint()->email($email);	
+	}
+));
+
+// Actions!
+$table->addColumn(array(
+	'headTitle' 	=> 'Aktionen',
+	'dataMethod'	=> function(User $user){
+		$editURL = $this->url('user/action', array('action' => 'edit', 'id' => $user->getId()));
+		return $this->prettyprint()->button($editURL, 'Edit');
 	}
 ));
 
