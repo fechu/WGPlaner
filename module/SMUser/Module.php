@@ -12,9 +12,12 @@ class Module implements AutoloaderProviderInterface, ControllerProviderInterface
 	
 	public function onBootstrap(MvcEvent $e)
     {
-        // Register for the route event
-    	$eventManager = $e->getApplication()->getEventManager();
-        $eventManager->attach(MvcEvent::EVENT_ROUTE, array($this, 'onRoute'));
+    	$authService = $e->getApplication()->getServiceManager()->get('smuser.auth_service');
+    	if(!$authService->getIdentity()) {
+        	// Register for the route event
+    		$eventManager = $e->getApplication()->getEventManager();
+        	$eventManager->attach(MvcEvent::EVENT_ROUTE, array($this, 'onRoute'));
+    	}
     }
 	
 	public function getConfig()
