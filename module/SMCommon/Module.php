@@ -76,6 +76,7 @@ class Module implements AutoloaderProviderInterface,
 				'pageHeader' 	=> 'SMCommon\View\Helper\PageHeader',
 				'table'			=> 'SMCommon\View\Helper\Table',
 				'objectUrl'		=> 'SMCommon\View\Helper\ObjectUrl',
+				'prettyprint'	=> 'SMCommon\View\Helper\PrettyPrint',
 			),
 			'factories' => array(
 				'formatDate' => function ($sm) {
