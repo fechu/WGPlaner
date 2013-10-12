@@ -5,7 +5,10 @@ return array(
     	'DoctrineModule', 
     	'DoctrineORMModule',
     	'ZendDeveloperTools',
+    	'Zucchi',
+    	'ZucchiBootstrap',
     	'SMCommon',
+    	'SMUser',
         'Application',
     ),
 
@@ -51,21 +54,4 @@ return array(
         // that weren't loaded.
         // 'check_dependencies' => true,
     ),
-	
-	// Doctrine configuration
-	'doctrine' => array(
-		'connection' => array(
-			// default connection name
-			'orm_default' => array(
-				'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
-				'params' => array(
-					'host'     => 'localhost',
-					'port'     => '3306',
-					'user'     => 'root',
-					'password' => 'root',
-					'dbname'   => 'wgplaner',
-				)
-			)
-		)
-	),
 );

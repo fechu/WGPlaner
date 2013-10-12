@@ -13,6 +13,7 @@ use Zend\Log\LoggerAwareInterface;
 use SMCommon\Doctrine\EntityManagerAwareInterface;
 use Zend\Log\LoggerInterface;
 use Doctrine\ORM\EntityManager;
+use Zend\Validator\Digits;
 /**
  * A base controller. 
  * It implements basic things like the logger that all controllers need.
@@ -58,7 +59,11 @@ abstract class AbstractActionController extends ZendActionController implements 
 		if (!$id) {
 			$id = $this->params()->fromQuery('id', 0);
 		}
+		
 		if ($id) {
+			// The validator is required because, query parameters can not be checked with a regex in 
+			// during routing. If you write the route correctly with a constraint id => '[0-9]+', then 
+			// an id from the route will never hit this Digits validator.
 			$validator = new Digits();
 			if (!$validator->isValid($id)) {
 				$this->logger->notice('Supplied invalid ID to controller action. Do we have a scripting kiddy?', array('id' => $id));
@@ -67,5 +72,29 @@ abstract class AbstractActionController extends ZendActionController implements 
 		}
 		
 		return $id;
+	}
+	
+	/**
+	 * Checks a id is given (with getId()). If none is found, will redirect to a Not Found page.
+	 */
+	public function requireId()
+	{
+		$id = $this->getId();
+		if (!$id) {
+			// Invalid ID!
+			$this->getResponse()->setStatusCode(404);
+			return false;
+		}
+		
+		return $id;
+	}
+	
+	/**
+	 * Shorthand to get the configuration.
+	 * Equal to $this->getServiceLocator()->get('config')
+	 */
+	public function getConfig()
+	{
+		return $this->getServiceLocator()->get('config');
 	}
 }
