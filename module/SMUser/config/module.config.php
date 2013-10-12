@@ -13,6 +13,11 @@ return array(
 		 * Should the SMUser module redirect every request to the login page that is not authenticated?
 		 */
 		'redirect_without_authentication' => true,
+		
+		/**
+		 * The route where to redirect after login.
+		 */
+		'redirect_after_login' => 'home',
 	),
 	
 	// Routes

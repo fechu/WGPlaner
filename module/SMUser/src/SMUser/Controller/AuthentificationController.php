@@ -38,7 +38,9 @@ class AuthentificationController extends AbstractActionController
 
 				if ($result->isValid()) {
 					// Successful logged in!
-					return $this->redirect()->toRoute('user');
+					$config = $this->getSMUserConfig();
+					$route = isset($config['redirect_after_login']) ? $config['redirect_after_login'] : NULL;
+					return $this->redirect()->toRoute($route);
 				}
 				else {
 					$messages = $result->getMessages();

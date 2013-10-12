@@ -31,4 +31,11 @@ abstract class AbstractActionController extends SMCommonAbstractActioncontroller
 		
 		return $repo;
 	}
+	
+	public function getSMUserConfig()
+	{
+		$config = $this->getConfig();
+		$smuserConfig = isset($config['smuser']) ? $config['smuser'] : array();
+		return $smuserConfig;
+	}
 }
