@@ -132,7 +132,13 @@ return array(
     					'route'		=> 'purchase-list/action',
     					'action'	=> 'not-active',
     					'visible'	=> false,
-    				)
+    				),
+    				array(
+    					'label'		=> 'Einkauf hinzufügen',
+    					'route'		=> 'purchase-list/action',
+    					'action'	=> 'add-purchase',
+    					'visible'	=> false,
+    				),
     			),
     		),
     	),

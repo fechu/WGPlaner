@@ -57,8 +57,19 @@ class Purchase extends AbstractEntity
 	 */
 	protected $user;
 	
+	public function __construct()
+	{
+		parent::__construct();
+		
+		$this->setDate(new \DateTime());
+	}
+	
 	public function setDate($date)
 	{
+		if (is_string($date)) {
+			$date = \DateTime::createFromFormat('Y-m-d', $date);
+			$date->setTime(0,0,0);
+		}
 		$this->date = $date;
 	}
 	
@@ -69,7 +80,7 @@ class Purchase extends AbstractEntity
 	
 	public function setSlipNumber($number)
 	{
-		$this->slipNumber = $number;
+		$this->slipNumber = (int)$number;
 	}
 	
 	public function getSlipNumber()
@@ -99,7 +110,7 @@ class Purchase extends AbstractEntity
 	
 	public function setAmount($amount)
 	{
-		$this->amount = $amount;
+		$this->amount = (float)$amount;
 	}
 	
 	public function getAmount()

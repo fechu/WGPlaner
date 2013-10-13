@@ -10,12 +10,15 @@ namespace Application\Form\Fieldset;
 use Zend\Form\Fieldset;
 use Zend\Form\Element\DateSelect;
 use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\Stdlib\Hydrator\ClassMethods;
 
 class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 {
 	public function __construct()
 	{
 		parent::__construct('PurchaseFieldset');
+		
+		$this->setHydrator(new ClassMethods(false));
 		
 		// Purchase date
 		$dateSelect = new DateSelect();
@@ -39,11 +42,11 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 			'name' => 'hasSlip',
 			'type' => 'Checkbox',
 			'options' => array(	
-				'label' => 'Beleg'
+				'label' => 'Beleg',
 			),
 			'attributes' => array(
 				'id' => 'hasSlipCheckbox',
-				'checked' => true,
+				'value' => 1
 			)
 		));
 		

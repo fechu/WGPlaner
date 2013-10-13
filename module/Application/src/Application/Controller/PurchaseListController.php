@@ -11,6 +11,7 @@ use SMCommon\Controller\AbstractActionController;
 use Application\Form\PurchaseListForm;
 use Application\Entity\PurchaseList;
 use Application\Form\PurchaseForm;
+use Application\Entity\Purchase;
 
 class PurchaseListController extends AbstractActionController
 {
@@ -103,12 +104,20 @@ class PurchaseListController extends AbstractActionController
 	{
 		$form = new PurchaseForm();
 		
+		$purchase = new Purchase();
+		$form->bind($purchase);
+		
 		/* @var $request \Zend\Http\Request */
 		$request = $this->getRequest();
 		if ($request->isPost()) {
 			$form->setData($request->getPost());
 			if ($form->isValid()) {
-				;
+				// Set the logged in user user who did the purchase.
+				$purchase->setUser($this->identity());
+				$this->em->persist($purchase);
+				$this->em->flush();
+				
+				return $this->redirect()->toRoute('purchase-list');
 			}
 		}
 		
