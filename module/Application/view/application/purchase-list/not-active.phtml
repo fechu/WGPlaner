@@ -2,7 +2,7 @@
 use Application\Entity\PurchaseList;
 use SMCommon\View\Helper\FormatDate;
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
-echo $this->pageHeader('Aktuelle Einkaufslisten');
+echo $this->pageHeader('Nicht aktive Einkaufslisten');
 
 $table = $this->table();
 $table->setData($this->lists);
@@ -23,20 +23,12 @@ $table->addColumn(array(
 	'dataMethod'	=> function(PurchaseList $purchaseList) {
 		$result = '';
 		
-		$editUrl = $this->url('purchase-list/action', array('action' => 'edit', 'id' => $purchaseList->getId()));
-		$result .= $this->prettyprint()->button($editUrl, 'Bearbeiten');
 		
 		return $result;
 	}
 ));
 
-$notActiveUrl = $this->url('purchase-list/action', array('action' => 'not-active'));
 ?> 
-
-<div class="alert alert-info alert-block">
-Hier werden nur Einkaufslisten angezeigt, bei denen das heutige Datum in der Zeitperiode liegt. Klicken Sie <b><a href="<?php echo $notActiveUrl?>">hier</a></b> um 
-alle anderen Einkauflisten zu sehen.
-</div>
 
 <?php echo $table; ?>
 <span class="pull-right"><a class="btn" href="<?php echo $this->url('purchase-list/action', array('action' => 'create')); ?>">Einkaufliste erstellen</a></span>

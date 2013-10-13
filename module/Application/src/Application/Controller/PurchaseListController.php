@@ -20,7 +20,7 @@ class PurchaseListController extends AbstractActionController
 	{
 		/* @var $repo \Application\Entity\Repository\PurchaseListRepository */
 		$repo = $this->em->getRepository('Application\Entity\PurchaseList');
-		$lists = $repo->findAll();
+		$lists = $repo->findActive(new \DateTime());
 		
 		return array(
 			'lists' => $lists,
@@ -105,5 +105,19 @@ class PurchaseListController extends AbstractActionController
 	public function addPurchaseAction()
 	{
 		
+	}
+	
+	/**
+	 * Shows all Not active lists
+	 */
+	public function notActiveAction()
+	{
+		/* @var $repo \Application\Entity\Repository\PurchaseListRepository */
+		$repo = $this->em->getRepository('Application\Entity\PurchaseList');
+		$lists = $repo->findNotActive(new \DateTime());
+		
+		return array(
+			'lists' => $lists,
+		);
 	}
 }
