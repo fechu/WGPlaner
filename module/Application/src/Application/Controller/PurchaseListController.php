@@ -102,6 +102,18 @@ class PurchaseListController extends AbstractActionController
 	
 	public function addPurchaseAction()
 	{
+		if (!$id = $this->requireId()) {
+			return;
+		}
+		
+		/* @var $repo \Application\Entity\Repository\PurchaseListRepository */
+		$repo = $this->em->getRepository('Application\Entity\PurchaseList');
+		$purchaseList = $repo->find($id);
+		if (!$purchaseList) {
+			$this->getResponse()->setStatusCode(404);
+			return;
+		}
+		
 		$form = new PurchaseForm();
 		
 		$purchase = new Purchase();
@@ -114,6 +126,7 @@ class PurchaseListController extends AbstractActionController
 			if ($form->isValid()) {
 				// Set the logged in user user who did the purchase.
 				$purchase->setUser($this->identity());
+				$purchaseList->addPurchase($purchase);	// Add the purchase to this list.
 				$this->em->persist($purchase);
 				$this->em->flush();
 				
@@ -123,6 +136,7 @@ class PurchaseListController extends AbstractActionController
 		
 		return array(
 			'form' => $form,
+			'purchaseList' => $purchaseList,
 		);
 	}
 	
