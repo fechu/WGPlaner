@@ -59,7 +59,42 @@ class PurchaseListController extends AbstractActionController
 	
 	public function editAction()
 	{
+		if (!$id = $this->requireId()) {
+			return;
+		}
 		
+		$form = new PurchaseListForm();
+		
+		/* @var $repo \Application\Entity\Repository\PurchaseListRepository */
+		$repo = $this->em->getRepository('Application\Entity\PurchaseList');
+
+		$purchaseList = $repo->find($id);
+		
+		if (!$purchaseList) {
+			// not found
+			$this->getResponse()->setStatusCode(404);
+			return;
+		}
+		
+		$form->bind($purchaseList);
+		
+		/* @var $request \Zend\Http\Request */
+		$request = $this->getRequest();
+		
+		if ($request->isPost()) {
+			$form->setData($request->getPost());
+			if ($form->isValid()) {
+				// Persist the purchase list
+				$this->em->flush();
+				
+				return $this->redirect()->toRoute('purchase-list');
+			}
+		}
+		
+		return array(
+			'form' 			=> $form,
+			'purchaseList' 	=> $purchaseList,
+		);
 	}
 	
 	public function deleteAction()
