@@ -111,5 +111,28 @@ return array(
 	    		)
             )
         ),
-    )
+    ),
+    
+    // Navigation
+    'navigation' => array(
+    	'default' => array(
+    		array(
+    			'label' => 'Einkaufslisten',
+    			'route' => 'purchase-list',
+    			'pages' => array(
+    				array(
+    					'label'		=> 'Aktuelle Listen',
+    					'route'		=> 'purchase-list/action',
+    					'action'	=> 'index',
+    				),
+    				array(
+    					'label'		=> 'Nicht aktive Listen',
+    					'route'		=> 'purchase-list/action',
+    					'action'	=> 'not-active',
+    				)
+    			),
+    		),
+    	),
+    ),
+    
 );

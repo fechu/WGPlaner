@@ -65,11 +65,14 @@ echo $this->doctype();
             </div>
         </div> <!-- Navbar -->
         <div class="container">
+        <!--  
         <?php echo $this->navigation('navigation')
         				->breadcrumbs()
+        				->setMinDepth(0)
         				->setRenderInvisible(true)
         				->setPartial('navigation/breadcrumb'); 
         ?>
+        -->
         <?php echo $this->content; ?>
         </div> <!-- /container -->
         </div>
