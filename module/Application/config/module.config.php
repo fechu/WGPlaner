@@ -119,16 +119,19 @@ return array(
     		array(
     			'label' => 'Einkaufslisten',
     			'route' => 'purchase-list',
+    			'order' => -1,
     			'pages' => array(
     				array(
     					'label'		=> 'Aktuelle Listen',
     					'route'		=> 'purchase-list/action',
     					'action'	=> 'index',
+    					'visible'	=> false,
     				),
     				array(
     					'label'		=> 'Nicht aktive Listen',
     					'route'		=> 'purchase-list/action',
     					'action'	=> 'not-active',
+    					'visible'	=> false,
     				)
     			),
     		),

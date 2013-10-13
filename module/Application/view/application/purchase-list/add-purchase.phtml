@@ -1,0 +1,15 @@
+<?php 
+/* @var $this SMCommon\View\Renderer\PhpRenderer */
+echo $this->pageHeader('Einkauf hinzufügen');
+
+echo $this->bootstrapForm($this->form, 'horizontal');
+?>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#hasSlipCheckbox").change(function() {
+			var checked = ($(this).is(":checked"));
+			$("#slipNumber").attr("disabled", !checked);
+		});
+	});
+</script>

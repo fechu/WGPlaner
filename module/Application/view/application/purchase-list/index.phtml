@@ -26,6 +26,12 @@ $table->addColumn(array(
 		$editUrl = $this->url('purchase-list/action', array('action' => 'edit', 'id' => $purchaseList->getId()));
 		$result .= $this->prettyprint()->button($editUrl, 'Bearbeiten');
 		
+		$addPurchaseUrl = $this->url('purchase-list/action', array(
+			'action' 	=> 'add-purchase', 
+			'id'		=> $purchaseList->getId(),
+		));
+		$result .= $this->prettyprint()->button($addPurchaseUrl, 'Einkauf hinzufügen');
+		
 		return $result;
 	}
 ));

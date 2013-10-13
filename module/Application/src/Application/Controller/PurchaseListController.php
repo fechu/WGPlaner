@@ -10,6 +10,7 @@ namespace Application\Controller;
 use SMCommon\Controller\AbstractActionController;
 use Application\Form\PurchaseListForm;
 use Application\Entity\PurchaseList;
+use Application\Form\PurchaseForm;
 
 class PurchaseListController extends AbstractActionController
 {
@@ -97,14 +98,23 @@ class PurchaseListController extends AbstractActionController
 		);
 	}
 	
-	public function deleteAction()
-	{
-		
-	}
 	
 	public function addPurchaseAction()
 	{
+		$form = new PurchaseForm();
 		
+		/* @var $request \Zend\Http\Request */
+		$request = $this->getRequest();
+		if ($request->isPost()) {
+			$form->setData($request->getPost());
+			if ($form->isValid()) {
+				;
+			}
+		}
+		
+		return array(
+			'form' => $form,
+		);
 	}
 	
 	/**
