@@ -9,11 +9,12 @@ namespace Application\Entity;
 
 use SMCommon\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\MappedSuperclass
  */
-class BillingList extends AbstractEntity 
+class AbstractBillingList extends AbstractEntity 
 {
 	/**
 	 * The name of the list
@@ -34,6 +35,21 @@ class BillingList extends AbstractEntity
 	 * @ORM\Column(type="utcdatetime")
 	 */
 	protected $endDate;
+	
+	/**
+	 * The user(s) associated with this list.
+	 * 
+	 * @var ArrayCollection
+	 * 
+	 * @ORM\ManyToMany(targetEntity="\Application\Entity\User", inversedBy="billingLists")
+	 * @ORM\JoinTable(name="billinglists_users")
+	 */
+	protected $users;
+	
+	public function __construct()
+	{
+		$this->users = new ArrayCollection();
+	}
 	
 	public function setName($name)
 	{
@@ -97,6 +113,17 @@ class BillingList extends AbstractEntity
 	}
 	
 	/**
+	 * Add a user to this list.
+	 * 
+	 * @param Application\Entity\User $user
+	 */
+	public function addUser($user)
+	{
+		$this->users[] = $user;
+		$user->addBillingList($this);
+	}
+	
+	/**
 	 * Checks if the given Startdate is before the end date. 
 	 * 
 	 * @param \DateTime	$startDate
@@ -106,5 +133,29 @@ class BillingList extends AbstractEntity
 	protected function validStartAndEndDate($startDate, $endDate)
 	{
 		return $startDate < $endDate;
+	}
+	
+	/**
+	 * Checks if the date is in the list period. i.e. after startdate and before enddate.
+	 */
+	protected function isDateInPeriod($date)
+	{
+		$result = true;
+
+		// Do we have a startdate. If yes, check if the given date is after the startdate.
+		if ($this->startDate) {
+			if (!($date >= $this->startDate)) {
+				$result = false;
+			}
+		}
+		
+		// Do we have an enddate. If yes, check if the given date is before the enddate.
+		if ($this->endDate) {
+			if (!($date <= $this->endDate)) {
+				$result = false;
+			}
+		}
+		
+		return $result;
 	}
 }

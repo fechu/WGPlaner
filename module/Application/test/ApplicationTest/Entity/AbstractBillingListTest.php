@@ -8,14 +8,14 @@
 namespace ApplicationTest\Entity;
 
 
-use Application\Entity\BillingList;
-class BillingListTest extends \PHPUnit_Framework_TestCase
+use Application\Entity\AbstractBillingList;
+class AbstractBillingListTest extends \PHPUnit_Framework_TestCase
 {
 	protected $billingList;
 	
 	public function setUp()
 	{
-		$this->billingList = new BillingList();
+		$this->billingList = new AbstractBillingList(); 
 	}
 	
 	public function testListIsCreatedSuccessfully()
