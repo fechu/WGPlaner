@@ -50,12 +50,51 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 		// Beleg nummer
 		$this->add(array(
 			'name' => 'slipNumber',
-			'type' => 'Number',
+			'type' => 'Text',
 			'options' => array(
 				'label' => 'Belegnummer',
 			),
 			'attributes' => array(
 				'id' => 'slipNumber',
+			)
+		));
+		
+		// Store
+		$this->add(array(
+			'name' => 'store',
+			'type' => 'Text',
+			'options' => array(
+				'label' => 'Geschäft'
+			),
+			'attributes' => array(
+				'required' => 'required'
+			)
+		));
+		
+		// Description
+		$this->add(array(
+			'name' => 'description',
+			'type' => 'Text',
+			'options' => array(
+				'label' => 'Beschreibung'
+			),
+			'attributes' => array(
+				'required' => 'required'
+			)
+		));
+		
+		// Amount
+		$this->add(array(
+			'name' => 'amount',
+			'type' => 'Text',
+			'options' => array(
+				'label' => 'Betrag',
+				'bootstrap' => array(
+					'append' => 'CHF',
+				)
+			),
+			'attributes' => array(
+				'required' => 'required'
 			)
 		));
 	}
@@ -70,6 +109,21 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 			'slipNumber' => array(
 				'required' 	=> false,
 				'allow_empty' => true,
+				'validators' => array(
+					array('name' => 'Int'),
+				)
+			),
+			'store' => array(
+				'required' => true,
+			),
+			'description' => array(
+				'required' => true,
+			),
+			'amount' => array(
+				'required' => true,
+				'validators' => array(
+					array('name' => 'Float'),
+				)
 			),
 		);
 	}
