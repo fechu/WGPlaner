@@ -64,7 +64,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
 	{
 		$email = "me@myself.me";
 		
-		$this->user->setEmailAdress($email);
+		$this->user->setEmailAddress($email);
 		
 		$this->assertEquals($email, $this->user->getEmailAddress(), 'Email should be set');
 	}
@@ -75,7 +75,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
 		
 		$invalidEmail = array();
 		
-		$this->user->setEmailAdress($invalidEmail); // Throws exception
+		$this->user->setEmailAddress($invalidEmail); // Throws exception
 	}
 	
 	public function testSetPassword()
@@ -84,7 +84,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
 		
 		$this->user->setPassword($password);
 		
-		$this->assertEquals($password, $this->user->getPassword(), 'Passwort should be set.');
+		$this->assertTrue($this->user->isCorrectPassword($password));
 	}
 	
 	public function testSetNonStringPasswordThrowsException()

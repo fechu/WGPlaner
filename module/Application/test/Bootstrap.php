@@ -1,6 +1,6 @@
 <?php
 
-namespace SMUserTest;
+namespace ApplicationTest;
 
 use Zend\Loader\AutoloaderFactory;
 use Zend\Mvc\Service\ServiceManagerConfig;
