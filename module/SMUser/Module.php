@@ -6,8 +6,12 @@ use Zend\ModuleManager\Feature\ControllerProviderInterface;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 use Zend\Mvc\MvcEvent;
 use Zend\ModuleManager\ModuleManager;
+use Zend\ModuleManager\Feature\ControllerPluginProviderInterface;
 
-class Module implements AutoloaderProviderInterface, ControllerProviderInterface, ViewHelperProviderInterface
+class Module implements AutoloaderProviderInterface, 
+						ControllerProviderInterface, 
+						ViewHelperProviderInterface,
+						ControllerPluginProviderInterface
 {
 	
 	public function onBootstrap(MvcEvent $e)
@@ -52,6 +56,15 @@ class Module implements AutoloaderProviderInterface, ControllerProviderInterface
 			'factories' => array(
 				'identity' => 'SMUser\View\Helper\Service\IdentityFactory',
 			),
+		);
+	}
+	
+	public function getControllerPluginConfig()
+	{
+		return array(
+			'factories' => array(
+				'identity' => 'SMUser\Controller\Plugin\Service\IdentityFactory',
+			)
 		);
 	}
 	

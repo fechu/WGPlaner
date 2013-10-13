@@ -11,7 +11,7 @@ return array(
     'router' => array(
         'routes' => array(
             'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'type' => 'Literal',
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
@@ -20,34 +20,31 @@ return array(
                     ),
                 ),
             ),
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
-            'application' => array(
+            'purchase-list' => array(
                 'type'    => 'Literal',
                 'options' => array(
-                    'route'    => '/application',
+                    'route'    => '/purchase-list',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Index',
+                        'controller'    => 'PurchaseList',
                         'action'        => 'index',
                     ),
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
-                    'default' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/[:controller[/:action]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
-                    ),
+                    'action' => array(
+						'type'    => 'Segment',
+						'options' => array(
+							'route'		=> '[/:id][/:action][/]',
+							'constraints' => array(
+								'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+								'id'		=> '[0-9]+',	
+							),
+							'defaults' => array(
+								'controller'	=> 'PurchaseList',
+							),
+						),
+					),
                 ),
             ),
         ),
@@ -73,7 +70,8 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController'
+            'Application\Controller\Index' 			=> 'Application\Controller\IndexController',
+            'Application\Controller\PurchaseList' 	=> 'Application\Controller\PurchaseListController'
         ),
     ),
     'view_manager' => array(

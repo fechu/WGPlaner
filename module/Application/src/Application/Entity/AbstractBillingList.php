@@ -48,6 +48,8 @@ class AbstractBillingList extends AbstractEntity
 	
 	public function __construct()
 	{
+		parent::__construct();
+		
 		$this->users = new ArrayCollection();
 	}
 	
@@ -70,6 +72,12 @@ class AbstractBillingList extends AbstractEntity
 	
 	public function setStartDate($date)
 	{
+		if (is_string($date)) {
+			// Try to make it a DateTime object
+			$date = \DateTime::createFromFormat('Y-m-d', $date);
+			$date->setTime(0,0,0);
+		}
+		
 		// If no enddate we set it!
 		if (!$this->endDate) {
 			$this->startDate = $date;
@@ -92,6 +100,12 @@ class AbstractBillingList extends AbstractEntity
 	
 	public function setEndDate($date)
 	{
+		if (is_string($date)) {
+			// Try to make it a DateTime object
+			$date = \DateTime::createFromFormat('Y-m-d', $date);
+			$date->setTime(23, 59, 59);
+		}
+		
 		// If no startdate is set yet, we just set the enddate.
 		if (!$this->startDate) {
 			$this->endDate = $date;

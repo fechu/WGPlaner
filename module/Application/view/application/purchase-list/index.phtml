@@ -1,0 +1,11 @@
+<?php 
+/* @var $this SMCommon\View\Renderer\PhpRenderer */
+echo $this->pageHeader('Einkaufslisten');
+
+$table = $this->table();
+$table->setData($this->lists);
+
+$table->addColumn(array('Name', 'getName'));
+
+echo $table;
+?>

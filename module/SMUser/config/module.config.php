@@ -110,7 +110,8 @@ return array(
      		'Zend\Authentication\AuthenticationService' => 'Zend\Authentication\AuthenticationService',
      	),
         'factories' => array(
-            'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
+            'navigation' 		=> 'Zend\Navigation\Service\DefaultNavigationFactory',
+        	'smuser.identity' 	=> 'SMUser\Authentication\Service\IdentityServiceFactory', 
         ),
      	'aliases' => array(
      		'smuser.auth_service' => 'Zend\Authentication\AuthenticationService',

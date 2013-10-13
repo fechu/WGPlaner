@@ -7,6 +7,7 @@ use Zend\Authentication\AuthenticationService;
 use Zend\View\Exception;
 use Zend\View\Helper\AbstractHelper;
 use SMUser\Entity\Repository\UserRepositoryInterface;
+use SMUser\Authentication\IdentityService;
 
 /**
  * View helper plugin to fetch the authenticated identity.
@@ -14,21 +15,19 @@ use SMUser\Entity\Repository\UserRepositoryInterface;
 class Identity extends AbstractHelper
 {
     /**
-     * AuthenticationService instance
-     *
-     * @var AuthenticationService
-     */
-    protected $authenticationService;
-    
-    /**
-     * User repo used to load the user.
-     */
-    protected $userRepository;
-    
-    /**
      * The user once it is loaded.
+     * 
+     * @var IdentityService
      */
-    protected $identity;
+    protected $identityService;
+    
+    /**
+     * @param IdentityService $identityService
+     */
+    public function __construct($identityService)
+    {
+    	$this->identityService = $identityService;
+    }
 
     /**
      * Retrieve the current identity, if any.
@@ -40,57 +39,7 @@ class Identity extends AbstractHelper
      */
     public function __invoke()
     {
-        if (!$this->authenticationService instanceof AuthenticationService) {
-            throw new Exception\RuntimeException('No AuthenticationService instance provided');
-        }
-
-        if (!$this->authenticationService->hasIdentity()) {
-            return null;
-        }
-        
-        return $this->getIdentity();
+    	return $this->identityService->getIdentity();
     }
 
-    /**
-     * Set AuthenticationService instance
-     *
-     * @param AuthenticationService $authenticationService
-     * @return Identity
-     */
-    public function setAuthenticationService(AuthenticationService $authenticationService)
-    {
-        $this->authenticationService = $authenticationService;
-        return $this;
-    }
-
-    /**
-     * Get AuthenticationService instance
-     *
-     * @return AuthenticationService
-     */
-    public function getAuthenticationService()
-    {
-        return $this->authenticationService;
-    }
-    
-    public function setUserRepository($repo)
-    {
-    	$this->userRepository = $repo;
-    }
-    
-    public function getIdentity()
-    {
-    	if (!$this->identity) {
-    		$identity = $this->authenticationService->getIdentity();
-    		
-    		if (!$this->userRepository instanceof UserRepositoryInterface) {
-	            throw new Exception\RuntimeException('No UserRepository instance provided');
-    		}
-    		
-    		// Load the user 
-    		$this->identity = $this->userRepository->findOneByUsername($identity);
-    	}
-
-    	return $this->identity;
-    }
 }

@@ -70,6 +70,8 @@ class User extends AbstractEntity implements UserInterface
 	
 	public function __construct()
 	{
+		parent::__construct();
+		
 		$this->purchases = new ArrayCollection();
 		$this->billingLists = new ArrayCollection();
 	}

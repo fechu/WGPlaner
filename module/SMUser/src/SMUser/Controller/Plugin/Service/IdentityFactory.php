@@ -7,11 +7,11 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace SMUser\View\Helper\Service;
+namespace SMUser\Controller\Plugin\Service;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use SMUser\View\Helper\Identity;
+use SMUser\Controller\Plugin\Identity;
 
 class IdentityFactory implements FactoryInterface
 {
