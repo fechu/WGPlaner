@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use SMUser\Entity\UserInterface;
 use SMCommon\Entity\AbstractEntity;
 use Zend\Crypt\Password\Bcrypt;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * A user
@@ -49,6 +50,20 @@ class User extends AbstractEntity implements UserInterface
 	 * @ORM\Column(type="string", nullable=true)
 	 */
 	protected $emailAdress;
+	
+	
+	/**
+	 * The purchases made by this user.	
+	 * 
+	 * @var ArrayCollection
+	 * @ORM\OneToMany(targetEntity="Application\Entity\Purchase", mappedBy="user")
+	 */
+	protected $purchases;
+	
+	public function __construct()
+	{
+		$this->purchases = new ArrayCollection();
+	}
 	
 	public function setUsername($username)
 	{
@@ -115,5 +130,16 @@ class User extends AbstractEntity implements UserInterface
 	{
 		$bcrypt = new Bcrypt();
 		return $bcrypt->verify($password, $this->getPassword());
+	}
+	
+	/**
+	 * Add a purchase to this user. 
+	 * @warning This method will only update this side of the relationship. 
+	 *			You are advised to use the setUser() method of Purchase to establish a
+	 *			relationship between a user and a purchase. 
+	 */
+	public function addPurchase($purchase)
+	{
+		$this->purchases[] = $purchase;
 	}
 }
