@@ -17,7 +17,6 @@ echo $this->doctype();
                         ->prependStylesheet($this->basePath() . '/css/style.css')
                         ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css') 
         				->prependStylesheet($this->basePath() . '/css/jquery-ui.custom.min.css')
-        				->prependStylesheet($this->basePath() . '/css/magnific-popup.css')
         ?>
 
         <!-- Scripts -->
@@ -25,7 +24,6 @@ echo $this->doctype();
         $this->headScript()->prependFile($this->basePath() . '/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',));
 		$this->headScript()->prependFile($this->basePath() . '/js/jquery.ui.datepicker-de.js');  // German localization for Datepicker
         $this->headScript()->prependFile($this->basePath() . '/js/jquery.ui.custom.min.js');
-        $this->headScript()->prependFile($this->basePath() . '/js/jquery.magnific-popup.min.js');
         $this->headScript()->prependFile($this->basePath() . '/js/bootstrap.min.js');
 		$this->headScript()->prependFile($this->basePath() . '/js/jquery.min.js');
         

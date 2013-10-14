@@ -3,13 +3,7 @@
 echo $this->pageHeader('Einkauf hinzufügen', $this->purchaseList->getName());
 
 echo $this->bootstrapForm($this->form, 'horizontal');
-?>
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		$("#hasSlipCheckbox").change(function() {
-			var checked = ($(this).is(":checked"));
-			$("#slipNumber").attr("disabled", !checked);
-		});
-	});
-</script>
+// Add the javascript specific for this page
+$this->inlineScript()->appendFile($this->basePath() . '/js/application/purchase-list/add-purchase.js');
+?>
