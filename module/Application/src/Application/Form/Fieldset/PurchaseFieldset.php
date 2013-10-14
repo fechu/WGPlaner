@@ -130,4 +130,15 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 			),
 		);
 	}
+	
+	/**
+	 * Set the value of the slipNumber element
+	 * @param int $number
+	 */
+	public function setSlipNumber($number)
+	{
+		/* @var $element \Zend\Form\Element\Text */
+		$element = $this->get('slipNumber');
+		$element->setValue($number);
+	}
 }

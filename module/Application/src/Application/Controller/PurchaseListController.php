@@ -36,6 +36,7 @@ class PurchaseListController extends AbstractActionController
 		$purchaseList = new PurchaseList();
 		$form->bind($purchaseList);
 		
+		
 		/* @var $request \Zend\Http\Request */
 		$request = $this->getRequest();
 		
@@ -132,6 +133,12 @@ class PurchaseListController extends AbstractActionController
 				
 				return $this->redirect()->toRoute('purchase-list');
 			}
+		}
+		else {
+			// Set default slip number
+			/* @var $repo \Application\Entity\Repository\PurchaseRepository */
+			$repo = $this->em->getRepository('Application\Entity\Purchase');
+			$form->setSlipNumber($repo->findNextSlipNumber());
 		}
 		
 		return array(
