@@ -20,6 +20,14 @@ class PurchaseListController extends AbstractActionController
 	 */
 	public function indexAction()
 	{
+		// If we have an ID we redirect to the showPurchase action.
+		if ($id = $this->getId()) {
+			return $this->forward()->dispatch('Application\Controller\PurchaseList', array(
+				'action' 	=> 'show-purchase',
+				'id'		=> $id,
+			));
+		}
+		
 		/* @var $repo \Application\Entity\Repository\PurchaseListRepository */
 		$repo = $this->em->getRepository('Application\Entity\PurchaseList');
 		$lists = $repo->findActive(new \DateTime());
@@ -158,6 +166,27 @@ class PurchaseListController extends AbstractActionController
 		
 		return array(
 			'lists' => $lists,
+		);
+	}
+	
+	public function showPurchaseAction()
+	{
+		if (!$id = $this->requireId()) {
+			return;
+		}
+		
+		/* @var $repo \Application\Entity\Repository\PurchaseListRepository */
+		$repo = $this->em->getRepository('Application\Entity\PurchaseList');
+		
+		$purchaseList = $repo->find($id);
+		if (!$purchaseList) {
+			$this->getResponse()->setStatusCode(404);
+			return;
+		}
+		
+		
+		return array(
+			'purchaseList'	=> $purchaseList,
 		);
 	}
 }

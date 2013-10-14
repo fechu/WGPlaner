@@ -7,7 +7,13 @@ echo $this->pageHeader('Aktuelle Einkaufslisten');
 $table = $this->table();
 $table->setData($this->lists);
 
-$table->addColumn(array('Name', 'getName'));
+$table->addColumn(array(
+	'headTitle' 	=> 'Name',
+	'dataMethod'	=> function(PurchaseList $purchaseList) {
+		$listUrl = $this->url('purchase-list/action', array('id' => $purchaseList->getId()));
+		return $this->prettyprint()->link($listUrl, $purchaseList->getName());
+	}
+));
 
 $table->addColumn(array(
 	'headTitle' 	=> 'Periode',
@@ -31,6 +37,11 @@ $table->addColumn(array(
 			'id'		=> $purchaseList->getId(),
 		));
 		$result .= $this->prettyprint()->button($addPurchaseUrl, 'Einkauf hinzufügen');
+		
+		$purchasesUrl = $this->url('purchase-list/action', array(
+			'id' => $purchaseList->getId(),
+		));
+		$result .= $this->prettyprint()->button($purchasesUrl, 'Einkäufe');
 		
 		return $result;
 	}
