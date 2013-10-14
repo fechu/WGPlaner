@@ -23,4 +23,6 @@ class PurchaseRepository extends EntityRepository
 		$result = $query->getQuery()->getSingleResult();
 		return $result['maxSlipNumber'] + 1;
 	}
+	
+	
 }

@@ -23,7 +23,7 @@ class PurchaseListController extends AbstractActionController
 		// If we have an ID we redirect to the showPurchase action.
 		if ($id = $this->getId()) {
 			return $this->forward()->dispatch('Application\Controller\PurchaseList', array(
-				'action' 	=> 'show-purchase',
+				'action' 	=> 'purchases',
 				'id'		=> $id,
 			));
 		}
@@ -169,7 +169,7 @@ class PurchaseListController extends AbstractActionController
 		);
 	}
 	
-	public function showPurchaseAction()
+	public function purchasesAction()
 	{
 		if (!$id = $this->requireId()) {
 			return;
@@ -183,7 +183,6 @@ class PurchaseListController extends AbstractActionController
 			$this->getResponse()->setStatusCode(404);
 			return;
 		}
-		
 		
 		return array(
 			'purchaseList'	=> $purchaseList,

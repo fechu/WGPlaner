@@ -137,6 +137,11 @@ class AbstractBillingList extends AbstractEntity
 		$user->addBillingList($this);
 	}
 	
+	public function getUsers()
+	{
+		return $this->users->toArray();
+	}
+	
 	/**
 	 * Checks if the given Startdate is before the end date. 
 	 * 
