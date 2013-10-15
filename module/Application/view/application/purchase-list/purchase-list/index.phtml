@@ -10,7 +10,7 @@ $table->setData($this->lists);
 $table->addColumn(array(
 	'headTitle' 	=> 'Name',
 	'dataMethod'	=> function(PurchaseList $purchaseList) {
-		$listUrl = $this->url('purchase-list/action', array('id' => $purchaseList->getId()));
+		$listUrl = $this->url('purchase-list/action', array('purchaselistid' => $purchaseList->getId()));
 		return $this->prettyprint()->link($listUrl, $purchaseList->getName());
 	}
 ));
@@ -29,17 +29,17 @@ $table->addColumn(array(
 	'dataMethod'	=> function(PurchaseList $purchaseList) {
 		$result = '';
 		
-		$editUrl = $this->url('purchase-list/action', array('action' => 'edit', 'id' => $purchaseList->getId()));
+		$editUrl = $this->url('purchase-list/list-action', array('action' => 'edit', 'purchaselistid' => $purchaseList->getId()));
 		$result .= $this->prettyprint()->button($editUrl, 'Bearbeiten');
 		
-		$addPurchaseUrl = $this->url('purchase-list/action', array(
-			'action' 	=> 'add-purchase', 
-			'id'		=> $purchaseList->getId(),
+		$addPurchaseUrl = $this->url('purchase-list/purchase', array(
+			'action' 			=> 'add', 
+			'purchaselistid'	=> $purchaseList->getId(),
 		));
 		$result .= $this->prettyprint()->button($addPurchaseUrl, 'Einkauf hinzufügen');
 		
-		$purchasesUrl = $this->url('purchase-list/action', array(
-			'id' => $purchaseList->getId(),
+		$purchasesUrl = $this->url('purchase-list/list-action', array(
+			'purchaselistid' => $purchaseList->getId(),
 		));
 		$result .= $this->prettyprint()->button($purchasesUrl, 'Einkäufe');
 		

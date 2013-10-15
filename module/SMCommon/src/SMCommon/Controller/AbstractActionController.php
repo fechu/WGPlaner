@@ -34,6 +34,12 @@ abstract class AbstractActionController extends ZendActionController implements 
 	 */
 	protected $em;
 	
+	/**
+	 * The prefix for the default ID. This is used together with the getId() and requireId() methods. 
+	 * If you don't supply a prefix, this property will be checked and used instead (if it's not null).
+	 */
+	protected $defaultId;
+	
 	public function setLogger(LoggerInterface $logger)
 	{
 		$this->logger = $logger;
@@ -50,14 +56,27 @@ abstract class AbstractActionController extends ZendActionController implements 
 	 * If there's no parameter in the route called "id" the method will also check the 
 	 * query parameters for a 'id=123' parameter.
 	 * 
+	 * @param string $prefix	The prefix that should be added before the 'id'. Example: $prefix = 'user' will 
+	 * 							check for the 'userid' in the route and then in the query parameters.
+	 * 
 	 * @return int	The id or 0 if no ID could be found.
+	 * 
+	 * @see $defaultId
 	 */
-	public function getId()
+	public function getId($prefix = NULL)
 	{
-		$id = $this->params()->fromRoute('id', false);
+		if ($prefix === NULL) {
+			// Just use the default ID.
+			$prefix = $this->defaultId;
+		}
+		
+		// Prefix?
+		$idKey = $prefix ? $prefix . 'id' : 'id';
+		
+		$id = $this->params()->fromRoute($idKey, false);
 		
 		if (!$id) {
-			$id = $this->params()->fromQuery('id', 0);
+			$id = $this->params()->fromQuery($idKey, 0);
 		}
 		
 		if ($id) {
@@ -76,10 +95,14 @@ abstract class AbstractActionController extends ZendActionController implements 
 	
 	/**
 	 * Checks a id is given (with getId()). If none is found, will redirect to a Not Found page.
+	 * 
+	 * @param string $prefix  See documentation of AbstractActionController#getId()
+	 * 
+	 * @see getId() for the documentation of the $prefix parameter
 	 */
-	public function requireId()
+	public function requireId($prefix = NULL)
 	{
-		$id = $this->getId();
+		$id = $this->getId($prefix);
 		if (!$id) {
 			// Invalid ID!
 			$this->getResponse()->setStatusCode(404);

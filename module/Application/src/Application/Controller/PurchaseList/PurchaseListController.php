@@ -5,7 +5,7 @@
  * @author Sandro Meier
  */
  
-namespace Application\Controller;
+namespace Application\Controller\PurchaseList;
 
 use SMCommon\Controller\AbstractActionController;
 use Application\Form\PurchaseListForm;
@@ -15,6 +15,13 @@ use Application\Entity\Purchase;
 
 class PurchaseListController extends AbstractActionController
 {
+	
+	public function __construct()
+	{
+		// Default id for PurchaseList objects in the route is 'purchaselist'
+		$this->defaultId = 'purchaselist';
+	}
+	
 	/**
 	 * List all Purchase lists where you are a user. 
 	 */
@@ -22,12 +29,12 @@ class PurchaseListController extends AbstractActionController
 	{
 		// If we have an ID we redirect to the showPurchase action.
 		if ($id = $this->getId()) {
-			return $this->forward()->dispatch('Application\Controller\PurchaseList', array(
-				'action' 	=> 'purchases',
-				'id'		=> $id,
+			return $this->forward()->dispatch('Application\Controller\PurchaseList\Purchase', array(
+				'__NAMESPACE__'		=> 'Application\Controller\PurchaseList',
+				'action' 			=> 'index',
+				'purchaselistid'	=> $id,
 			));
 		}
-		
 		/* @var $repo \Application\Entity\Repository\PurchaseListRepository */
 		$repo = $this->em->getRepository('Application\Entity\PurchaseList');
 		$lists = $repo->findActive(new \DateTime());
@@ -109,51 +116,7 @@ class PurchaseListController extends AbstractActionController
 	}
 	
 	
-	public function addPurchaseAction()
-	{
-		if (!$id = $this->requireId()) {
-			return;
-		}
-		
-		/* @var $repo \Application\Entity\Repository\PurchaseListRepository */
-		$repo = $this->em->getRepository('Application\Entity\PurchaseList');
-		$purchaseList = $repo->find($id);
-		if (!$purchaseList) {
-			$this->getResponse()->setStatusCode(404);
-			return;
-		}
-		
-		$form = new PurchaseForm();
-		
-		$purchase = new Purchase();
-		$form->bind($purchase);
-		
-		/* @var $request \Zend\Http\Request */
-		$request = $this->getRequest();
-		if ($request->isPost()) {
-			$form->setData($request->getPost());
-			if ($form->isValid()) {
-				// Set the logged in user user who did the purchase.
-				$purchase->setUser($this->identity());
-				$purchaseList->addPurchase($purchase);	// Add the purchase to this list.
-				$this->em->persist($purchase);
-				$this->em->flush();
-				
-				return $this->redirect()->toRoute('purchase-list');
-			}
-		}
-		else {
-			// Set default slip number
-			/* @var $repo \Application\Entity\Repository\PurchaseRepository */
-			$repo = $this->em->getRepository('Application\Entity\Purchase');
-			$form->setSlipNumber($repo->findNextSlipNumber());
-		}
-		
-		return array(
-			'form' => $form,
-			'purchaseList' => $purchaseList,
-		);
-	}
+	
 	
 	/**
 	 * Shows all Not active lists
@@ -166,26 +129,6 @@ class PurchaseListController extends AbstractActionController
 		
 		return array(
 			'lists' => $lists,
-		);
-	}
-	
-	public function purchasesAction()
-	{
-		if (!$id = $this->requireId()) {
-			return;
-		}
-		
-		/* @var $repo \Application\Entity\Repository\PurchaseListRepository */
-		$repo = $this->em->getRepository('Application\Entity\PurchaseList');
-		
-		$purchaseList = $repo->find($id);
-		if (!$purchaseList) {
-			$this->getResponse()->setStatusCode(404);
-			return;
-		}
-		
-		return array(
-			'purchaseList'	=> $purchaseList,
 		);
 	}
 }
