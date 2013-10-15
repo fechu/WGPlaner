@@ -309,7 +309,8 @@ class Table extends AbstractHelper
 	public function __invoke() 
 	{
 		// No options given. New strategy. Return a new object
-		$newHelper = new Table();
+		$class = get_called_class();
+		$newHelper = new $class;
 		$newHelper->setView($this->getView());
 		return $newHelper;
 	}
