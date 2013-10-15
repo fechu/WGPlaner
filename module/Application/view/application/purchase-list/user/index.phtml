@@ -1,5 +1,10 @@
 <?php 
+use Application\View\Helper\UserTable;
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
 echo $this->pageHeader('Benutzer');
 
+$table = $this->usertable();
+$table->setData($this->users);
+
+echo $table;
 ?>

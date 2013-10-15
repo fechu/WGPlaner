@@ -7,13 +7,17 @@
  
 namespace Application\Controller\PurchaseList;
 
-use SMCommon\Controller\AbstractActionController;
 use Application\Entity\PurchaseList;
 use Application\Form\PurchaseForm;
 use Application\Entity\Purchase;
 
 class PurchaseController extends AbstractActionController
 {
+	public function __construct()
+	{
+		$this->defaultId = 'purchase';
+	}
+	
 	/**
 	 * Lists all purchases for of a purchase list.
 	 */
@@ -37,10 +41,6 @@ class PurchaseController extends AbstractActionController
 	public function addAction()
 	{
 		$purchaseList = $this->getPurchaseList();
-		if (!$purchaseList) {
-			$this->getResponse()->setStatusCode(404);
-			return;
-		}
 	
 		$form = new PurchaseForm();
 	
@@ -77,17 +77,5 @@ class PurchaseController extends AbstractActionController
 		);
 	}
 	
-	/**
-	 * Takes the id from the route and fetches the purchase list.
-	 * @return PurchaseList|NULL 
-	 */
-	protected function getPurchaseList()
-	{
-		$id = $this->getId('purchaselist');
-		
-		/* @var $repo \Application\Entity\Repository\PurchaseListRepository */
-		$repo = $this->em->getRepository('Application\Entity\PurchaseList');
-		
-		return $repo->find($id);
-	}
+
 }

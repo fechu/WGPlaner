@@ -7,7 +7,6 @@
  
 namespace Application\Controller\PurchaseList;
 
-use SMCommon\Controller\AbstractActionController;
 
 class UserController extends AbstractActionController
 {
@@ -15,15 +14,20 @@ class UserController extends AbstractActionController
 	/**
 	 * Lists all users of a purchase list.
 	 */
-	public function index()
+	public function indexAction()
 	{
-		die('purchaseListUsers');
+		$purchaseList = $this->getPurchaseList();
+		
+		return array(
+			'users' => $purchaseList->getUsers(),
+		);
+		
 	}
 	
 	/**
 	 * The action that lets you add a user to a purchase list.
 	 */
-	public function add()
+	public function addAction()
 	{
 		
 	}

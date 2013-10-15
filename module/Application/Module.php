@@ -12,8 +12,11 @@ use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 
-class Module implements AutoloaderProviderInterface, ServiceProviderInterface
+class Module implements AutoloaderProviderInterface, 
+						ServiceProviderInterface,
+						ViewHelperProviderInterface
 {
 	public function onBootstrap(MvcEvent $e)
 	{
@@ -66,4 +69,12 @@ class Module implements AutoloaderProviderInterface, ServiceProviderInterface
 		);
 	}
 	
+	public function getViewHelperConfig()
+	{
+		return array(
+			'invokables' => array(
+				'usertable'		=> 'Application\View\Helper\UserTable',
+			)
+		);
+	}
 }
