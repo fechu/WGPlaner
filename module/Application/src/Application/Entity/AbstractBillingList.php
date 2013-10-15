@@ -143,6 +143,14 @@ class AbstractBillingList extends AbstractEntity
 	}
 	
 	/**
+	 * Checks if the user is associated with this list.
+	 */
+	public function hasUser($user)
+	{
+		return in_array($user, $this->users->toArray());
+	}
+	
+	/**
 	 * Checks if the given Startdate is before the end date. 
 	 * 
 	 * @param \DateTime	$startDate

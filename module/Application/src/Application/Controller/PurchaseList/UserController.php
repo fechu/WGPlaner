@@ -8,6 +8,7 @@
 namespace Application\Controller\PurchaseList;
 
 
+use Application\Form\SelectUserForm;
 class UserController extends AbstractActionController
 {
 	
@@ -19,7 +20,8 @@ class UserController extends AbstractActionController
 		$purchaseList = $this->getPurchaseList();
 		
 		return array(
-			'users' => $purchaseList->getUsers(),
+			'users' 		=> $purchaseList->getUsers(),
+			'purchaseList'	=> $purchaseList,
 		);
 		
 	}
@@ -29,6 +31,35 @@ class UserController extends AbstractActionController
 	 */
 	public function addAction()
 	{
+		$form = new SelectUserForm($this->em);
 		
+		$purchaseList = $this->getPurchaseList();
+		
+		/* @var $request \Zend\Http\Request */
+		$request = $this->getRequest();
+		
+		if ($request->isPost()) {
+			$form->setData($request->getPost());
+			if ($form->isValid()) {
+				$user = $form->getSelectedUser();
+				
+				// Add the user to the purchase list
+				if (!$purchaseList->hasUser($user)) {
+					$purchaseList->addUser($user);
+					$this->em->flush();
+				}
+				
+				// Redirect to the users list
+				return $this->redirect()->toRoute('purchase-list/user', array(
+					'action' 			=> 'index',
+					'purchaselistid'	=> $this->getPurchaseList()->getId(),
+				));
+			}
+		}
+		
+		return array(
+			'form'			=> $form,
+			'purchaseList' 	=> $this->getPurchaseList(),
+		);
 	}
 }

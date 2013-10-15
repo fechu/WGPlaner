@@ -1,10 +1,19 @@
 <?php 
 use Application\View\Helper\UserTable;
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
-echo $this->pageHeader('Benutzer');
+echo $this->pageHeader('Benutzer', $this->purchaseList->getName());
 
 $table = $this->usertable();
 $table->setData($this->users);
 
 echo $table;
+
+$addUserUrl = $this->url('purchase-list/user', array(
+	'action' 			=> 'add', 
+	'purchaselistid'	=> $this->purchaseList->getId(),
+));
 ?>
+
+<span class="pull-right">
+	<?php echo $this->prettyprint()->button($addUserUrl, 'Benutzer hinzufügen')?>
+</span>

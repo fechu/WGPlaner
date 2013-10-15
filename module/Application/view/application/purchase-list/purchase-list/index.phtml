@@ -10,7 +10,7 @@ $table->setData($this->lists);
 $table->addColumn(array(
 	'headTitle' 	=> 'Name',
 	'dataMethod'	=> function(PurchaseList $purchaseList) {
-		$listUrl = $this->url('purchase-list/action', array('purchaselistid' => $purchaseList->getId()));
+		$listUrl = $this->url('purchase-list/list-action', array('purchaselistid' => $purchaseList->getId()));
 		return $this->prettyprint()->link($listUrl, $purchaseList->getName());
 	}
 ));
