@@ -32,6 +32,12 @@ $table->addColumn(array(
 		$editUrl = $this->url('purchase-list/list-action', array('action' => 'edit', 'purchaselistid' => $purchaseList->getId()));
 		$result .= $this->prettyprint()->button($editUrl, 'Bearbeiten');
 		
+		$addUserButton = $this->url('purchase-list/user', array(
+			'action' 		=> 'add', 
+			'purchaselistid'=> $purchaseList->getId(),
+		));
+		$result .= $this->prettyprint()->button($addUserButton, 'Benutzer hinzufügen');
+		
 		$addPurchaseUrl = $this->url('purchase-list/purchase', array(
 			'action' 			=> 'add', 
 			'purchaselistid'	=> $purchaseList->getId(),

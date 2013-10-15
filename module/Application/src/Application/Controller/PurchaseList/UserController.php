@@ -9,8 +9,13 @@ namespace Application\Controller\PurchaseList;
 
 
 use Application\Form\SelectUserForm;
+use SMCommon\Form\DeleteForm;
 class UserController extends AbstractActionController
 {
+	public function __construct()
+	{
+		$this->defaultId ='user';
+	}
 	
 	/**
 	 * Lists all users of a purchase list.
@@ -62,4 +67,47 @@ class UserController extends AbstractActionController
 			'purchaseList' 	=> $this->getPurchaseList(),
 		);
 	}
+	
+	public function removeAction()
+	{
+		$user = $this->getUser();
+		if (!$user) {
+			$this->setStatusCode(404);
+			return;
+		}
+		
+		$form = new DeleteForm();
+		$purchaseList = $this->getPurchaseList();
+		
+		/* @var $request \Zend\Http\Request */
+		$request = $this->getRequest();
+		
+		if ($request->isPost()) {
+			// Remove the user from this list.
+			$purchaseList->removeUser($user);
+			$this->em->flush();
+			
+			// Go to user list
+			return $this->redirect()->toRoute('purchase-list/user', array(
+				'purchaselistid'	=> $purchaseList->getId(),
+			));
+		}
+		
+		return array(
+			'user' => $user,
+			'purchaseList'	=> $purchaseList,
+			'form' => $form,
+		);
+	}
+	
+	/**
+	 * Loads and returns the user based on the userid from the route.
+	 */
+	protected function getUser()
+	{
+		if ($id = $this->getId()) {
+			$user = $this->em->find('Application\Entity\User', $id);
+			return $user;
+		}
+	} 
 }

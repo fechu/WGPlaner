@@ -137,6 +137,16 @@ class AbstractBillingList extends AbstractEntity
 		$user->addBillingList($this);
 	}
 	
+	/**
+	 * Remove a user from the list
+	 * 
+	 * @param Application\Entity\User
+	 */
+	public function removeUser(User $user) 
+	{
+		$this->users->removeElement($user);
+	}
+	
 	public function getUsers()
 	{
 		return $this->users->toArray();
