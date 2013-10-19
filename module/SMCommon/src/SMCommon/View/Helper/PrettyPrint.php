@@ -46,6 +46,46 @@ class PrettyPrint extends AbstractHelper
 		return $this->link($url, $title, $class);
 	}
 	
+	/**
+	 * Pretty print a button group. 
+	 * 
+	 * @param array 		$urls 	All Title/Link pairs. The first is the title and the link for the button. 
+	 * 								All others will be in the dropdown.
+	 * @param string|null	$style	The style of the button. (danger, primary...)
+	 */
+	public function splitButton($urls, $style = NULL)
+	{
+		if (count($urls) < 1) {
+			throw new \InvalidArgumentException('URLs array needs to contain at least one element. ');
+		}
+		
+		$mainButtonArray = $urls[0];
+		$mainButtonTitle 	= isset($mainButtonArray['title']) ? $mainButtonArray['title'] : '';
+		$mainButtonUrl 		= isset($mainButtonArray['url']) ? $mainButtonArray['url'] : ''; 
+		
+		$html = '<div class="btn-group">';
+		$html .='<button class="btn" onclick="window.location.href=\''. $mainButtonUrl .'\'">'. $mainButtonTitle .'</button>';
+		$html .='<button class="btn dropdown-toggle" data-toggle="dropdown">';
+		$html .='<span class="caret"></span>';
+		$html .='</button>';
+		
+		// Dropdown
+		$html .= '<ul class="dropdown-menu">';
+		
+		// Add dropdown links.
+		for ($i = 1; $i < count($urls); $i++) {
+			
+			$itemArray = $urls[$i];
+			$itemTitle 	= isset($itemArray['title']) ? $itemArray['title'] : '';
+			$itemUrl 	= isset($itemArray['url']) ? $itemArray['url'] : '';
+			
+			$html .= '<li><a href="'. $itemUrl .'">'. $itemTitle .'</a></li>';
+		}
+		
+		$html .= '</ul></div>';
+		return $html;
+	}
+	
 	public function link($url, $title, $class = NULL) 
 	{
 		if ($class) {
