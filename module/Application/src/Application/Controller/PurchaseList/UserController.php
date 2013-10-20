@@ -76,17 +76,24 @@ class UserController extends AbstractActionController
 			return;
 		}
 		
-		$form = new DeleteForm();
+		$form = new DeleteForm('Entfernen');
 		$purchaseList = $this->getPurchaseList();
 		
 		/* @var $request \Zend\Http\Request */
 		$request = $this->getRequest();
 		
 		if ($request->isPost()) {
-			// Remove the user from this list.
-			$purchaseList->removeUser($user);
-			$this->em->flush();
 			
+			if (count($purchaseList->getUsers()) == 1) {
+				// You can't remove the last user
+				$this->logger->info('The last user of list ' . $purchaseList->getName() . ' cant be deleted!');
+			}
+			else {
+				// Remove the user from this list.
+				$purchaseList->removeUser($user);
+				$this->em->flush();
+			}
+
 			// Go to user list
 			return $this->redirect()->toRoute('purchase-list/user', array(
 				'purchaselistid'	=> $purchaseList->getId(),

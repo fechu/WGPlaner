@@ -54,19 +54,20 @@ $table->addColumn(array(
 		);
 		
 		$result .= $this->prettyprint()->splitButton($editButtonGroup);
-		
+			
+		// Details about the purchase list.
+		$purchasesUrl = $this->url('purchase-list/list-action', array(
+			'purchaselistid' => $purchaseList->getId(),
+		));
+		$result .= $this->prettyprint()->button($purchasesUrl, 'Details');
+
 		// Add purchase button
 		$addPurchaseUrl = $this->url('purchase-list/purchase', array(
 			'action' 			=> 'add', 
 			'purchaselistid'	=> $purchaseList->getId(),
 		));
 		$result .= $this->prettyprint()->button($addPurchaseUrl, 'Einkauf hinzufügen');
-		
-		// Details about the purchase list.
-		$purchasesUrl = $this->url('purchase-list/list-action', array(
-			'purchaselistid' => $purchaseList->getId(),
-		));
-		$result .= $this->prettyprint()->button($purchasesUrl, 'Einkäufe');
+	
 		
 		return $result;
 	}
