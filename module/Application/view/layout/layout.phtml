@@ -41,7 +41,7 @@ echo $this->doctype();
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a href="/" class="brand">WGPlaner</a>
+                    <a href="<?php echo $this->url('home'); ?>" class="brand">WGPlaner</a>
                     <?php
                     if ($this->identity()) :
          			/* @var $navigation \Zend\View\Helper\Navigation\Menu */

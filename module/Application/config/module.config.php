@@ -15,8 +15,9 @@ return array(
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Index',
-                        'action'     => 'index',
+                    	'__NAMESPACE__' => 'Application\Controller\PurchaseList',
+                        'controller' 	=> 'PurchaseList',
+                        'action'     	=> 'index',
                     ),
                 ),
             ),
