@@ -82,7 +82,7 @@ class PrettyPrint extends AbstractHelper
 			$html .= '<li><a href="'. $itemUrl .'">'. $itemTitle .'</a></li>';
 		}
 		
-		$html .= '</ul></div>';
+		$html .= '</ul></div> ';
 		return $html;
 	}
 	
