@@ -51,9 +51,15 @@ class UTCDateTimeType extends DateTimeType
             $value,
             (self::$utc) ? self::$utc : (self::$utc = new \DateTimeZone('UTC'))
         );
+        
         if (!$val) {
             throw ConversionException::conversionFailed($value, $this->getName());
         }
+
+        // Retrieve all dates in the timezone defined here.
+        // This is a little hacky, as the user should be able to select his timezone. But for now it's enough.
+        $val->setTimezone(new \DateTimeZone('Europe/Zurich'));
+
         return $val;
     }
 }
