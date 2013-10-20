@@ -22,6 +22,7 @@ echo $this->doctype();
         <!-- Scripts -->
         <?php 
         $this->headScript()->prependFile($this->basePath() . '/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',));
+        $this->headScript()->prependFile($this->basePath() . '/js/application/enable-datepicker.js');
 		$this->headScript()->prependFile($this->basePath() . '/js/jquery.ui.datepicker-de.js');  // German localization for Datepicker
         $this->headScript()->prependFile($this->basePath() . '/js/jquery.ui.custom.min.js');
         $this->headScript()->prependFile($this->basePath() . '/js/bootstrap.min.js');
