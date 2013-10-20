@@ -12,7 +12,7 @@ use Application\Entity\User;
 
 class PurchaseListRepository extends EntityRepository 
 {
-	public function findActive($date, $orderBy = NULL, $limit = NULL, $offset = NULL) 
+	public function findActive($date, $orderBy = NULL, $limit = NULL, $offset = NULL, $returnQuerybuilder = false) 
 	{
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder->select('purchaseList');
@@ -38,6 +38,23 @@ class PurchaseListRepository extends EntityRepository
 		if ($offset) {
 			$queryBuilder->setFirstResult($offset);
 		}
+		
+		// Return the query builder?
+		if ($returnQuerybuilder) {
+			return $queryBuilder;
+		}
+		
+		return $queryBuilder->getQuery()->getResult();
+	}
+	
+	public function findActiveForUser($date, $user, $orderBy = NULL, $limit = NULL, $offset = NULL, $returnQuerybuilder = false) 
+	{
+		$queryBuilder = $this->findActive($date, $orderBy, $limit, $offset, true);
+
+		// Restrict the user
+		$queryBuilder->join('purchaseList.users', 'user');
+		$queryBuilder->andWhere('user = :user');
+		$queryBuilder->setParameter('user', $user);
 		
 		return $queryBuilder->getQuery()->getResult();
 	}
