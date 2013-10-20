@@ -11,6 +11,7 @@ use Zend\Form\Fieldset;
 use Zend\Form\Element\DateSelect;
 use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\Stdlib\Hydrator\ClassMethods;
+use Zend\Form\Element\Date;
 
 class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 {
@@ -21,20 +22,11 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 		$this->setHydrator(new ClassMethods(false));
 		
 		// Purchase date
-		$dateSelect = new DateSelect();
+		$dateSelect = new Date();
 		$dateSelect->setLabel('Datum');
 		$dateSelect->setName('date');
-		$dateSelect->setDayAttributes(array(
-			'class' => 'span1'
-		));
-		$dateSelect->setMonthAttributes(array(
-			'class' => 'span2',
-		));
-		$dateSelect->setYearAttributes(array(
-			'class' => 'span1'
-		));
-		$dateSelect->setMinYear(date('Y') - 1);
-		$dateSelect->setMaxYear(date('Y') + 1);
+		$dateSelect->setFormat('d.m.Y');
+		$dateSelect->setAttribute('class', 'datepicker');
 		$this->add($dateSelect);
 		
 		// Hat Beleg?

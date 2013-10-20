@@ -67,7 +67,7 @@ class Purchase extends AbstractEntity
 	public function setDate($date)
 	{
 		if (is_string($date)) {
-			$date = \DateTime::createFromFormat('Y-m-d', $date);
+			$date = \DateTime::createFromFormat('d.m.Y', $date);
 			$date->setTime(0,0,0);
 		}
 		$this->date = $date;
