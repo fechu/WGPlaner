@@ -11,6 +11,8 @@ use Zend\Form\Fieldset;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use Zend\Form\Element\DateSelect;
 use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\Form\Element\Date;
+use Zend\Form\Element\DateTime;
 
 class AbstractBillingListFieldset extends Fieldset implements InputFilterProviderInterface
 {
@@ -43,20 +45,14 @@ class AbstractBillingListFieldset extends Fieldset implements InputFilterProvide
 	protected function addDateSelect($name, $label) 
 	{
 		// Start Datum
-		$dateSelect = new DateSelect();
-		$dateSelect->setLabel($label);
+		
+		$dateSelect = new DateTime();
 		$dateSelect->setName($name);
-		$dateSelect->setDayAttributes(array(
-			'class' => 'span1'
-		));
-		$dateSelect->setMonthAttributes(array(
-			'class' => 'span2',
-		));
-		$dateSelect->setYearAttributes(array(
-			'class' => 'span1'
-		));
-		$dateSelect->setMinYear(date('Y') - 1);
-		$dateSelect->setMaxYear(date('Y') + 1);
+		$dateSelect->setLabel($label);
+		$dateSelect->setFormat('d.m.Y');
+		
+		$dateSelect->setAttribute('class', 'datepicker');
+		
 		$this->add($dateSelect);
 	}
 	

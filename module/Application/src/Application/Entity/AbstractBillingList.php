@@ -74,7 +74,7 @@ class AbstractBillingList extends AbstractEntity
 	{
 		if (is_string($date)) {
 			// Try to make it a DateTime object
-			$date = \DateTime::createFromFormat('Y-m-d', $date);
+			$date = \DateTime::createFromFormat('d.m.Y', $date, new \DateTimeZone('Europe/Zurich'));
 			$date->setTime(0,0,0);
 		}
 		
@@ -102,7 +102,7 @@ class AbstractBillingList extends AbstractEntity
 	{
 		if (is_string($date)) {
 			// Try to make it a DateTime object
-			$date = \DateTime::createFromFormat('Y-m-d', $date);
+			$date = \DateTime::createFromFormat('d.m.Y', $date, new \DateTimeZone('Europe/Zurich'));
 			$date->setTime(23, 59, 59);
 		}
 		
