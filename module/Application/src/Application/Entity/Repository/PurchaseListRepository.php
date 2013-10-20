@@ -56,10 +56,15 @@ class PurchaseListRepository extends EntityRepository
 		$queryBuilder->andWhere('user = :user');
 		$queryBuilder->setParameter('user', $user);
 		
+		// Return query builder for further modification?
+		if ($returnQuerybuilder) {
+			return $queryBuilder;
+		}
+		
 		return $queryBuilder->getQuery()->getResult();
 	}
 	
-	public function findNotActive($date, $orderBy = NULL, $limit = NULL, $offset = NULL) 
+	public function findNotActive($date, $orderBy = NULL, $limit = NULL, $offset = NULL, $returnQueryBuilder = false) 
 	{
 		$queryBuilder = $this->getEntityManager()->createQueryBuilder();
 		$queryBuilder->select('purchaseList');
@@ -86,6 +91,28 @@ class PurchaseListRepository extends EntityRepository
 			$queryBuilder->setFirstResult($offset);
 		}
 		
+		// Return query builder for further modification?
+		if ($returnQueryBuilder) {
+			return $queryBuilder;
+		}
+		
+		return $queryBuilder->getQuery()->getResult();
+	}
+	
+	public function findNotActiveForUser($date, $user, $orderBy = NULL, $limit = NULL, $offset = NULL, $returnQuerybuilder = false)
+	{
+		$queryBuilder = $this->findNotActive($date, $orderBy, $limit, $offset, true);
+	
+		// Restrict the user
+		$queryBuilder->join('purchaseList.users', 'user');
+		$queryBuilder->andWhere('user = :user');
+		$queryBuilder->setParameter('user', $user);
+		
+		// Return query builder?
+		if ($returnQuerybuilder) {
+			return $queryBuilder;
+		}
+	
 		return $queryBuilder->getQuery()->getResult();
 	}
 }

@@ -125,7 +125,7 @@ class PurchaseListController extends AbstractActionController
 	{
 		/* @var $repo \Application\Entity\Repository\PurchaseListRepository */
 		$repo = $this->em->getRepository('Application\Entity\PurchaseList');
-		$lists = $repo->findNotActive(new \DateTime());
+		$lists = $repo->findNotActiveForUser(new \DateTime(), $this->identity());
 		
 		return array(
 			'lists' => $lists,
