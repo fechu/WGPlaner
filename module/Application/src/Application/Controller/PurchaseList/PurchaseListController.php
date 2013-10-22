@@ -7,7 +7,6 @@
  
 namespace Application\Controller\PurchaseList;
 
-use SMCommon\Controller\AbstractActionController;
 use Application\Form\PurchaseListForm;
 use Application\Entity\PurchaseList;
 use Application\Form\PurchaseForm;
@@ -129,6 +128,15 @@ class PurchaseListController extends AbstractActionController
 		
 		return array(
 			'lists' => $lists,
+		);
+	}
+	
+	public function billAction()
+	{
+		$purchaseList = $this->getPurchaseList();
+
+		return array(
+			'purchaseList' => $purchaseList,
 		);
 	}
 }
