@@ -26,7 +26,7 @@ class PurchaseList extends AbstractBillingList
      *      joinColumns={@ORM\JoinColumn(name="purchaselist_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="purchase_id", referencedColumnName="id", unique=true)}
      *      )
-     * @ORM\OrderBy({"id" = "ASC"})
+     * @ORM\OrderBy({"date" = "ASC"})
 	 */
 	protected $purchases;
 	
