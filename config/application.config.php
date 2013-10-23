@@ -4,7 +4,7 @@ return array(
     'modules' => array(
     	'DoctrineModule', 
     	'DoctrineORMModule',
-    	'ZendDeveloperTools',
+    	'ZendDeveloperTools',	// Uncomment this line by default.
     	'Zucchi',
     	'ZucchiBootstrap',
     	'SMCommon',

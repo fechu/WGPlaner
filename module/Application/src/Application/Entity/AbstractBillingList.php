@@ -174,6 +174,7 @@ class AbstractBillingList extends AbstractEntity
 	
 	/**
 	 * Checks if the date is in the list period. i.e. after startdate and before enddate.
+	 * @param DateTime	$date
 	 */
 	protected function isDateInPeriod($date)
 	{
@@ -194,5 +195,13 @@ class AbstractBillingList extends AbstractEntity
 		}
 		
 		return $result;
+	}
+	
+	/**
+	 * @return boolean True if todays date is between start and enddate. 
+	 */
+	public function isActive()
+	{
+		return $this->isDateInPeriod(new \DateTime());	
 	}
 }

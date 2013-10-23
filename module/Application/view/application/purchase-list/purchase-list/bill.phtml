@@ -1,3 +1,13 @@
 <?php 
+use SMCommon\View\Helper\FormatDate;
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
-echo $this->pageHeader('Abrechnung', $this->purchaseList->getName());
+/* @var $purchaseList Application\Entity\PurchaseList */
+$purchaseList = $this->purchaseList;
+echo $this->pageHeader('Abrechnung', $purchaseList->getName());
+?>
+<?php if ($purchaseList->isActive()) : ?>
+<div class="alert alert-info alert-block">
+	<h4>Nicht abgeschlossene Abrechnung</h4>
+	Diese Abrechnung ist noch nicht abgeschlossen. Die Periode endet am <?php echo $this->formatDate($purchaseList->getEndDate(), FormatDate::FORMAT_DATE); ?>.
+</div>
+<?php endif;?>
