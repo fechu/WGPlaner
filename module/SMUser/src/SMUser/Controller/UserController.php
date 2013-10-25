@@ -20,6 +20,14 @@ class UserController extends AbstractActionController
 	 */
 	public function indexAction()
 	{
+		if ($id = $this->getId()) {
+			return $this->forward()->dispatch('SMUser\Controller\User', array(
+				'__NAMESPACE__'		=> 'SMUser\Controller',
+				'action' 			=> 'view',
+				'id'				=> $id,
+			));
+		}
+		
 		/* @var $repo \SMUser\Entity\Repository\UserRepositoryInterface */
 		$repo = $this->getUserRepository();
 		
@@ -62,7 +70,10 @@ class UserController extends AbstractActionController
 				$repo->saveUser($user);
 				
 				// And redirect!
-				return $this->redirect()->toRoute('user');
+				return $this->redirect()->toRoute('user/action', array(
+					'action' 	=> 'view',
+					'id'		=> $user->getId(),
+				));
 			}
 		}
 				
@@ -104,6 +115,16 @@ class UserController extends AbstractActionController
 		);
 	}
 	
+	public function viewAction()
+	{
+		if (!$user = $this->getUser()) {
+			$user = $this->identity();
+		}
+		return array(
+			'user' => $user,
+		);
+	}
+	
 	/**
 	 * Change the password of a user.
 	 */
@@ -133,7 +154,10 @@ class UserController extends AbstractActionController
 				$this->getUserRepository()->saveUser($user);
 				
 				// Forward to the user list
-				return $this->redirect()->toRoute('user');
+				return $this->redirect()->toRoute('user/action', array(
+					'action' 	=> 'view',
+					'id'		=> $user->getId(), 
+				));
 			}
 		}
 		

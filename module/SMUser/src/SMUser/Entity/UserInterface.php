@@ -13,6 +13,11 @@ namespace SMUser\Entity;
 interface UserInterface 
 {
 	/**
+	 * Return the id of the user
+	 */
+	public function getId();
+	
+	/**
 	 * Set the username
 	 * 
 	 * @param string	$username

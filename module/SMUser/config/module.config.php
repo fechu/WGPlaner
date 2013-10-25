@@ -35,6 +35,7 @@ return array(
 				),
 				'may_terminate' => true,
 				'child_routes' => array(
+
 					'action' => array(
 						'type'    => 'Segment',
 						'options' => array(
@@ -47,6 +48,17 @@ return array(
 								'controller'	=> 'User',
 							),
 						),
+					),
+				),
+			),
+			'profile'	=> array(
+				'type'    => 'Literal',
+				'options' => array(
+					'route'		=> '/user/profile',
+					'defaults' => array(
+						'__NAMESPACE__' => 'SMUser\Controller',
+						'controller'	=> 'User',
+						'action'		=> 'view',
 					),
 				),
 			),

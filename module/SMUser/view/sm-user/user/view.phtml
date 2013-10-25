@@ -1,0 +1,47 @@
+<?php 
+/* @var $this SMCommon\View\Renderer\PhpRenderer */
+/* @var $user SMUser\Entity\UserInterface */
+$user = $this->user;
+echo $this->pageHeader('Profil', $user->getFullname());
+?>
+
+<div class="row">
+	<div class="span2 offset3">
+		<?php echo $this->gravatar($user->getEmailAddress(), array('img_size' => 160), array('class' => 'img-rounded'))?>
+    </div>
+    <div class="span4">
+      <blockquote>
+        <p><?php echo $user->getFullname()?></p>
+        <small><cite title="Source Title"><?php echo $user->getUsername() ?>  <i class="icon-user"></i></cite></small>
+      </blockquote>
+      <p>
+        <i class="icon-envelope"></i> <?php echo $user->getEmailAddress()?> <br>
+        <?php 
+	 	$editUrl = $this->url('user/action', array(
+			'action' 	=> 'edit',
+			'id' 		=> $user->getId(),
+		));
+	
+		$changePasswordUrl = $this->url('user/action', array(
+			'action'	=> 'change-password',
+			'id'		=> $user->getId(),
+		));
+		echo $this->prettyprint()->splitButton(array(
+			array(
+				'title' => 'Bearbeiten',
+				'url'	=> $editUrl,
+			),
+			array(
+				'title' => 'Bearbeiten',
+				'url'	=> $editUrl,
+			),
+			array(
+				'title' => 'Password ändern',
+				'url'	=> $changePasswordUrl,
+			),
+		));
+	 	?>
+      </p>
+    </div>
+ </div>
+

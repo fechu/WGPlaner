@@ -38,4 +38,15 @@ abstract class AbstractActionController extends SMCommonAbstractActioncontroller
 		$smuserConfig = isset($config['smuser']) ? $config['smuser'] : array();
 		return $smuserConfig;
 	}
+	
+	/**
+	 * Loads the user based on the id found in the route
+	 * @return \SMUser\Entity\UserInterface
+	 */
+	public function getUser()
+	{
+		$id = $this->getId();
+		
+		return $this->getUserRepository()->findOneById($id);
+	}
 }
