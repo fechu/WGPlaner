@@ -6,6 +6,14 @@ $(document).ready(function() {
 		$("#slipNumber").attr("disabled", !checked);
 	};
 	
+	// Hanlde default empty values
+	if ($("#slipNumber").val() == 0) {
+		$("#slipNumber").val("");
+		$("#hasSlipCheckbox").prop("checked", false);
+	}
+	
 	// Is the field checked?
 	checkSlipCheckbox();
+	
+
 });

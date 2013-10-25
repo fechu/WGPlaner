@@ -37,7 +37,7 @@ $purchase = $this->purchase;
 </div>
 
 <div class="row">
-	<div class="span6 offset3">
+	<div class="span12">
 		<h3>Details</h3>
 		<?php 
 		echo $this->partial('partial/purchase', array(
@@ -45,4 +45,10 @@ $purchase = $this->purchase;
 		));
 		?>
 	</div>
+</div>
+<div class="pull-right">
+	<?php 
+	$editUrl = $this->url('purchase-list/purchase', array('action' => 'edit'), array(), true);
+	echo $this->prettyprint()->button($editUrl, 'Bearbeiten');
+	?>
 </div>

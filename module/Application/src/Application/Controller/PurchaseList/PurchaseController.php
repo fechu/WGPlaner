@@ -92,6 +92,38 @@ class PurchaseController extends AbstractActionController
 		);
 	}
 	
+	public function editAction()
+	{
+		$purchase = $this->getPurchase();
+		$purchaseList = $this->getPurchaseList();
+		
+		if ($purchase->getPurchaseList() != $purchaseList) {
+			// Purchase is not in this list.
+			$this->getResponse()->setStatusCode(404);
+			return;
+		}
+		
+		$form = new PurchaseForm();
+		$form->bind($purchase);
+		
+		/* @var $request \Zend\Http\Request */
+		$request = $this->getRequest();
+		if ($request->isPost()) {
+			$form->setData($request->getPost());
+			if ($form->isValid()) {
+				// Got valid data.
+				$this->em->flush();
+				
+				return $this->redirect()->toRoute('purchase-list/purchase', array('action' => NULL), array(), true);
+			}
+		}
+		
+		return array(
+			'purchase' => $purchase,
+			'form'	=> $form,
+		);
+	}
+	
 	/**
 	 * View a purchase
 	 */

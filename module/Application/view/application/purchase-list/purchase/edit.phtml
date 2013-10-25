@@ -1,0 +1,12 @@
+<?php 
+/* @var $this SMCommon\View\Renderer\PhpRenderer */
+/* @var $purchase Application\Entity\Purchase */
+$purchase = $this->purchase;
+
+echo $this->pageHeader('Einkauf bearbeiten');
+
+echo $this->bootstrapForm($this->form,'horizontal');
+
+// Add the javascript specific for this page
+$this->inlineScript()->appendFile($this->basePath() . '/js/application/purchase-list/add-purchase.js');
+?>
