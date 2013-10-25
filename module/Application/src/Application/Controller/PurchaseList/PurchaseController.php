@@ -19,16 +19,31 @@ class PurchaseController extends AbstractActionController
 	}
 	
 	/**
-	 * Lists all purchases for of a purchase list.
+	 * Lists all purchases for of a purchase list. 
+	 * If a purchaseId is present in the route it will be forwarded to show that purchase.
 	 */
 	public function indexAction()
 	{
+		$purchaseId = $this->getId();
+		$purchaseListId = $this->getId('purchaselist');
+		
+		// If we have an ID we redirect to the showPurchase action.
+		if ($purchaseId && $purchaseListId) {
+			return $this->forward()->dispatch('Application\Controller\PurchaseList\Purchase', array(
+				'__NAMESPACE__'		=> 'Application\Controller\PurchaseList',
+				'action' 			=> 'view',
+				'purchaselistid'	=> $purchaseListId,
+				'purchaseid'		=> $purchaseId,
+			));
+		}
 		
 		$purchaseList = $this->getPurchaseList();
 		if (!$purchaseList) {
 			$this->getResponse()->setStatusCode(404);
 			return;
 		}
+		
+
 		
 		return array(
 			'purchaseList'	=> $purchaseList,
@@ -77,5 +92,23 @@ class PurchaseController extends AbstractActionController
 		);
 	}
 	
+	/**
+	 * View a purchase
+	 */
+	public function viewAction()
+	{
+		$purchaseList = $this->getPurchaseList();
+		$purchase = $this->getPurchase();
+		
+		if ($purchase->getPurchaseList() != $purchaseList) {
+			// Purchase is not in this purchase list!
+			$this->getResponse()->setStatusCode(404);
+			return;
+		}
+		
+		return array(
+			'purchase' => $purchase
+		);
+	}
 
 }

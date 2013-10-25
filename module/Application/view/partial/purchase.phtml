@@ -1,0 +1,51 @@
+<?php 
+use SMCommon\View\Helper\FormatDate;
+// A partial for displaying a purchase. 
+
+/* @var $this SMCommon\View\Renderer\PhpRenderer */
+/* @var $purchase \Application\Entity\Purchase */
+$purchase = $this->purchase;
+?>
+
+<table class="table table-condensed">
+	<tr>
+		<td>Betrag</td>
+		<td><?php echo number_format($purchase->getAmount(), 2) ?> CHF</td>
+	</tr>
+	<tr>
+		<td>Geschäft</td>
+		<td><?php echo $purchase->getStore()?></td>
+	</tr>
+	<tr>
+		<td>Datum</td>
+		<td><?php echo $this->formatDate($purchase->getDate(), FormatDate::FORMAT_DATE);?></td>
+	</tr>
+	<tr>
+		<td>Belegnummer</td>
+		<td><?php echo ($purchase->getSlipNumber() ? $purchase->getSlipNumber() : "-")?></td>
+	</tr>
+	<tr>
+		<td>Beschreibung</td>
+		<td><?php echo $purchase->getDescription() ?></td> 
+	</tr>
+	<tr>
+		<td>Benutzer</td>
+		<td><?php 
+			$userUrl = $this->url('user/action', array(
+				'id' => $purchase->getUser()->getId(),
+			));
+			echo $this->prettyprint()->link($userUrl, $purchase->getUser()->getFullname()); 
+			?>
+		</td> 
+	</tr>
+	<tr>
+		<td>Erstellt</td>
+		<td><?php echo $this->formatDate($purchase->getCreated());?></td>
+	</tr>
+	<?php if ($purchase->getCreated() != $purchase->getLastModified()) : ?>
+	<tr>
+		<td>Zuletzt bearbeitet</td>
+		<td><?php echo $this->formatDate($purchase->getLastModified());?></td>
+	</tr>
+	<?php endif;?>
+</table>

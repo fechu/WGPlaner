@@ -9,6 +9,7 @@ namespace Application\Controller\PurchaseList;
 
 use SMCommon\Controller\AbstractActionController as ActionController;
 use Application\Entity\PurchaseList;
+use Application\Entity\Purchase;
 
 class AbstractActionController extends ActionController
 {
@@ -23,6 +24,20 @@ class AbstractActionController extends ActionController
 		/* @var $repo \Application\Entity\Repository\PurchaseListRepository */
 		$repo = $this->em->getRepository('Application\Entity\PurchaseList');
 	
+		return $repo->find($id);
+	}
+	
+	/**
+	 * Takes the purchaseId from the route and fetches the product.
+	 * @return Purchase
+	 */
+	protected function getPurchase()
+	{
+		$id = $this->getId('purchase');
+		
+		/* @var $repo \Application\Entity\Repository\PurchaseRepository */
+		$repo = $this->em->getRepository('Application\Entity\Purchase');
+		
 		return $repo->find($id);
 	}
 }

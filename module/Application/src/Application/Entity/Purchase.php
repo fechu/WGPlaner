@@ -57,6 +57,13 @@ class Purchase extends AbstractEntity
 	 */
 	protected $user;
 	
+	/**
+	 * The purchase list this purchase belongs to.
+	 * 
+	 * @ORM\ManyToOne(targetEntity="Application\Entity\PurchaseList", inversedBy="purchases")
+	 */
+	protected $purchaseList;
+	
 	public function __construct()
 	{
 		parent::__construct();
@@ -132,5 +139,17 @@ class Purchase extends AbstractEntity
 		return $this->user;
 	}
 	
+	/**
+	 * Set the purchase list of this 
+	 */
+	public function setPurchaseList($list)
+	{
+		$this->purchaseList = $list;
+		$list->addPurchase($this);
+	}
 	
+	public function getPurchaseList()
+	{
+		return $this->purchaseList;
+	}
 }

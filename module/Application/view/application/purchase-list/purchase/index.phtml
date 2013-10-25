@@ -33,7 +33,11 @@ foreach ($this->purchaseList->getUsers() as $user) {
 $table->addColumn(array(
 	'headTitle' 	=> 'Aktionen',
 	'dataMethod'	=> function(Purchase $purchase) {
-		return $this->prettyprint()->button('', 'Details');
+		$url = $this->url('purchase-list/purchase', array(
+			'purchaselistid' 	=> $this->purchaseList->getId(),
+			'purchaseid'		=> $purchase->getId(),
+		));
+		return $this->prettyprint()->button($url, 'Details');
 	}
 ));
 

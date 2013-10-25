@@ -21,11 +21,7 @@ class PurchaseList extends AbstractBillingList
 	 * This is actually a one to many unidirectional relationship. But doctrine handles this as
 	 * a many to many with a unique constraint in the jointable.
 	 * 
-	 * @ORM\ManyToMany(targetEntity="Application\Entity\Purchase")
-     * @ORM\JoinTable(name="purchaselist_purchases",
-     *      joinColumns={@ORM\JoinColumn(name="purchaselist_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="purchase_id", referencedColumnName="id", unique=true)}
-     *      )
+	 * @ORM\OneToMany(targetEntity="Application\Entity\Purchase", mappedBy="purchaseList")
      * @ORM\OrderBy({"date" = "ASC"})
 	 */
 	protected $purchases;
@@ -56,11 +52,13 @@ class PurchaseList extends AbstractBillingList
 	 * @param \Application\Entity\Purchase $purchase
 	 * @throws InvalidArgumentException If the date of the purchase is not between start and enddate of 
 	 * 									this list.
+	 * @warning Use the opposite side to set a purchase list. Purchase#setPurchaseList()
 	 */
 	public function addPurchase($purchase) 
 	{
 		if ($this->isDateInPeriod($purchase->getDate())) {
 			$this->purchases[] = $purchase;
+			
 		}
 		else {
 			throw new \InvalidArgumetnException('Purchase date needs to be between start and enddate of this list!');
