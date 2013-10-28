@@ -42,7 +42,6 @@ class AbstractBillingList extends AbstractEntity
 	 * @var ArrayCollection
 	 * 
 	 * @ORM\ManyToMany(targetEntity="\Application\Entity\User", inversedBy="billingLists")
-	 * @ORM\JoinTable(name="billinglists_users")
 	 */
 	protected $users;
 	

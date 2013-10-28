@@ -11,7 +11,7 @@ use \Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity(repositoryClass="Application\Entity\Repository\CountListRepository")
+ * @ORM\Entity(repositoryClass="Application\Entity\Repository\ListRepository")
  */
 class CountList extends AbstractBillingList
 {
