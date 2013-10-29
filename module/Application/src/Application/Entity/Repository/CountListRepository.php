@@ -9,7 +9,7 @@ namespace Application\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class CountListRepository extends EntityRepository0
+class CountListRepository extends EntityRepository
 {
 	
 }
