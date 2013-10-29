@@ -11,8 +11,9 @@ use SMCommon\Form\AbstractForm;
 use Doctrine\ORM\EntityManager;
 use Application\Entity\User;
 use Application\Entity\PurchaseList;
+use Zend\InputFilter\InputFilterProviderInterface;
 
-class SelectPurchaseListForm extends AbstractForm
+class SelectPurchaseListForm extends AbstractForm implements InputFilterProviderInterface
 {
 	/**
 	 * The entity manager
@@ -48,7 +49,7 @@ class SelectPurchaseListForm extends AbstractForm
 				'name'	=> 'findForUser',
 				'params'=> array(
 					'user' => $user
-				)
+				),
 			);
 		}
 		// Finally add the element
@@ -57,6 +58,8 @@ class SelectPurchaseListForm extends AbstractForm
 			'type' => 'DoctrineModule\Form\Element\ObjectSelect',
 			'options' => $options,
 		));
+		
+		$this->actionCollection->setSubmitButtonTitle('Auswählen');
 	}
 	
 	/**
@@ -68,5 +71,14 @@ class SelectPurchaseListForm extends AbstractForm
 		$id = $element->getValue();
 		
 		return $this->em->find('Application\Entity\PurchaseList', $id);
+	}
+	
+	public function getInputFilterSpecification()
+	{
+		return array(
+			'purchaseList' => array(
+				'required' => false,
+			)
+		);
 	}
 }

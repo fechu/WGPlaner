@@ -111,13 +111,17 @@ class PurchaseListController extends AbstractActionController
 			if ($form->isValid()) {
 				$template = $form->getSelectedPurchaseList();
 				
-				// Redirect to create a purchase list with this template
-				$query = array('query' => array(
-					'template' => $template->getId(),
-				));
+				$query = array();
+				if ($template) {
+					$query['query'] = array(
+						'template' => $template->getId(),
+					);
+				}
+
 				$params = array(
 					'action' => 'create',
 				);
+				// Redirect to create a purchase list with this template
 				return $this->redirect()->toRoute('purchase-list/action', $params, $query);
 			}
 		}
