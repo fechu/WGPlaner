@@ -43,11 +43,33 @@ class PurchaseListController extends AbstractActionController
 		);
 	}
 	
+	/**
+	 * Create a new purchase list. 
+	 * 
+	 * This action supports the query parameter "template". This should be an id of 
+	 * another purchase list. Then the data of that purchase list will be used to prefill 
+	 * the purchase list. 
+	 */
 	public function createAction()
 	{
 		$form = new PurchaseListForm();
+
+		$templateId = $this->params()->fromQuery('template');
+		$templatePurchaseList = NULL;
+		if ($templateId) {
+			// Load the purchase list as a template
+			/* @var $repo \Application\Entity\Repository\ListRepository */
+			$repo = $this->em->getRepository('Application\Entity\PurchaseList');
+			$templatePurchaseList = $repo->find($templateId);
+			
+			if (!$templatePurchaseList) {
+				$this->logger->notice('Template to create purchase list does not exist!', 
+						array('templateId' => $templateId)
+				);
+			}
+		}
+		$purchaseList = new PurchaseList($templatePurchaseList);
 		
-		$purchaseList = new PurchaseList();
 		$form->bind($purchaseList);
 		
 		

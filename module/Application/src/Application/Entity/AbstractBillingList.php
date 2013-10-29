@@ -45,11 +45,26 @@ class AbstractBillingList extends AbstractEntity
 	 */
 	protected $users;
 	
-	public function __construct()
+	
+	/**
+	 * Create a new billing list
+	 * 
+	 * @param AbstractBillingList $template A template that should be used
+	 * 											to create the list. Name and users are copied.
+	 */
+	public function __construct($template = NULL)
 	{
 		parent::__construct();
 		
 		$this->users = new ArrayCollection();
+		
+		if ($template) {
+			// Insert the data from the template
+			$this->name = $template->getName();
+			foreach ($template->getUsers() as $user) {
+				$this->addUser($user);
+			}
+		}
 	}
 	
 	public function setName($name)
@@ -132,8 +147,10 @@ class AbstractBillingList extends AbstractEntity
 	 */
 	public function addUser($user)
 	{
-		$this->users[] = $user;
-		$user->addBillingList($this);
+		if (!$this->users->contains($user)) {
+			$this->users[] = $user;
+			$user->addBillingList($this);
+		}
 	}
 	
 	/**
