@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity(repositoryClass="Application\Entity\Repository\PurchaseListRepository")
+ * @ORM\Entity(repositoryClass="Application\Entity\Repository\ListRepository")
  */
 class PurchaseList extends AbstractBillingList
 {
@@ -26,23 +26,14 @@ class PurchaseList extends AbstractBillingList
 	 */
 	protected $purchases;
 	
-	public function __construct()
+	public function __construct($template = NULL)
 	{
-		parent::__construct();
+		parent::__construct($template);
 		
 		$this->purchases = new ArrayCollection();
 		
-		// Default start and end date are the current month.
-		$startDate = new \DateTime();
-		$startDate->modify('first day of this month');
-		$startDate->setTime(0, 0, 0);
-		$this->setStartDate($startDate);
-		
-		$endDate = new \DateTime();
-		$endDate->modify('last day of this month');
-		$endDate->setTime(23, 59, 59);
-		$this->setEndDate($endDate);
-		
+		// Set the default dates.
+		$this->setDefaultDates();
 	}
 	
 	/**
@@ -68,5 +59,19 @@ class PurchaseList extends AbstractBillingList
 	public function getPurchases()
 	{
 		return $this->purchases->toArray();
+	}
+	
+	protected function setDefaultDates()
+	{
+		// Default start and end date are the current month.
+		$startDate = new \DateTime();
+		$startDate->modify('first day of this month');
+		$startDate->setTime(0, 0, 0);
+		$this->setStartDate($startDate);
+		
+		$endDate = new \DateTime();
+		$endDate->modify('last day of this month');
+		$endDate->setTime(23, 59, 59);
+		$this->setEndDate($endDate);
 	}
 }

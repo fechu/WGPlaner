@@ -1,49 +1,43 @@
 <?php 
-use Application\Entity\PurchaseList;
-use SMCommon\View\Helper\FormatDate;
+use Application\Entity\CountList;
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
-echo $this->pageHeader('Aktuelle Einkaufslisten');
+echo $this->pageHeader('Strichlisten');
 
 $table = $this->table();
 $table->setData($this->lists);
 
-$table->addColumn(array(
-	'headTitle' 	=> 'Name',
-	'dataMethod'	=> function(PurchaseList $purchaseList) {
-		$listUrl = $this->url('purchase-list/list-action', array('purchaselistid' => $purchaseList->getId()));
-		return $this->prettyprint()->link($listUrl, $purchaseList->getName());
-	}
-));
+$table->addColumn(array('Name', 'getName'));
 
 $table->addColumn(array(
 	'headTitle' 	=> 'Periode',
-	'dataMethod'	=> function(PurchaseList $purchaseList) {
-		$startDate =  $this->formatDate($purchaseList->getStartDate(), FormatDate::FORMAT_DATE);
-		$endDate = $this->formatDate($purchaseList->getEndDate(), FormatDate::FORMAT_DATE);
+	'dataMethod'	=> function(CountList $countList) {
+		$startDate =  $this->formatDate($countList->getStartDate(), FormatDate::FORMAT_DATE);
+		$endDate = $this->formatDate($countList->getEndDate(), FormatDate::FORMAT_DATE);
 		return $startDate . ' - ' . $endDate;
 	}
 ));
 
 $table->addColumn(array(
 	'headTitle' 	=> 'Aktionen',
-	'dataMethod'	=> function(PurchaseList $purchaseList) {
+	'dataMethod'	=> function(CountList $countList) {
 		$result = '';
-		
+
+		/*
 		$editButtonGroup = array();
-		
+
 		// Edit button
 		$editUrl = $this->url('purchase-list/list-action', array('action' => 'edit', 'purchaselistid' => $purchaseList->getId()));
 		$editButtonGroup[] = array(
 			'title' => 'Bearbeiten',
 			'url'	=> $editUrl
 		);
-		
-		// Add the edit button in the submenu again. 
+
+		// Add the edit button in the submenu again.
 		$editButtonGroup[] = array(
 			'title' => 'Einfkaufsliste bearbeiten',
 			'url'	=> $editUrl
 		);
-		
+
 		// Edit users (for submenu)
 		$editUsersUrl = $this->url('purchase-list/user', array(
 			'purchaselistid'=> $purchaseList->getId(),
@@ -52,7 +46,7 @@ $table->addColumn(array(
 			'title' => 'Benutzer bearbeiten',
 			'url'	=> $editUsersUrl
 		);
-		
+
 		$result .= $this->prettyprint()->splitButton($editButtonGroup);
 			
 		// Details about the purchase list.
@@ -63,23 +57,18 @@ $table->addColumn(array(
 
 		// Add purchase button
 		$addPurchaseUrl = $this->url('purchase-list/purchase', array(
-			'action' 			=> 'add', 
+			'action' 			=> 'add',
 			'purchaselistid'	=> $purchaseList->getId(),
 		));
 		$result .= $this->prettyprint()->button($addPurchaseUrl, 'Einkauf hinzufügen');
-	
-		
+*/
+
 		return $result;
 	}
 ));
 
-$notActiveUrl = $this->url('purchase-list/action', array('action' => 'not-active'));
-?> 
-
-<div class="alert alert-info alert-block">
-Hier werden nur Einkaufslisten angezeigt, bei denen das heutige Datum in der Zeitperiode liegt. Klicken Sie <b><a href="<?php echo $notActiveUrl?>">hier</a></b> um 
-alle anderen Einkauflisten zu sehen.
-</div>
+?>
 
 <?php echo $table; ?>
-<span class="pull-right"><a class="btn" href="<?php echo $this->url('purchase-list/action', array('action' => 'select-template')); ?>">Einkaufliste erstellen</a></span>
+<span class="pull-right"><a class="btn" href="<?php echo $this->url('count-list/action', array('action' => 'create')); ?>">Strichliste erstellen</a></span>
+
