@@ -81,7 +81,7 @@ class ListRepository extends EntityRepository
 	 */
 	public function findNotActive($date, $orderBy = NULL, $limit = NULL, $offset = NULL, $returnQueryBuilder = false)
 	{
-		$this->createQueryBuilder('list');
+		$queryBuilder = $this->createQueryBuilder('list');
 	
 		// The date must be outside the start and enddate.
 		$queryBuilder->where('list.startDate > :date');

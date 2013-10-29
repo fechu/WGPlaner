@@ -104,6 +104,24 @@ class PurchaseListController extends AbstractActionController
 	{
 		$form = new SelectPurchaseListForm($this->em, $this->identity());
 		
+		/* @var $request \Zend\Http\Request */
+		$request = $this->getRequest();
+		if ($request->isPost()) {
+			$form->setData($request->getPost());
+			if ($form->isValid()) {
+				$template = $form->getSelectedPurchaseList();
+				
+				// Redirect to create a purchase list with this template
+				$query = array('query' => array(
+					'template' => $template->getId(),
+				));
+				$params = array(
+					'action' => 'create',
+				);
+				return $this->redirect()->toRoute('purchase-list/action', $params, $query);
+			}
+		}
+		
 		return array(
 			'form' => $form,
 		);
