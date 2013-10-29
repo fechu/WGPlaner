@@ -69,7 +69,7 @@ class PurchaseController extends AbstractActionController
 			if ($form->isValid()) {
 				// Set the logged in user user who did the purchase.
 				$purchase->setUser($this->identity());
-				$purchaseList->addPurchase($purchase);	// Add the purchase to this list.
+				$purchase->setPurchaseList($purchaseList);	// Add the purchase to this list.
 				$this->em->persist($purchase);
 				$this->em->flush();
 				
