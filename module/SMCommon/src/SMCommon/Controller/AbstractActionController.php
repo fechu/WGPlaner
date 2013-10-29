@@ -14,6 +14,7 @@ use SMCommon\Doctrine\EntityManagerAwareInterface;
 use Zend\Log\LoggerInterface;
 use Doctrine\ORM\EntityManager;
 use Zend\Validator\Digits;
+use SMCommon\Log\Logger;
 /**
  * A base controller. 
  * It implements basic things like the logger that all controllers need.

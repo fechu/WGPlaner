@@ -8,10 +8,10 @@ use Zend\ModuleManager\Feature\ControllerProviderInterface;
 use Zend\Log\LoggerAwareInterface;
 use SMCommon\Doctrine\EntityManagerAwareInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
-use Zend\Log\Logger;
 use Zend\Log\Writer\Stream;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 use SMCommon\View\Helper\FormatDate;
+use SMCommon\Log\Logger;
 
 class Module implements AutoloaderProviderInterface, 
 						ControllerProviderInterface,
@@ -63,6 +63,12 @@ class Module implements AutoloaderProviderInterface,
 					$writer = new Stream('./data/application.log');
 					$log->addWriter($writer);
 			
+					// Get and inject the identity
+					if ($sm->has('smuser.identity')) {
+						$identityService = $sm->get('smuser.identity');
+						$log->setIdentity($identityService->getIdentity());
+					}
+					
 					return $log;
 				},
 			),

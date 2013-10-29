@@ -81,7 +81,7 @@ class ListRepository extends EntityRepository
 	 */
 	public function findNotActive($date, $orderBy = NULL, $limit = NULL, $offset = NULL, $returnQueryBuilder = false)
 	{
-		$this->createQueryBuilder('list');
+		$queryBuilder = $this->createQueryBuilder('list');
 	
 		// The date must be outside the start and enddate.
 		$queryBuilder->where('list.startDate > :date');
@@ -120,10 +120,7 @@ class ListRepository extends EntityRepository
 	{
 		$queryBuilder = $this->findNotActive($date, $orderBy, $limit, $offset, true);
 	
-		// Restrict the user
-		$queryBuilder->join('list.users', 'user');
-		$queryBuilder->andWhere('user = :user');
-		$queryBuilder->setParameter('user', $user);
+		$this->restrictUser($queryBuilder, $user);
 	
 		// Return query builder?
 		if ($returnQuerybuilder) {
@@ -131,5 +128,30 @@ class ListRepository extends EntityRepository
 		}
 	
 		return $queryBuilder->getQuery()->getResult();
+	}
+	
+	public function findForUser($user, $orderBy = NULL, $limit = NULL, $offset = NULL, $returnQueryBuilder = false) 
+	{
+		$queryBuilder = $this->createQueryBuilder('list');
+		$this->restrictUser($queryBuilder, $user);
+		
+		if ($returnQueryBuilder) {
+			return $queryBuilder;
+		}
+		
+		return $queryBuilder->getQuery()->getResult();
+	}
+	
+	/**
+	 * Restrict a query builder to only select lists of $user.
+	 */
+	protected function restrictUser($queryBuilder, $user) 
+	{
+		// Restrict the user
+		$queryBuilder->join('list.users', 'user');
+		$queryBuilder->andWhere('user = :user');
+		$queryBuilder->setParameter('user', $user);
+		
+		return $queryBuilder;
 	}
 }

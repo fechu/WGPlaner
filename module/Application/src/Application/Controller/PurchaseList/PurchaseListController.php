@@ -11,6 +11,7 @@ use Application\Form\PurchaseListForm;
 use Application\Entity\PurchaseList;
 use Application\Form\PurchaseForm;
 use Application\Entity\Purchase;
+use Application\Form\SelectPurchaseListForm;
 
 class PurchaseListController extends AbstractActionController
 {
@@ -43,11 +44,33 @@ class PurchaseListController extends AbstractActionController
 		);
 	}
 	
+	/**
+	 * Create a new purchase list. 
+	 * 
+	 * This action supports the query parameter "template". This should be an id of 
+	 * another purchase list. Then the data of that purchase list will be used to prefill 
+	 * the purchase list. 
+	 */
 	public function createAction()
 	{
 		$form = new PurchaseListForm();
+
+		$templateId = $this->params()->fromQuery('template');
+		$templatePurchaseList = NULL;
+		if ($templateId) {
+			// Load the purchase list as a template
+			/* @var $repo \Application\Entity\Repository\ListRepository */
+			$repo = $this->em->getRepository('Application\Entity\PurchaseList');
+			$templatePurchaseList = $repo->find($templateId);
+			
+			if (!$templatePurchaseList) {
+				$this->logger->notice('Template to create purchase list does not exist!', 
+						array('templateId' => $templateId)
+				);
+			}
+		}
+		$purchaseList = new PurchaseList($templatePurchaseList);
 		
-		$purchaseList = new PurchaseList();
 		$form->bind($purchaseList);
 		
 		
@@ -67,6 +90,40 @@ class PurchaseListController extends AbstractActionController
 				
 				return $this->redirect()->toRoute('purchase-list');
 			}	
+		}
+		
+		return array(
+			'form' => $form,
+		);
+	}
+	
+	/**
+	 * Select a template to create a purchase list.
+	 */
+	public function selectTemplateAction()
+	{
+		$form = new SelectPurchaseListForm($this->em, $this->identity());
+		
+		/* @var $request \Zend\Http\Request */
+		$request = $this->getRequest();
+		if ($request->isPost()) {
+			$form->setData($request->getPost());
+			if ($form->isValid()) {
+				$template = $form->getSelectedPurchaseList();
+				
+				$query = array();
+				if ($template) {
+					$query['query'] = array(
+						'template' => $template->getId(),
+					);
+				}
+
+				$params = array(
+					'action' => 'create',
+				);
+				// Redirect to create a purchase list with this template
+				return $this->redirect()->toRoute('purchase-list/action', $params, $query);
+			}
 		}
 		
 		return array(
