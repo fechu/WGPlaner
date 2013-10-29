@@ -11,6 +11,7 @@ use Application\Form\PurchaseListForm;
 use Application\Entity\PurchaseList;
 use Application\Form\PurchaseForm;
 use Application\Entity\Purchase;
+use Application\Form\SelectPurchaseListForm;
 
 class PurchaseListController extends AbstractActionController
 {
@@ -90,6 +91,18 @@ class PurchaseListController extends AbstractActionController
 				return $this->redirect()->toRoute('purchase-list');
 			}	
 		}
+		
+		return array(
+			'form' => $form,
+		);
+	}
+	
+	/**
+	 * Select a template to create a purchase list.
+	 */
+	public function selectTemplateAction()
+	{
+		$form = new SelectPurchaseListForm($this->em, $this->identity());
 		
 		return array(
 			'form' => $form,
