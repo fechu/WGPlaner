@@ -52,7 +52,7 @@ class PurchaseList extends AbstractBillingList
 			
 		}
 		else {
-			throw new \InvalidArgumetnException('Purchase date needs to be between start and enddate of this list!');
+			throw new \InvalidArgumentException('Purchase date needs to be between start and enddate of this list!');
 		}
 	}
 	
