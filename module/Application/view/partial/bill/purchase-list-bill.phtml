@@ -33,17 +33,33 @@ $bill = $this->bill;
 						</tr>
 						<?php endforeach;?>
 					<?php else : ?>
-						<!-- List of money spent per user -->
-						<?php foreach ($bill->getUsers() as $user) : ?>
-						<tr>
-							<td><?php echo $user->getFullname();?></td>
-							<td style="text-align: right;"><?php echo number_format($bill->getTotalAmount($user), 2);?> CHF</td>
-						</tr>
-						<?php endforeach;?>
+						<thead>
+							<tr style="font-weight: bold;">
+								<td>Name</td>
+								<td>Eingekauft</td>
+								<td>Anteil</td>
+								<td style="text-align: right;">Zu bezahlen</td>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- List of money spent per user -->
+							<?php foreach ($bill->getUsers() as $user) : ?>
+							<tr>
+								<td><?php echo $user->getFullname();?></td>
+								<td><?php echo number_format($bill->getTotalAmount($user), 2);?> CHF</td>
+								<td><?php echo number_format($bill->getPortion($user),2)?> CHF</td>
+								<td style="text-align: right;"><?php echo number_format($bill->getAmountToPay($user), 2)?> CHF</td>
+							</tr>
+							<?php endforeach;?>
+						</tbody>
 					<?php endif;?>
 					<tr>
 						<td><b>Total</b></td>
-						<td style="text-align: right"><b><?php echo number_format($bill->getTotalAmount($this->user), 2); ?> CHF</b></td>
+						<?php if ($this->user) : ?>
+						<td style="text-align: right;"><b><?php echo number_format($bill->getTotalAmount($this->user), 2); ?> CHF</b></td>
+						<?php else:?>
+						<td colspan="3"><b><?php echo number_format($bill->getTotalAmount($this->user), 2); ?> CHF</b></td>
+						<?php endif;?>
 					</tr>
 				</table>
 				

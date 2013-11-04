@@ -105,4 +105,20 @@ class PurchaseListBill extends AbstractBillingListBill
 		
 		return $totalAmount;
 	}
+	
+	/**
+	 * @return The portion a user has to pay.
+	 */
+	public function getPortion($user)
+	{
+		return $this->getTotalAmount() / count($this->getUsers());
+	}
+	
+	/**
+	 * @return The amount which $user still has to pay
+	 */
+	public function getAmountToPay($user)
+	{
+		return -($this->getTotalAmount($user) - $this->getPortion($user));
+	}
 }
