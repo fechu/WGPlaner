@@ -55,6 +55,9 @@ class PurchaseListTest extends \PHPUnit_Framework_TestCase
 		$endDate = new \DateTime();
 		$endDate->add(new \DateInterval('P10D'));	// Add 10 days.
 		
+		$this->list->setStartDate($startDate);
+		$this->list->setEndDate($endDate);
+		
 		$oldCount = count($this->list->getPurchases());
 		$this->list->addPurchase($purchase); // Throws excpetion
 	}
