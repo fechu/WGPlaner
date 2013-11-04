@@ -12,6 +12,7 @@ use Application\Entity\PurchaseList;
 use Application\Form\PurchaseForm;
 use Application\Entity\Purchase;
 use Application\Form\SelectPurchaseListForm;
+use Application\Bill\BillingList\PurchaseListBill;
 
 class PurchaseListController extends AbstractActionController
 {
@@ -191,9 +192,10 @@ class PurchaseListController extends AbstractActionController
 	public function billAction()
 	{
 		$purchaseList = $this->getPurchaseList();
-
+		
 		return array(
-			'purchaseList' => $purchaseList,
+			'purchaseList' 	=> $purchaseList,
+			'bill'			=> new PurchaseListBill($purchaseList),
 		);
 	}
 }

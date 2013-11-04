@@ -1,10 +1,22 @@
 <?php 
-// A partial for displaying a purchase. 
+/**
+ * A partial for displaying a purchase. 
+ * 
+ * Params: 
+ * user: required. The user you want to display
+ * rows: optional.	Additional rows you want to display. Array of key value pairs, 
+ * 					where the key is the title and the value the title.
+ */
+
+
 
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
 /* @var $user \Application\Entity\User */
 $user = $this->user;
 $email = $user->getEmailAddress();
+
+// Additional rows
+$rows = ($this->rows != NULL ? $this->rows : array());
 ?>
 <div class="row">
 	<table class="table table-condensed span5">
@@ -16,10 +28,12 @@ $email = $user->getEmailAddress();
 			<td>Email</td>
 			<td><a href="mailto:<?php echo $email;?>"><?php echo $email; ?></a></td>
 		</tr>
+		<?php foreach ($rows as $title => $value): ?>
 		<tr>
-			<td>Einkäufe in dieser Liste</td>
-			<td>TODO</td>
+			<td><?php echo $title?></td>
+			<td><?php echo $value?></td>
 		</tr>
+		<?php endforeach;?>
 	</table>
 	
 	<div class="pull-right">
