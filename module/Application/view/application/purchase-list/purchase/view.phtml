@@ -29,7 +29,7 @@ $purchase = $this->purchase;
 	<div class="span6">
 		<h3>Benutzer</h3>
 		<?php 
-		echo $this->partial('partial/purchase-list/user', array(
+		echo $this->partial('partial/user/span6-gravatar', array(
 			'user' => $this->purchase->getUser(),
 		));
 		?>
