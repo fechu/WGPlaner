@@ -10,6 +10,7 @@ namespace ApplicationTest\Bill;
 use Application\Bill\BillingList\PurchaseListBill;
 use Application\Entity\Purchase;
 use Application\Entity\User;
+use Application\Entity\PurchaseList;
 class PurchaseListBillTest extends \PHPUnit_Framework_TestCase
 {
 	protected $list;
@@ -100,6 +101,17 @@ class PurchaseListBillTest extends \PHPUnit_Framework_TestCase
 	
 		// Amount for user2
 		$this->assertEquals(60, $this->list->getTotalAmount($user2), 'Should return sum for user2');
+	}
+	
+	public function testCreationWithPurchaseList()
+	{
+		$purchaseList = new PurchaseList();
+		$purchaseList->addPurchase(new Purchase());
+		$purchaseList->addPurchase(new Purchase());
+		
+		$bill = new PurchaseListBill($purchaseList);
+		
+		$this->assertEquals($purchaseList->getPurchases(), $bill->getPurchases(), 'Should set the purchases from the purchase list during initialization.');
 	}
 	
 	/**

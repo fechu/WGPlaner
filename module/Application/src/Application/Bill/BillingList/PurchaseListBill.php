@@ -18,12 +18,20 @@ class PurchaseListBill extends AbstractBillingListBill
 	
 	/**
 	 * An associative array containg the purchases sorted by user. 
+	 * 
+	 * @param PurchaseList $purchaseList	The purchase list the bill should belong to. 
+	 * 
 	 * @warning Lazy loaded by getPurchases() for a user.
 	 */
 	protected $userPurchases;
 	
-	public function __construct()
+	public function __construct($purchaseList = NULL)
 	{
+		
+		if ($purchaseList) {
+			$this->setPurchases($purchaseList->getPurchases());		
+		}
+		
 		$this->userPurchases = array();
 	}
 	
