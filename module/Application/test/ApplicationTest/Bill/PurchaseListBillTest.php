@@ -20,14 +20,6 @@ class PurchaseListBillTest extends \PHPUnit_Framework_TestCase
 		$this->list = new PurchaseListBill();
 	}
 	
-	public function testSetUsersThrowsException()
-	{
-		$this->setExpectedException('BadMethodCallException');
-		
-		// Not allwed to set users.
-		$this->list->setUsers(array());
-	}
-	
 	public function testSetAndGetPurchases()
 	{
 		$purchases = array(new Purchase());

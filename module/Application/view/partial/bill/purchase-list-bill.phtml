@@ -1,0 +1,69 @@
+<?php 
+/**
+ * Displays a purchase list
+ * 
+ * Width: 12
+ * 
+ * Parameters: 
+ * user: 		A user which you want to in the bill. If empty, all will be shown.
+ * hideUsers : 	Hide the users
+ * bill : 		The purchase list bill
+ */
+
+/* @var $this SMCommon\View\Renderer\PhpRenderer */
+/* @var $bill Application\Bill\BillingList\PurchaseListBill */
+$bill = $this->bill;
+?>
+<div class="row">
+	<div class="span12">
+		<div class="row">
+			<div class="<?php echo ($this->user ? 'span6' : 'span12'); ?>">
+				<?php if ($this->user) : ?>
+				<h3>Einkäufe</h3>	
+				<?php else:?>
+				<h3>Total</h3>
+				<?php endif;?>
+				<table class="table table-striped">
+					<?php if ($this->user) : ?>
+						<!-- List of purchases -->
+						<?php foreach ($bill->getPurchases($this->user) as $purchase) : ?>
+						<tr>
+							<td><?php echo $purchase->getDescription();?></td>
+							<td style="text-align:right;"><?php echo number_format($purchase->getAmount(), 2); ?> CHF</td>
+						</tr>
+						<?php endforeach;?>
+					<?php else : ?>
+						<!-- List of money spent per user -->
+						<?php foreach ($bill->getUsers() as $user) : ?>
+						<tr>
+							<td><?php echo $user->getFullname();?></td>
+							<td style="text-align: right;"><?php echo number_format($bill->getTotalAmount($user), 2);?> CHF</td>
+						</tr>
+						<?php endforeach;?>
+					<?php endif;?>
+					<tr>
+						<td><b>Total</b></td>
+						<td style="text-align: right"><b><?php echo number_format($bill->getTotalAmount($this->user), 2); ?> CHF</b></td>
+					</tr>
+				</table>
+				
+			</div>
+			<?php if (!$this->hideUsers) : ?>
+			<div class="span6">
+				<h3>Benutzer</h3>
+				<?php 
+				$users = ($this->user ? array($this->user) : $bill->getUsers());
+				foreach ($users as $user) : ?>
+				
+				<?php 		 
+					echo $this->partial('partial/user/span6-gravatar', array(
+						'user' => $user,
+					));
+				?>
+				<br>
+				<?php endforeach; ?>
+			</div>
+			<?php endif;?>
+		</div>
+	</div>
+</div>

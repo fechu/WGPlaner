@@ -3,6 +3,10 @@ use SMCommon\View\Helper\FormatDate;
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
 /* @var $purchaseList Application\Entity\PurchaseList */
 $purchaseList = $this->purchaseList;
+
+/* @var $bill Application\Bill\BillingList\PurchaseListBill */
+$bill = $this->bill;
+
 echo $this->pageHeader('Abrechnung', $purchaseList->getName());
 ?>
 <?php if ($purchaseList->isActive()) : ?>
@@ -11,3 +15,33 @@ echo $this->pageHeader('Abrechnung', $purchaseList->getName());
 	Diese Abrechnung ist noch nicht abgeschlossen. Die Periode endet am <?php echo $this->formatDate($purchaseList->getEndDate(), FormatDate::FORMAT_DATE); ?>.
 </div>
 <?php endif;?>
+
+<!-- Begin Tabs -->
+<ul id="billTabs" class="nav nav-tabs" data-tabs="tabs">
+	<li class="active">
+		<a href="#total" data-toggle="tab">Total</a>
+	</li>
+	<?php foreach ($bill->getUsers() as $user) : ?>
+	<li>
+		<a href="#<?php echo $user->getId(); ?>" data-toggle="tab"><?php echo $user->getFullname(); ?></a>
+	</li>
+	<?php endforeach;?>
+</ul>
+<div id="billTabsContent" class="tab-content">
+	<div class="tab-pane fade active in" id="total">
+		<?php echo $this->partial('partial/bill/purchase-list-bill', array(
+			'bill' => $bill,
+			'hideUsers' => true,
+		))?>	
+	</div>
+	<?php foreach ($bill->getUsers() as $user) : ?>
+	<div class="tab-pane fade in" id="<?php echo $user->getId()?>">
+		<?php echo $this->partial('partial/bill/purchase-list-bill', array(
+			'bill' 	=> $bill,
+			'user'	=> $user,
+		));
+		?>		
+	</div>
+	<?php endforeach; ?>
+</div>
+<!-- End Tabs -->

@@ -30,21 +30,10 @@ class PurchaseListBill extends AbstractBillingListBill
 		
 		if ($purchaseList) {
 			$this->setPurchases($purchaseList->getPurchases());		
+			$this->users = $purchaseList->getUsers();
 		}
 		
 		$this->userPurchases = array();
-	}
-	
-	/**
-	 * @throws \BadMethodCallException 	You cannot set the users of a PurchaseListBill. 
-	 * 									Set the purchases and the users will be taken from there
-	 */
-	public function setUsers($users)
-	{
-		// Not allowed!
-		throw new \BadMethodCallException(
-				"You cannot set the users of a PurchaseListBill. Set the purchases and the users will be taken from the purchases." 
-		);
 	}
 	
 	/**
