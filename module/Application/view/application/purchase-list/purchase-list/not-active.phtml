@@ -23,6 +23,11 @@ $table->addColumn(array(
 	'dataMethod'	=> function(PurchaseList $purchaseList) {
 		$result = '';
 		
+		$billUrl = $this->url('purchase-list/list-action', array(
+			'action' 			=> 'bill',
+			'purchaselistid' 	=> $purchaseList->getId(), 
+		));
+		$result .= $this->prettyprint()->button($billUrl, 'Abrechnung');
 		
 		return $result;
 	}
