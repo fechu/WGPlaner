@@ -18,7 +18,7 @@ class Logger extends \Zend\Log\Logger
     {
     	// Add the identity if we have one.
     	if ($this->identity) {
-    		$extra['identity'] = $identity;
+    		$extra['identity'] = $this->identity;
     	}
     	
     	parent::log($priority, $message, $extra);
