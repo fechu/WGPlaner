@@ -51,6 +51,12 @@ class User extends AbstractEntity implements UserInterface
 	 */
 	protected $emailAdress;
 	
+	/**
+	 * The key that gives the user access to the API.
+	 * 
+	 * @ORM\Column(type="string")
+	 */
+	protected $apiKey;
 	
 	/**
 	 * The purchases made by this user.	
@@ -119,6 +125,22 @@ class User extends AbstractEntity implements UserInterface
 	public function getEmailAddress()
 	{
 		return $this->emailAdress;
+	}
+	
+	/**
+	 * @return string The API key for the user.
+	 */
+	public function getAPIKey()
+	{
+		return $this->apiKey;
+	}
+	
+	/**
+	 * Generate a new random API Key.
+	 */
+	public function generateAPIKey()
+	{
+		$this->apiKey = md5($this->username . $this->emailAdress . uniqid());
 	}
 
 	public function setPassword($password)

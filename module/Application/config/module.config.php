@@ -37,6 +37,7 @@ return array(
             'Application\Controller\PurchaseList\User'			=> 'Application\Controller\PurchaseList\UserController',
             'Application\Controller\PurchaseList\Purchase'		=> 'Application\Controller\PurchaseList\PurchaseController',
             'Application\Controller\CountList\CountList'		=> 'Application\Controller\CountList\CountListController',
+            'Application\Controller\Settings'					=> 'Application\Controller\SettingsController',
         ),
     ),
     'view_manager' => array(
