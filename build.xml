@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+
+<project name="Stanser Musiktage" default="test">
+
+  <!-- Define the deployment fileset. -->
+  <fileset dir="." id="deployment-all-fileset">
+    <include name="**" />
+    <exclude name="build.xml"/>
+    <exclude name="*.komodo*"/>
+    <exclude name=".git/**"/>
+    <exclude name="config/config.php"/>
+    <exclude name="db/**"/>
+    <exclude name="logs/**"/>
+    <exclude name="tests/**"/>
+  </fileset>
+
+  <fileset dir="." id="deployment-core-fileset">
+    <include name="**"/>
+    <exclude name="build.xml"/>
+    <exclude name="*.komodo*"/>
+    <exclude name=".git/**"/>
+    <exclude name="config/config.php"/>
+    <exclude name="db/**"/>
+    <exclude name="logs/**"/>
+    <exclude name="tests/**"/>
+    <exclude name="lib/**"/>
+  </fileset>
+	
+  <!-- Runs all unit tests. -->
+  <target name="test">
+    <phpunit bootstrap="module/Application/test/Bootstrap.php" haltonfailure="true" haltonerror="true">
+      <formatter type="plain" usefile="false" />
+      <batchtest>
+        <fileset dir="module/Application/test/ApplicationTest">
+          <include name="**/*Test.php"/>
+        </fileset>
+      </batchtest>
+    </phpunit>
+  </target>
+
+</project>
