@@ -95,4 +95,18 @@ class UserTest extends \PHPUnit_Framework_TestCase
 		
 		$this->user->setPassword($invalidPassword); // throws excpeption
 	}
+	
+	public function testApiKeyIsGeneratedByDefault()
+	{
+		$this->user->generateAPIKey();
+		$this->assertNotNull($this->user->getAPIKey(), 'API Key should never be null.');
+	}
+	
+	public function testApiKeyChanges()
+	{
+		$this->user->generateAPIKey();
+		$oldKey = $this->user->getAPIKey();
+		$this->user->generateAPIKey();
+		$this->assertNotEquals($oldKey, $this->user->getAPIKey(), 'API Key should change when a new one is generated.');
+	}
 }

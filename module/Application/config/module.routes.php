@@ -20,6 +20,29 @@ return array(
 			),
 		),
 	),
+	'settings' => array(
+		'type' => 'Segment',
+		'options' => array(
+			'route'    => '/settings',
+			'defaults' => array(
+				'__NAMESPACE__' => 'Application\Controller',
+				'controller' 	=> 'Settings',
+				'action'     	=> 'api',
+			),
+		),
+		'may_terminate' => true,
+		'child_routes' => array(
+			'action' => array(
+				'type'    => 'Segment',
+				'options' => array(
+					'route'			=> '[/:action]',
+					'constraints' 	=> array(
+						'action'    	=> '[a-zA-Z][a-zA-Z0-9_-]*',
+					),
+				),
+			),
+		),
+	),
 	'purchase-list' => array(
 		'type'    => 'Literal',
 		'options' => array(

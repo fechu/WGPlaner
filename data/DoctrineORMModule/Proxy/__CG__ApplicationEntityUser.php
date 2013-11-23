@@ -64,10 +64,10 @@ class User extends \Application\Entity\User implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'username', 'fullname', 'password', 'emailAdress', 'purchases', 'billingLists', 'id', 'created', 'lastModified', 'deleted');
+            return array('__isInitialized__', 'username', 'fullname', 'password', 'emailAdress', 'apiKey', 'purchases', 'billingLists', 'id', 'created', 'lastModified', 'deleted');
         }
 
-        return array('__isInitialized__', 'username', 'fullname', 'password', 'emailAdress', 'purchases', 'billingLists', 'id', 'created', 'lastModified', 'deleted');
+        return array('__isInitialized__', 'username', 'fullname', 'password', 'emailAdress', 'apiKey', 'purchases', 'billingLists', 'id', 'created', 'lastModified', 'deleted');
     }
 
     /**
@@ -237,6 +237,28 @@ class User extends \Application\Entity\User implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmailAddress', array());
 
         return parent::getEmailAddress();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAPIKey()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAPIKey', array());
+
+        return parent::getAPIKey();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function generateAPIKey()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'generateAPIKey', array());
+
+        return parent::generateAPIKey();
     }
 
     /**

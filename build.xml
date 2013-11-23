@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+
+<project name="Stanser Musiktage" default="test">
+
+  <!-- Define the deployment fileset. -->
+  <fileset dir="." id="deployment-fileset">
+    <include name="**" />
+    <exclude name="build.xml"/>
+    <exclude name="composer.*"/>
+    <exclude name=".git/**"/>
+    <exclude name="config/autoload/database.local.php"/>
+    <exclude name="config/autoload/zenddevelopertools.local.php"/>
+    <exclude name="data/**"/>
+    <exclude name="build/**"/>
+  </fileset>
+	
+  <!-- Runs all unit tests. -->
+  <target name="test">
+    <phpunit bootstrap="module/Application/test/Bootstrap.php" haltonfailure="true" haltonerror="true">
+      <formatter type="plain" usefile="false" />
+      <batchtest>
+        <fileset dir="module/Application/test/ApplicationTest">
+          <include name="**/*Test.php"/>
+        </fileset>
+      </batchtest>
+    </phpunit>
+  </target>
+
+  <target name="build" depends="test">
+
+    <!-- Delete the old build dir -->
+    <delete dir="build" includeemptydirs="true" />
+
+    <!-- Create build directory -->
+    <mkdir dir="build" />
+
+    <!-- Copy files -->
+    <copy todir="build">
+      <fileset refid="deployment-fileset"/>
+    </copy>
+
+    <!-- Create the data folder -->
+    <mkdir dir="build/data"/>
+
+  </target>
+
+</project>
