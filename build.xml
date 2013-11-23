@@ -3,27 +3,15 @@
 <project name="Stanser Musiktage" default="test">
 
   <!-- Define the deployment fileset. -->
-  <fileset dir="." id="deployment-all-fileset">
+  <fileset dir="." id="deployment-fileset">
     <include name="**" />
     <exclude name="build.xml"/>
-    <exclude name="*.komodo*"/>
+    <exclude name="composer.*"/>
     <exclude name=".git/**"/>
-    <exclude name="config/config.php"/>
-    <exclude name="db/**"/>
-    <exclude name="logs/**"/>
-    <exclude name="tests/**"/>
-  </fileset>
-
-  <fileset dir="." id="deployment-core-fileset">
-    <include name="**"/>
-    <exclude name="build.xml"/>
-    <exclude name="*.komodo*"/>
-    <exclude name=".git/**"/>
-    <exclude name="config/config.php"/>
-    <exclude name="db/**"/>
-    <exclude name="logs/**"/>
-    <exclude name="tests/**"/>
-    <exclude name="lib/**"/>
+    <exclude name="config/autoload/database.local.php"/>
+    <exclude name="config/autoload/zenddevelopertools.local.php"/>
+    <exclude name="data/**"/>
+    <exclude name="build/**"/>
   </fileset>
 	
   <!-- Runs all unit tests. -->
@@ -36,6 +24,24 @@
         </fileset>
       </batchtest>
     </phpunit>
+  </target>
+
+  <target name="build" depends="test">
+
+    <!-- Delete the old build dir -->
+    <delete dir="build" includeemptydirs="true" />
+
+    <!-- Create build directory -->
+    <mkdir dir="build" />
+
+    <!-- Copy files -->
+    <copy todir="build">
+      <fileset refid="deployment-fileset"/>
+    </copy>
+
+    <!-- Create the data folder -->
+    <mkdir dir="build/data"/>
+
   </target>
 
 </project>
