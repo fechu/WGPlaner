@@ -24,5 +24,17 @@ class PurchaseRepository extends EntityRepository
 		return $result['maxSlipNumber'] + 1;
 	}
 	
+	/**
+	 * Finds unique stores that where used. 
+	 */
+	public function findUniqueStores()
+	{
+		$query = $this->createQueryBuilder('p');
+		$query->select('DISTINCT p.store');
+		
+		$result = $query->getQuery()->getScalarResult();
+		
+		return array_map('current', $result);
+	}
 	
 }

@@ -9,6 +9,7 @@ return array(
     	'ZucchiBootstrap',
     	'SMCommon',
     	'SMUser',
+    	'API',
         'Application',
     ),
 

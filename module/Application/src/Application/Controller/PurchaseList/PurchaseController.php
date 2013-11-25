@@ -57,7 +57,7 @@ class PurchaseController extends AbstractActionController
 	{
 		$purchaseList = $this->getPurchaseList();
 	
-		$form = new PurchaseForm();
+		$form = new PurchaseForm($this->em);
 	
 		$purchase = new Purchase();
 		$form->bind($purchase);
@@ -103,7 +103,7 @@ class PurchaseController extends AbstractActionController
 			return;
 		}
 		
-		$form = new PurchaseForm();
+		$form = new PurchaseForm($this->em);
 		$form->bind($purchase);
 		
 		/* @var $request \Zend\Http\Request */
