@@ -6,40 +6,16 @@
  */
 
 return array(
-	'router' => array(
-		'routes' => array(
-			'api' => array(
-				'type' => 'Segment',
-				'options' => array(
-					'route'    => '/api',
-					'defaults' => array(
-						/// @todo Add api index controller (with documentation?)
-						'__NAMESPACE__' => 'Application\Controller',
-						'controller' 	=> 'Index',
-						'action'     	=> 'index',
-					),
-				),
-				'may_terminate' => true,
-				'child_routes' => array(
-					'purchase' => array(
-						'type'    => 'Segment',
-						'options' => array(
-							'route'			=> '/purchase[/:id][/:action]',
-							'constraints' 	=> array(
-								'action'    	=> '[a-zA-Z][a-zA-Z0-9_-]*',
-								'id'			=> '[0-9]+'
-							),
-							'defaults' => array(
-								'__NAMESPACE__' => 'API\Controller', 
-								'controller'	=> 'Purchase',
-								'action'		=> null,
-							),
-						),
-					),
-				),
-			),
-		)
+	
+	// Additional configuration for smuser.
+	'smuser' => array(
+		'route_whitelist' => array(
+			'api',
+		),
 	),
+	
+	// Routes in routes.config.php
+	'router' => include 'routes.config.php',
 	
 	'controllers' => array(
 		'invokables' => array(

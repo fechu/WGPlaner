@@ -15,9 +15,19 @@ return array(
 		'redirect_without_authentication' => true,
 		
 		/**
+		 * Route Whitelist
+		 * All routes in this list will be ignored if no one is authenticated.
+		 */
+		'route_whitelist' => array(
+			'auth', 
+			'login'
+		),
+		
+		/**
 		 * The route where to redirect after login.
 		 */
 		'redirect_after_login' => 'home',
+		
 	),
 	
 	// Routes

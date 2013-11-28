@@ -21,9 +21,8 @@ class PurchaseController extends AbstractRestfulController
 		return new JsonModel($repo->findUniqueStores());
 	}
 	
-	public function get($id)
+	public function create($data)
 	{
-		
+		var_dump($data);
 	}
-	
 }
