@@ -20,18 +20,53 @@ return array(
 				),
 				'may_terminate' => true,
 				'child_routes' => array(
-					'purchase' => array(
+					
+					// Overall data
+					'data' => array(
 						'type'    => 'Segment',
 						'options' => array(
-							'route'			=> '/purchase[/:id][/:action]',
+							'route'			=> '/data/:action',
 							'constraints' 	=> array(
-								'action'    	=> '[a-zA-Z][a-zA-Z0-9_-]*',
-								'id'			=> '[0-9]+'
+								'action'    		=> '[a-zA-Z][a-zA-Z0-9_-]*',
 							),
 							'defaults' => array(
 								'__NAMESPACE__' => 'API\Controller', 
-								'controller'	=> 'Purchase',
+								'controller'	=> 'Data',
+							),
+						),
+					),
+					
+					// Purchase list data.
+					'purchase-list' => array(
+						'type'    => 'Segment',
+						'options' => array(
+							'route'			=> '/purchase-list[/:purchaselistid]',
+							'constraints' 	=> array(
+								'action'    		=> '[a-zA-Z][a-zA-Z0-9_-]*',
+								'purchaselistid'	=> '[0-9]+'
+							),
+							'defaults' => array(
+								'__NAMESPACE__' => 'API\Controller', 
+								'controller'	=> 'PurchaseList',
 								'action'		=> null,
+							),
+						),
+						'may_terminate' => true,
+						'child_routes' => array(
+							'purchase' => array(
+								'type'    => 'Segment',
+								'options' => array(
+									'route'			=> '/purchase[/:purchaseid][/:action]',
+									'constraints' 	=> array(
+										'action'    	=> '[a-zA-Z][a-zA-Z0-9_-]*',
+										'purchaseid'	=> '[0-9]+'
+									),
+									'defaults' => array(
+										'__NAMESPACE__' => 'API\Controller',
+										'controller'	=> 'Purchase',
+										'action'		=> null,
+									),
+								),
 							),
 						),
 					),

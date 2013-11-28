@@ -8,21 +8,59 @@
 namespace API\Controller;
 
 use Zend\View\Model\JsonModel;
-use SMCommon\Controller\AbstractRestfulController;
+use Application\Form\PurchaseForm;
+use Application\Entity\Purchase;
 
 class PurchaseController extends AbstractRestfulController
 {
 	
-	public function storesAction()
+	public function __construct()
 	{
-		/* @var $repo \Application\Entity\Repository\PurchaseRepository */
-		$repo = $this->em->getRepository('Application\Entity\Purchase');
-		
-		return new JsonModel($repo->findUniqueStores());
+		$this->identifierName = "purchaseid";
 	}
 	
+	/**
+	 * Create a new purchase. 
+	 * @todo Deny adding of purchases to lists that do not belong to the user.
+	 */
 	public function create($data)
 	{
-		var_dump($data);
+		$user = $this->identity();
+		if ($user) {
+			$purchaseList = $this->getPurchaseList();
+			
+			// Form for validating the data.
+			$form = new PurchaseForm($this->em);
+			
+			$purchase = new Purchase();
+			$form->bind($purchase);
+			
+			/* @var $request \Zend\Http\Request */
+			$request = $this->getRequest();
+			$form->setData(array('PurchaseFieldset' => $data));
+			if ($form->isValid()) {
+				// Set the logged in user user who did the purchase.
+				$purchase->setUser($user);
+				$purchase->setPurchaseList($purchaseList);	// Add the purchase to this list.
+				$this->em->persist($purchase);
+				$this->em->flush();
+		
+				// Success!
+				return $this->createdResponse();
+			}
+			else {
+				return $this->badRequestResponse($form->getMessages());
+			}
+			
+			return array(
+				'form' => $form,
+				'purchaseList' => $purchaseList,
+			);
+		}
+		else {
+			$this->invalidAPIKeyResponse();
+		}
 	}
+	
+	
 }

@@ -15,6 +15,7 @@ use Zend\Log\LoggerInterface;
 use Doctrine\ORM\EntityManager;
 use Zend\Validator\Digits;
 use SMCommon\Log\Logger;
+use Zend\View\Model\JsonModel;
 /**
  * A base controller. 
  * It implements basic things like the logger that all controllers need.
@@ -120,5 +121,58 @@ abstract class AbstractRestfulController extends ZendRestfulController implement
 	public function getConfig()
 	{
 		return $this->getServiceLocator()->get('config');
+	}
+	
+	protected function createdResponse()
+	{
+		/* @var $response \Zend\Http\Response */
+		$response = $this->getResponse();
+		
+		$response->setStatusCode(201);
+		return $response;
+	}
+	
+	/**
+	 * Modifies the response, that it indicates that the request has to be authorized.
+	 * Includes information in the body on how to resolve this issue. 
+	 * @return JsonModel The model containing further information.
+	 */
+	protected function unauthorizedResponse($details = null)
+	{
+		/* @var $response \Zend\Http\Response */
+		$response = $this->getResponse();
+		
+		$response->setStatusCode(401);
+		
+		return $this->generateErrorViewModel(
+				'The request is not authorized.',
+				$details
+		);
+	}
+	
+	protected function badRequestResponse($details = null)
+	{
+		/* @var $response \Zend\Http\Response */
+		$response = $this->getResponse();
+		
+		$response->setStatusCode(400); // Bad request
+		
+		return $this->generateErrorViewModel(
+				'Your request was not understand by the server.',
+				$details
+		);
+	}
+	
+	protected function generateErrorViewModel($error, $details = null) 
+	{
+		$errorData = array(
+			'error' => $error,
+		);
+		
+		if ($details) {
+			$errorData['error_details'] = $details;
+		}
+		
+		return new JsonModel($errorData);
 	}
 }

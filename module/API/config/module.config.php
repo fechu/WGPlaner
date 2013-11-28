@@ -19,7 +19,9 @@ return array(
 	
 	'controllers' => array(
 		'invokables' => array(
-			'API\Controller\Purchase' 	=> 'API\Controller\PurchaseController',
+			'API\Controller\Purchase' 		=> 'API\Controller\PurchaseController',
+			'API\Controller\PurchaseList'	=> 'API\Controller\PurchaseListController',
+			'API\Controller\Data'			=> 'API\Controller\DataController',
 		),
 	),
 	
