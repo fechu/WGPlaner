@@ -39,7 +39,7 @@ class PurchaseListController extends AbstractRestfulController
 			}, $lists);
 			
 			
-			return new JsonModel(array('purachseList' => $lists));
+			return new JsonModel(array('purchaseList' => $lists));
 		}
 		else {
 			return $this->invalidAPIKeyResponse();
