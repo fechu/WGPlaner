@@ -17,6 +17,14 @@ class PurchaseListController extends AbstractRestfulController
 		$this->identifierName = "purchaselistid";
 	}
 	
+	/**
+	 * Get purchase lists for the authenticated user. 
+	 * 
+	 * Pameters: 
+	 * 
+	 * active	boolean 	Return all lists or only currently active lists.
+	 * 						Accepts 0 and 1 as values
+	 */
 	public function getList()
 	{
 		/* @var $repo \Application\Entity\Repository\ListRepository */
@@ -24,18 +32,22 @@ class PurchaseListController extends AbstractRestfulController
 		
 		$user = $this->identity();
 		if ($user) {
-			$lists = $repo->findForUser($user);
-			$hydrator = new DoctrineObject($this->em, 'Application\Entity\PurchaseList');
-			$lists = array_map(function($list) use ($hydrator) {
+			
+			// Active or all lists
+			$active = $this->params()->fromQuery('active', false);
+			if ((bool)$active) {
+				$lists = $repo->findActiveForUser(new \DateTime(), $user);
+			}
+			else {
+				$lists = $repo->findForUser($user);
+			}
+
+			$lists = array_map(function($list) {
 				/* @var $list \Application\Entity\PurchaseList */
-				$listData = $hydrator->extract($list);
-				
-				// Remove unwanted data
-				unset($listData['purchases']);
-				unset($listData['users']);
-				
-				return $listData;
-				
+				return array(
+					"id"	=> $list->getId(),
+					"name" 	=> $list->getName(),
+				);
 			}, $lists);
 			
 			
