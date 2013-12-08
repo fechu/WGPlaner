@@ -83,7 +83,7 @@ class PurchaseController extends AbstractActionController
 			// Set default slip number
 			/* @var $repo \Application\Entity\Repository\PurchaseRepository */
 			$repo = $this->em->getRepository('Application\Entity\Purchase');
-			$form->setSlipNumber($repo->findNextSlipNumber());
+			$form->setSlipNumber($repo->findNextSlipNumber($purchaseList));
 		}
 	
 		return array(
