@@ -12,9 +12,10 @@
         "zendframework/zendframework": "2.2.*",
         "doctrine/doctrine-orm-module": "0.7.*",
         "zucchi/zucchi": "dev-master",
-        "zucchi/bootstrap": "dev-master"
+        "zucchi/bootstrap": "dev-master",
+        "zendframework/zftool": "dev-master"
     },
-    "require-dev" : {
-        "zendframework/zend-developer-tools" : "*"
+    "require-dev": {
+        "zendframework/zend-developer-tools": "*"
     }
 }
