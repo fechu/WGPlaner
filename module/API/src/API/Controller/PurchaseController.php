@@ -42,6 +42,7 @@ class PurchaseController extends AbstractRestfulController
 				// Set the logged in user user who did the purchase.
 				$purchase->setUser($user);
 				$purchase->setAccount($account);	// Add the purchase to this list.
+				$purchase->setCreatedWithAPI(true);
 				$this->em->persist($purchase);
 				$this->em->flush();
 
