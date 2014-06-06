@@ -74,7 +74,7 @@ class PurchaseController extends AbstractAccountController
 				$this->em->flush();
 
 				// Show all purchases of the account
-				return $this->redirect()->toRoute('account/purchases', array(
+				return $this->redirect()->toRoute('accounts/purchases', array(
 					'accountid' 	=> $account->getId(),
 				));
 			}
@@ -114,7 +114,7 @@ class PurchaseController extends AbstractAccountController
 				// Got valid data.
 				$this->em->flush();
 
-				return $this->redirect()->toRoute('account/purchases', array('action' => NULL), array(), true);
+				return $this->redirect()->toRoute('accounts/purchases', array('action' => NULL), array(), true);
 			}
 		}
 

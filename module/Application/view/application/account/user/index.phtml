@@ -14,7 +14,7 @@ $table->addColumn(array(
 	'dataMethod'	=> function(User $user) {
 		$result = '';
 
-		$removeUserUrl = $this->url('account/users', array(
+		$removeUserUrl = $this->url('accounts/users', array(
 			'action' 			=> 'remove',
 			'userid' 			=> $user->getId(),
 			'accountid'			=> $this->account->getId(),
@@ -28,7 +28,7 @@ $table->addColumn(array(
 
 echo $table;
 
-$addUserUrl = $this->url('account/users', array(
+$addUserUrl = $this->url('accounts/users', array(
 	'action' 			=> 'add',
 	'accountid'			=> $this->account->getId(),
 ));

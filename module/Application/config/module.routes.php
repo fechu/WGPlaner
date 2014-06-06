@@ -43,10 +43,10 @@ return array(
 			),
 		),
 	),
-	'account' => array(
+	'accounts' => array(
 		'type'    => 'Literal',
 		'options' => array(
-			'route'    => '/account',
+			'route'    => '/accounts',
 			'defaults' => array(
 				'__NAMESPACE__' => 'Application\Controller\Account',
 				'controller'    => 'Account',

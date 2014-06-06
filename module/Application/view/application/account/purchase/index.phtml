@@ -33,7 +33,7 @@ foreach ($this->account->getUsers() as $user) {
 $table->addColumn(array(
 	'headTitle' 	=> 'Aktionen',
 	'dataMethod'	=> function(Purchase $purchase) {
-		$url = $this->url('account/purchases', array(
+		$url = $this->url('accounts/purchases', array(
 			'accountid' 	=> $this->account->getId(),
 			'purchaseid'	=> $purchase->getId(),
 		));
@@ -43,7 +43,7 @@ $table->addColumn(array(
 
 echo $table;
 
-$addPurchsaeUrl = $this->url('account/purchases', array(
+$addPurchsaeUrl = $this->url('accounts/purchases', array(
 	'action' 		=> 'add',
 	'accountid'		=> $this->account->getId(),
 ));

@@ -55,7 +55,7 @@ class UserController extends AbstractAccountController
 				}
 
 				// Redirect to the users list
-				return $this->redirect()->toRoute('account/users', array(
+				return $this->redirect()->toRoute('accounts/users', array(
 					'action' 	=> 'index',
 					'accountid'	=> $this->getAccount()->getId(),
 				));
@@ -95,7 +95,7 @@ class UserController extends AbstractAccountController
 			}
 
 			// Go to user list
-			return $this->redirect()->toRoute('account/users', array(
+			return $this->redirect()->toRoute('accounts/users', array(
 				'accountid'	=> $account->getId(),
 			));
 		}

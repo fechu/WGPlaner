@@ -37,10 +37,10 @@ return array(
 					),
 
 					// account data.
-					'account' => array(
+					'accounts' => array(
 						'type'    => 'Segment',
 						'options' => array(
-							'route'			=> '/account[/:accountid]',
+							'route'			=> '/accounts[/:accountid]',
 							'constraints' 	=> array(
 								'accountid'			=> '[0-9]+'
 							),
@@ -55,7 +55,7 @@ return array(
 							'purchase' => array(
 								'type'    => 'Segment',
 								'options' => array(
-									'route'			=> '/purchase',
+									'route'			=> '/purchases',
 									'defaults' => array(
 										'__NAMESPACE__' => 'API\Controller',
 										'controller'	=> 'Purchase',

@@ -11,7 +11,7 @@ $table->addColumn(array(
 	'headTitle' 	=> 'Name',
 	'dataMethod'	=> function(Account $account) {
 		$listUrl = $this->url(
-				'account/list-action',
+				'accounts/list-action',
 				array(
 					'accountid' => $account->getId()
 				)
@@ -29,7 +29,7 @@ $table->addColumn(array(
 
 		// Edit button
 		$editUrl = $this->url(
-				'account/list-action',
+				'accounts/list-action',
 				array(
 					'action' 	=> 'edit',
 					'accountid' => $account->getId()
@@ -47,7 +47,7 @@ $table->addColumn(array(
 		);
 
 		// Edit users (for submenu)
-		$editUsersUrl = $this->url('account/users', array(
+		$editUsersUrl = $this->url('accounts/users', array(
 			'accountid'=> $account->getId(),
 		));
 		$editButtonGroup[] = array(
@@ -58,13 +58,13 @@ $table->addColumn(array(
 		$result .= $this->prettyprint()->splitButton($editButtonGroup);
 
 		// Details about the purchase list.
-		$purchasesUrl = $this->url('account/list-action', array(
+		$purchasesUrl = $this->url('accounts/list-action', array(
 			'accountid' => $account->getId(),
 		));
 		$result .= $this->prettyprint()->button($purchasesUrl, 'Details');
 
 		// Add purchase button
-		$addPurchaseUrl = $this->url('account/purchases', array(
+		$addPurchaseUrl = $this->url('accounts/purchases', array(
 			'action' 	=> 'add',
 			'accountid'	=> $account->getId(),
 		));
@@ -75,7 +75,7 @@ $table->addColumn(array(
 	}
 ));
 
-$addAccountUrl = $this->url('account/action', array('action' => 'create'));
+$addAccountUrl = $this->url('accounts/action', array('action' => 'create'));
 
 ?>
 

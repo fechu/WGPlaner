@@ -83,24 +83,24 @@ return array(
     	'default' => array(
     		array(
     			'label' => 'Konten',
-    			'route' => 'account',
+    			'route' => 'accounts',
     			'order' => -1,
     			'pages' => array(
     				array(
     					'label'		=> 'Aktuelle Listen',
-    					'route'		=> 'account/action',
+    					'route'		=> 'accounts/action',
     					'action'	=> 'index',
     					'visible'	=> false,
     				),
     				array(
     					'label'		=> 'Nicht aktive Listen',
-    					'route'		=> 'account/action',
+    					'route'		=> 'accounts/action',
     					'action'	=> 'not-active',
     					'visible'	=> false,
     				),
     				array(
     					'label'		=> 'Einkauf hinzufügen',
-    					'route'		=> 'account/action',
+    					'route'		=> 'accounts/action',
     					'action'	=> 'add-purchase',
     					'visible'	=> false,
     				),

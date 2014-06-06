@@ -108,7 +108,7 @@ class AccountController extends AbstractAccountController
 				// Persist the account
 				$this->em->flush($account);
 
-				return $this->redirect()->toRoute('account');
+				return $this->redirect()->toRoute('accounts');
 			}
 		}
 
