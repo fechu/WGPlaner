@@ -78,6 +78,7 @@ class Purchase extends AbstractEntity
 		parent::__construct();
 
 		$this->setDate(new \DateTime());
+		$this->setCreatedWithAPI(false);
 	}
 
 	public function setDate($date)
