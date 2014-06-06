@@ -1,6 +1,6 @@
 <?php
 /**
- * @file PurchaseListForm.php
+ * @file AccountForm.php
  * @date Oct 13, 2013
  * @author Sandro Meier
  */
@@ -8,8 +8,6 @@
 namespace Application\Form;
 
 use SMCommon\Form\AbstractForm;
-use Application\Form\Fieldset\AbstractBillingListFieldset;
-use Application\Form\Fieldset\AbstractAccountFieldset;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
 class AccountForm extends AbstractForm

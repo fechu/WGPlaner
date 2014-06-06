@@ -67,7 +67,7 @@ class User extends AbstractEntity implements UserInterface
 	protected $purchases;
 
 	/**
-	 * The billing lists where the user can create entries
+	 * The accounts where the user can create entries
 	 *
 	 * @var ArrayCollection
 	 * @ORM\ManyToMany(targetEntity="Application\Entity\Account", mappedBy="users", cascade={"persist"})
@@ -179,7 +179,7 @@ class User extends AbstractEntity implements UserInterface
 	/**
 	 * Add a list to this user.
 	 * @warning	This method will only update this side of the relationship.
-	 * 			You are advised to use the addUser() method of BillingList to establish a
+	 * 			You are advised to use the addUser() method of account to establish a
 	 * 			relationship between a user and a list.
 	 */
 	public function addAccount($account)
