@@ -44,7 +44,10 @@ class Account extends AbstractEntity
 
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->purchases = new ArrayCollection();
+		$this->users = new ArrayCollection();
 	}
 
 	/**

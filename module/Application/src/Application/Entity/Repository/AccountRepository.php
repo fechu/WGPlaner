@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
 /**
  * Implements basic methods for finding accounts.
  */
-class ListRepository extends EntityRepository
+class AccountRepository extends EntityRepository
 {
 
 	public function findForUser($user, $orderBy = NULL, $limit = NULL, $offset = NULL, $returnQueryBuilder = false)

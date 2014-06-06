@@ -1,4 +1,4 @@
-<?php 
+<?php
 use SMCommon\View\Helper\FormatDate;
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
 echo $this->pageHeader('Einkauf');
@@ -25,10 +25,10 @@ $purchase = $this->purchase;
 			</tr>
 		</table>
 	</div>
-	
+
 	<div class="span6">
 		<h3>Benutzer</h3>
-		<?php 
+		<?php
 		echo $this->partial('partial/user/span6-gravatar', array(
 			'user' => $this->purchase->getUser(),
 		));
@@ -39,7 +39,7 @@ $purchase = $this->purchase;
 <div class="row">
 	<div class="span12">
 		<h3>Details</h3>
-		<?php 
+		<?php
 		echo $this->partial('partial/purchase', array(
 			'purchase' => $this->purchase,
 		));
@@ -47,8 +47,8 @@ $purchase = $this->purchase;
 	</div>
 </div>
 <div class="pull-right">
-	<?php 
-	$editUrl = $this->url('purchase-list/purchase', array('action' => 'edit'), array(), true);
+	<?php
+	$editUrl = $this->url('account/purchases', array('action' => 'edit'), array(), true);
 	echo $this->prettyprint()->button($editUrl, 'Bearbeiten');
 	?>
 </div>

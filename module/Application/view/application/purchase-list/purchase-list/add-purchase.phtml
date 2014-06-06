@@ -1,9 +1,0 @@
-<?php 
-/* @var $this SMCommon\View\Renderer\PhpRenderer */
-echo $this->pageHeader('Einkauf hinzufügen', $this->purchaseList->getName());
-
-echo $this->bootstrapForm($this->form, 'horizontal');
-
-// Add the javascript specific for this page
-$this->inlineScript()->appendFile($this->basePath() . '/js/application/purchase-list/add-purchase.js');
-?>

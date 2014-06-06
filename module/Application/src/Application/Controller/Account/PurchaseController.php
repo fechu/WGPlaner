@@ -1,67 +1,67 @@
 <?php
 /**
  * @file PurchaseController.php
- * @date Oct 15, 2013 
+ * @date Oct 15, 2013
  * @author Sandro Meier
  */
- 
-namespace Application\Controller\PurchaseList;
 
-use Application\Entity\PurchaseList;
+namespace Application\Controller\Account;
+
+use Application\Entity\Account;
 use Application\Form\PurchaseForm;
 use Application\Entity\Purchase;
 
-class PurchaseController extends AbstractActionController
+class PurchaseController extends AbstractAccountController
 {
 	public function __construct()
 	{
 		$this->defaultId = 'purchase';
 	}
-	
+
 	/**
-	 * Lists all purchases for of a purchase list. 
+	 * Lists all purchases for of an account.
 	 * If a purchaseId is present in the route it will be forwarded to show that purchase.
 	 */
 	public function indexAction()
 	{
 		$purchaseId = $this->getId();
-		$purchaseListId = $this->getId('purchaselist');
-		
+		$accountId = $this->getId('account');
+
 		// If we have an ID we redirect to the showPurchase action.
-		if ($purchaseId && $purchaseListId) {
-			return $this->forward()->dispatch('Application\Controller\PurchaseList\Purchase', array(
-				'__NAMESPACE__'		=> 'Application\Controller\PurchaseList',
+		if ($purchaseId && $accountId) {
+			return $this->forward()->dispatch('Application\Controller\Account\Purchase', array(
+				'__NAMESPACE__'		=> 'Application\Controller\Account',
 				'action' 			=> 'view',
-				'purchaselistid'	=> $purchaseListId,
+				'accountid'			=> $accountId,
 				'purchaseid'		=> $purchaseId,
 			));
 		}
-		
-		$purchaseList = $this->getPurchaseList();
-		if (!$purchaseList) {
+
+		$account = $this->getAccount();
+		if (!$account) {
 			$this->getResponse()->setStatusCode(404);
 			return;
 		}
-		
 
-		
+
+
 		return array(
-			'purchaseList'	=> $purchaseList,
+			'account'	=> $account,
 		);
-	}	
-	
+	}
+
 	/**
-	 * Add a purchase to a purchase list.
+	 * Add a purchase to an account.
 	 */
 	public function addAction()
 	{
-		$purchaseList = $this->getPurchaseList();
-	
+		$account = $this->getAccount();
+
 		$form = new PurchaseForm($this->em);
-	
+
 		$purchase = new Purchase();
 		$form->bind($purchase);
-	
+
 		/* @var $request \Zend\Http\Request */
 		$request = $this->getRequest();
 		if ($request->isPost()) {
@@ -69,13 +69,13 @@ class PurchaseController extends AbstractActionController
 			if ($form->isValid()) {
 				// Set the logged in user user who did the purchase.
 				$purchase->setUser($this->identity());
-				$purchase->setPurchaseList($purchaseList);	// Add the purchase to this list.
+				$purchase->setAccount($account); 	// Add the purchase to this list.
 				$this->em->persist($purchase);
 				$this->em->flush();
-				
-				// Show all purchases of the list
-				return $this->redirect()->toRoute('purchase-list/purchase', array(
-					'purchaselistid' 	=> $purchaseList->getId(),
+
+				// Show all purchases of the account
+				return $this->redirect()->toRoute('account/purchases', array(
+					'accountid' 	=> $account->getId(),
 				));
 			}
 		}
@@ -83,29 +83,29 @@ class PurchaseController extends AbstractActionController
 			// Set default slip number
 			/* @var $repo \Application\Entity\Repository\PurchaseRepository */
 			$repo = $this->em->getRepository('Application\Entity\Purchase');
-			$form->setSlipNumber($repo->findNextSlipNumber($purchaseList));
+			$form->setSlipNumber($repo->findNextSlipNumber($account));
 		}
-	
+
 		return array(
-			'form' => $form,
-			'purchaseList' => $purchaseList,
+			'form' 		=> $form,
+			'account' 	=> $account,
 		);
 	}
-	
+
 	public function editAction()
 	{
 		$purchase = $this->getPurchase();
-		$purchaseList = $this->getPurchaseList();
-		
-		if ($purchase->getPurchaseList() != $purchaseList) {
+		$account = $this->getAccount();
+
+		if ($purchase->getAccount() != $account) {
 			// Purchase is not in this list.
 			$this->getResponse()->setStatusCode(404);
 			return;
 		}
-		
+
 		$form = new PurchaseForm($this->em);
 		$form->bind($purchase);
-		
+
 		/* @var $request \Zend\Http\Request */
 		$request = $this->getRequest();
 		if ($request->isPost()) {
@@ -113,31 +113,31 @@ class PurchaseController extends AbstractActionController
 			if ($form->isValid()) {
 				// Got valid data.
 				$this->em->flush();
-				
-				return $this->redirect()->toRoute('purchase-list/purchase', array('action' => NULL), array(), true);
+
+				return $this->redirect()->toRoute('account/purchases', array('action' => NULL), array(), true);
 			}
 		}
-		
+
 		return array(
 			'purchase' => $purchase,
 			'form'	=> $form,
 		);
 	}
-	
+
 	/**
 	 * View a purchase
 	 */
 	public function viewAction()
 	{
-		$purchaseList = $this->getPurchaseList();
+		$account = $this->getAccount();
 		$purchase = $this->getPurchase();
-		
-		if ($purchase->getPurchaseList() != $purchaseList) {
+
+		if ($purchase->getAccount() != $account) {
 			// Purchase is not in this purchase list!
 			$this->getResponse()->setStatusCode(404);
 			return;
 		}
-		
+
 		return array(
 			'purchase' => $purchase
 		);

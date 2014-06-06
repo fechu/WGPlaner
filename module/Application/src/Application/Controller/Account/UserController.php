@@ -1,73 +1,73 @@
 <?php
 /**
  * @file UserController.php
- * @date Oct 15, 2013 
+ * @date Oct 15, 2013
  * @author Sandro Meier
  */
- 
-namespace Application\Controller\PurchaseList;
 
+namespace Application\Controller\Account;
 
 use Application\Form\SelectUserForm;
 use SMCommon\Form\DeleteForm;
-class UserController extends AbstractActionController
+
+class UserController extends AbstractAccountController
 {
 	public function __construct()
 	{
 		$this->defaultId ='user';
 	}
-	
+
 	/**
-	 * Lists all users of a purchase list.
+	 * Lists all users of an account.
 	 */
 	public function indexAction()
 	{
-		$purchaseList = $this->getPurchaseList();
-		
+		$account = $this->getAccount();
+
 		return array(
-			'users' 		=> $purchaseList->getUsers(),
-			'purchaseList'	=> $purchaseList,
+			'users' 	=> $account->getUsers(),
+			'account'	=> $account,
 		);
-		
+
 	}
-	
+
 	/**
-	 * The action that lets you add a user to a purchase list.
+	 * The action that lets you add a user to an account.
 	 */
 	public function addAction()
 	{
 		$form = new SelectUserForm($this->em);
-		
-		$purchaseList = $this->getPurchaseList();
-		
+
+		$account = $this->getAccount();
+
 		/* @var $request \Zend\Http\Request */
 		$request = $this->getRequest();
-		
+
 		if ($request->isPost()) {
 			$form->setData($request->getPost());
 			if ($form->isValid()) {
 				$user = $form->getSelectedUser();
-				
+
 				// Add the user to the purchase list
-				if (!$purchaseList->hasUser($user)) {
-					$purchaseList->addUser($user);
+				if (!$account->hasUser($user)) {
+					$account->addUser($user);
 					$this->em->flush();
 				}
-				
+
 				// Redirect to the users list
-				return $this->redirect()->toRoute('purchase-list/user', array(
-					'action' 			=> 'index',
-					'purchaselistid'	=> $this->getPurchaseList()->getId(),
+				return $this->redirect()->toRoute('account/users', array(
+					'action' 	=> 'index',
+					'accountid'	=> $this->getAccount()->getId(),
 				));
 			}
 		}
-		
+
 		return array(
-			'form'			=> $form,
-			'purchaseList' 	=> $this->getPurchaseList(),
+			'form'		=> $form,
+			'account' 	=> $account
 		);
 	}
-	
+
 	public function removeAction()
 	{
 		$user = $this->getUser();
@@ -75,38 +75,38 @@ class UserController extends AbstractActionController
 			$this->setStatusCode(404);
 			return;
 		}
-		
+
 		$form = new DeleteForm('Entfernen');
-		$purchaseList = $this->getPurchaseList();
-		
+		$account = $this->getAccount();
+
 		/* @var $request \Zend\Http\Request */
 		$request = $this->getRequest();
-		
+
 		if ($request->isPost()) {
-			
-			if (count($purchaseList->getUsers()) == 1) {
+
+			if (count($account->getUsers()) == 1) {
 				// You can't remove the last user
-				$this->logger->info('The last user of list ' . $purchaseList->getName() . ' cant be deleted!');
+				$this->logger->info('The last user of list ' . $account->getName() . ' cant be deleted!');
 			}
 			else {
 				// Remove the user from this list.
-				$purchaseList->removeUser($user);
+				$account->removeUser($user);
 				$this->em->flush();
 			}
 
 			// Go to user list
-			return $this->redirect()->toRoute('purchase-list/user', array(
-				'purchaselistid'	=> $purchaseList->getId(),
+			return $this->redirect()->toRoute('account/users', array(
+				'accountid'	=> $account->getId(),
 			));
 		}
-		
+
 		return array(
-			'user' => $user,
-			'purchaseList'	=> $purchaseList,
-			'form' => $form,
+			'user' 		=> $user,
+			'account'	=> $account,
+			'form' 		=> $form,
 		);
 	}
-	
+
 	/**
 	 * Loads and returns the user based on the userid from the route.
 	 */
@@ -116,5 +116,5 @@ class UserController extends AbstractActionController
 			$user = $this->em->find('Application\Entity\User', $id);
 			return $user;
 		}
-	} 
+	}
 }
