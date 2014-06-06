@@ -64,6 +64,15 @@ class Purchase extends AbstractEntity
 	 */
 	protected $account;
 
+
+	/**
+	 * If the purchase was created through the API.
+	 * @var boolean
+	 *
+	 * @ORM\Column(type="boolean")
+	 */
+	protected $createdWithAPI;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -152,4 +161,24 @@ class Purchase extends AbstractEntity
 	{
 		return $this->account;
 	}
+
+	/**
+	 * Set if the purchase was created with the API
+	 * @return the boolean
+	 */
+	public function getCreatedWithAPI()
+	{
+		return $this->createdWithAPI;
+	}
+
+	/**
+	 * @param boolean $createdWithAPI
+	 */
+	public function setCreatedWithAPI($createdWithAPI)
+	{
+		$this->createdWithAPI = $createdWithAPI;
+	}
+
+
+
 }
