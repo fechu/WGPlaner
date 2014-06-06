@@ -21,7 +21,7 @@ class AccountController extends AbstractRestfulController
 	 * Get accounts for the authenticated user.
 	 *
 	 */
-	public function getAccount()
+	public function getList()
 	{
 		/* @var $repo \Application\Entity\Repository\AccountRepository */
 		$repo = $this->em->getRepository('Application\Entity\Account');

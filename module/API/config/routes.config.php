@@ -1,7 +1,7 @@
 <?php
 /**
  * @file routes.config.php
- * @date Nov 28, 2013 
+ * @date Nov 28, 2013
  * @author Sandro Meier
  */
 
@@ -20,7 +20,7 @@ return array(
 				),
 				'may_terminate' => true,
 				'child_routes' => array(
-					
+
 					// Overall data
 					'data' => array(
 						'type'    => 'Segment',
@@ -30,24 +30,23 @@ return array(
 								'action'    		=> '[a-zA-Z][a-zA-Z0-9_-]*',
 							),
 							'defaults' => array(
-								'__NAMESPACE__' => 'API\Controller', 
+								'__NAMESPACE__' => 'API\Controller',
 								'controller'	=> 'Data',
 							),
 						),
 					),
-					
-					// Purchase list data.
-					'purchase-list' => array(
+
+					// account data.
+					'account' => array(
 						'type'    => 'Segment',
 						'options' => array(
-							'route'			=> '/purchase-list[/:purchaselistid]',
+							'route'			=> '/account[/:accountid]',
 							'constraints' 	=> array(
-								'action'    		=> '[a-zA-Z][a-zA-Z0-9_-]*',
-								'purchaselistid'	=> '[0-9]+'
+								'accountid'			=> '[0-9]+'
 							),
 							'defaults' => array(
-								'__NAMESPACE__' => 'API\Controller', 
-								'controller'	=> 'PurchaseList',
+								'__NAMESPACE__' => 'API\Controller',
+								'controller'	=> 'Account',
 								'action'		=> null,
 							),
 						),
@@ -56,11 +55,7 @@ return array(
 							'purchase' => array(
 								'type'    => 'Segment',
 								'options' => array(
-									'route'			=> '/purchase[/:purchaseid][/:action]',
-									'constraints' 	=> array(
-										'action'    	=> '[a-zA-Z][a-zA-Z0-9_-]*',
-										'purchaseid'	=> '[0-9]+'
-									),
+									'route'			=> '/purchase',
 									'defaults' => array(
 										'__NAMESPACE__' => 'API\Controller',
 										'controller'	=> 'Purchase',
@@ -74,4 +69,3 @@ return array(
 			),
 		)
 	);
- 

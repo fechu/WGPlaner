@@ -54,7 +54,7 @@ class User extends AbstractEntity implements UserInterface
 	/**
 	 * The key that gives the user access to the API.
 	 *
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", nullable=true)
 	 */
 	protected $apiKey;
 
