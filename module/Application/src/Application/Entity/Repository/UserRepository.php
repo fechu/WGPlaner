@@ -22,6 +22,11 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
 		return $this->find($id);
 	}
 	
+	public function findOneByApiKey($key)
+	{
+		return $this->findOneBy(array('apiKey' => $key));
+	}
+	
 	public function createNewUser()
 	{
 		// Create and return a new user

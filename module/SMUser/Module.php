@@ -76,9 +76,21 @@ class Module implements AutoloaderProviderInterface,
 			$shouldRedirect = isset($smuserConfig['redirect_without_authentication']) ? $smuserConfig['redirect_without_authentication'] : false;
 			
 			if ($shouldRedirect) {
+				$whitelist = $smuserConfig['route_whitelist'];
 				$routeName = $e->getRouteMatch()->getMatchedRouteName();
 				$action = $e->getRouteMatch()->getParam('action');
-				if ($routeName !== 'auth' || $action !== 'login') {
+				
+				// Check if we got that route or a childroute
+				$redirect = true;
+				foreach ($whitelist as $whitelistedRoute) {
+					if (strpos($routeName, $whitelistedRoute) === 0) {
+						$redirect = false;
+						break;
+					}
+				}
+				
+				// Need to redirect?
+				if ($redirect) { 
 		            $url = $e->getRouter()->assemble(array(), array('name' => 'auth'));
 		            $response=$e->getResponse();
 		            $response->getHeaders()->addHeaderLine('Location', $url);

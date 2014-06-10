@@ -1,6 +1,6 @@
-<?php 
+<?php
 use SMCommon\View\Helper\FormatDate;
-// A partial for displaying a purchase. 
+// A partial for displaying a purchase.
 
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
 /* @var $purchase \Application\Entity\Purchase */
@@ -26,21 +26,26 @@ $purchase = $this->purchase;
 	</tr>
 	<tr>
 		<td>Beschreibung</td>
-		<td><?php echo $purchase->getDescription() ?></td> 
+		<td><?php echo $purchase->getDescription() ?></td>
 	</tr>
 	<tr>
 		<td>Benutzer</td>
-		<td><?php 
+		<td><?php
 			$userUrl = $this->url('user/action', array(
 				'id' => $purchase->getUser()->getId(),
 			));
-			echo $this->prettyprint()->link($userUrl, $purchase->getUser()->getFullname()); 
+			echo $this->prettyprint()->link($userUrl, $purchase->getUser()->getFullname());
 			?>
-		</td> 
+		</td>
 	</tr>
 	<tr>
 		<td>Erstellt</td>
-		<td><?php echo $this->formatDate($purchase->getCreated());?></td>
+		<td>
+			<?php echo $this->formatDate($purchase->getCreated());?>
+			<?php if ($purchase->getCreatedWithAPI()): ?>
+				(API)
+			<?php endif;?>
+		</td>
 	</tr>
 	<?php if ($purchase->getCreated() != $purchase->getLastModified()) : ?>
 	<tr>

@@ -1,0 +1,53 @@
+<?php
+use Application\Entity\Account;
+use Application\Entity\Purchase;
+use SMCommon\View\Helper\FormatDate;
+/* @var $this SMCommon\View\Renderer\PhpRenderer */
+echo $this->pageHeader('Einkäufe', $this->account->getName());
+
+$table = $this->table();
+$table->setData($this->account->getPurchases());
+
+$table->addColumn(array(
+	'headTitle' 	=> 'Datum',
+	'dataMethod'	=> function (Purchase $purchase) {
+		return $this->formatDate($purchase->getDate(), FormatDate::FORMAT_DATE);
+	}
+));
+
+$table->addColumn(array('Geschäft', 'getStore'));
+
+
+// Each user has its own column
+foreach ($this->account->getUsers() as $user) {
+	$table->addColumn(array(
+		'headTitle' 	=> $user->getFullname(),
+		'dataMethod'	=> function(Purchase $purchase) use ($user) {
+			if ($purchase->getUser() == $user) {
+				return number_format($purchase->getAmount(), 2) . " CHF";
+			}
+		}
+	));
+}
+
+$table->addColumn(array(
+	'headTitle' 	=> 'Aktionen',
+	'dataMethod'	=> function(Purchase $purchase) {
+		$url = $this->url('accounts/purchases', array(
+			'accountid' 	=> $this->account->getId(),
+			'purchaseid'	=> $purchase->getId(),
+		));
+		return $this->prettyprint()->button($url, 'Details');
+	}
+));
+
+echo $table;
+
+$addPurchsaeUrl = $this->url('accounts/purchases', array(
+	'action' 		=> 'add',
+	'accountid'		=> $this->account->getId(),
+));
+?>
+
+
+<span class="pull-right"><a class="btn" href="<?php echo $addPurchsaeUrl ?>">Einkauf hinzufügen</a></span>

@@ -32,12 +32,11 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' 						=> 'Application\Controller\IndexController',
-            'Application\Controller\PurchaseList\PurchaseList' 	=> 'Application\Controller\PurchaseList\PurchaseListController',
-            'Application\Controller\PurchaseList\User'			=> 'Application\Controller\PurchaseList\UserController',
-            'Application\Controller\PurchaseList\Purchase'		=> 'Application\Controller\PurchaseList\PurchaseController',
-            'Application\Controller\CountList\CountList'		=> 'Application\Controller\CountList\CountListController',
-            'Application\Controller\Settings'					=> 'Application\Controller\SettingsController',
+            'Application\Controller\Index' 				=> 'Application\Controller\IndexController',
+            'Application\Controller\Account\Account' 	=> 'Application\Controller\Account\AccountController',
+            'Application\Controller\Account\User'		=> 'Application\Controller\Account\UserController',
+            'Application\Controller\Account\Purchase'	=> 'Application\Controller\Account\PurchaseController',
+            'Application\Controller\Settings'			=> 'Application\Controller\SettingsController',
         ),
     ),
     'view_manager' => array(
@@ -56,7 +55,7 @@ return array(
             __DIR__ . '/../view',
         ),
     ),
-    
+
     // Doctrine configuration
     'doctrine' => array(
     	'driver' => array(
@@ -67,7 +66,7 @@ return array(
     				__DIR__ . '/../src/Application/Entity',
     			),
     		),
-    
+
     		// default metadata driver, aggregates all other drivers into a single one.
     		// Override `orm_default` only if you know what you're doing
     		'orm_default' => array(
@@ -78,30 +77,30 @@ return array(
             )
         ),
     ),
-    
+
     // Navigation
     'navigation' => array(
     	'default' => array(
     		array(
-    			'label' => 'Einkaufslisten',
-    			'route' => 'purchase-list',
+    			'label' => 'Konten',
+    			'route' => 'accounts',
     			'order' => -1,
     			'pages' => array(
     				array(
     					'label'		=> 'Aktuelle Listen',
-    					'route'		=> 'purchase-list/action',
+    					'route'		=> 'accounts/action',
     					'action'	=> 'index',
     					'visible'	=> false,
     				),
     				array(
     					'label'		=> 'Nicht aktive Listen',
-    					'route'		=> 'purchase-list/action',
+    					'route'		=> 'accounts/action',
     					'action'	=> 'not-active',
     					'visible'	=> false,
     				),
     				array(
     					'label'		=> 'Einkauf hinzufügen',
-    					'route'		=> 'purchase-list/action',
+    					'route'		=> 'accounts/action',
     					'action'	=> 'add-purchase',
     					'visible'	=> false,
     				),
@@ -109,5 +108,5 @@ return array(
     		),
     	),
     ),
-    
+
 );

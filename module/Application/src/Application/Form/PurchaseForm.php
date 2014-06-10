@@ -14,11 +14,15 @@ class PurchaseForm extends AbstractForm
 {
 	protected $fieldset;
 	
-	public function __construct()
+	/**
+	 * Create the form
+	 * @param The entity manager used to load autocomplete data.
+	 */
+	public function __construct($em)
 	{
 		parent::__construct();
 		
-		$fieldset = new PurchaseFieldset();
+		$fieldset = new PurchaseFieldset($em);
 		$fieldset->setUseAsBaseFieldset(true);
 		$this->fieldset = $fieldset;
 		$this->add($fieldset);

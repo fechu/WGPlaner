@@ -15,7 +15,11 @@ use Zend\Form\Element\Date;
 
 class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 {
-	public function __construct()
+	/**
+	 * Create a PurchaseFieldset.
+	 * @param $em The entity manager used to load the autocomplete stuff.
+	 */
+	public function __construct($em)
 	{
 		parent::__construct('PurchaseFieldset');
 		
@@ -55,6 +59,10 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 		));
 		
 		// Store
+		// @todo Make the autocompletion with ajax calls. Especially if there are a lot stores in the future.
+		/* @var $repo \Application\Entity\Repository\PurchaseRepository */
+		$repo = $em->getRepository('Application\Entity\Purchase');
+		$uniqueStores = $repo->findUniqueStores();
 		$this->add(array(
 			'name' => 'store',
 			'type' => 'Text',
@@ -62,7 +70,9 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 				'label' => 'Geschäft'
 			),
 			'attributes' => array(
-				'required' => 'required'
+				'required' => 'required',
+				'data-provide' => 'typeahead',
+				'data-source' => json_encode($uniqueStores),
 			)
 		));
 		
