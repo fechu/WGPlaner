@@ -64,10 +64,10 @@ class User extends \Application\Entity\User implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'username', 'fullname', 'password', 'emailAdress', 'apiKey', 'purchases', 'billingLists', 'id', 'created', 'lastModified', 'deleted');
+            return array('__isInitialized__', 'username', 'fullname', 'password', 'emailAdress', 'apiKey', 'purchases', 'accounts', 'id', 'created', 'lastModified', 'deleted');
         }
 
-        return array('__isInitialized__', 'username', 'fullname', 'password', 'emailAdress', 'apiKey', 'purchases', 'billingLists', 'id', 'created', 'lastModified', 'deleted');
+        return array('__isInitialized__', 'username', 'fullname', 'password', 'emailAdress', 'apiKey', 'purchases', 'accounts', 'id', 'created', 'lastModified', 'deleted');
     }
 
     /**
@@ -308,12 +308,12 @@ class User extends \Application\Entity\User implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function addBillingList($billingList)
+    public function addAccount($account)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addBillingList', array($billingList));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addAccount', array($account));
 
-        return parent::addBillingList($billingList);
+        return parent::addAccount($account);
     }
 
     /**
