@@ -9,6 +9,7 @@ namespace Application\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use SMUser\Entity\Repository\UserRepositoryInterface;
 use Application\Entity\User;
+use Application\Entity\Account;
 
 class PurchaseRepository extends EntityRepository
 {
@@ -42,6 +43,38 @@ class PurchaseRepository extends EntityRepository
 		$result = $query->getQuery()->getScalarResult();
 
 		return array_map('current', $result);
+	}
+
+	/**
+	 * Find purchases in a date range (including dates)
+	 * @param \DateTime $startDate
+	 * @param \DateTime $endDate
+	 * @param Account $account
+	 */
+	public function findInRange($startDate, $endDate, $account = NULL)
+	{
+		$query = $this->createQueryBuilder('purchase');
+
+		// Set start date
+		if ($startDate !== NULL) {
+			$query->andWhere('purchase.date >= :startDate');
+			$query->setParameter('startDate', $startDate);
+		}
+
+		// Set end date
+		if ($endDate !== NULL) {
+			$query->andWhere('purchase.date <= :endDate');
+			$query->setParameter('endDate', $endDate);
+		}
+
+		// Set account
+		if ($account !== NULL) {
+			$query->join('purchase.account', 'account');
+			$query->andWhere('account = :account');
+			$query->setParameter('account', $account);
+		}
+
+		return $query->getQuery()->getResult();
 	}
 
 }

@@ -3,10 +3,14 @@ use Application\Entity\Account;
 use Application\Entity\Purchase;
 use SMCommon\View\Helper\FormatDate;
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
-echo $this->pageHeader('Einkäufe', $this->account->getName());
+
+/* @var $dateFormatter SMCommon\View\Helper\FormatDate */
+$dateFormatter = $this->plugin('formatDate');
+$subtitle = $dateFormatter->formatRange($this->startDate, $this->endDate, FormatDate::FORMAT_DATE);
+echo $this->pageHeader($this->account->getName(), $subtitle);
 
 $table = $this->table();
-$table->setData($this->account->getPurchases());
+$table->setData($this->purchases);
 
 $table->addColumn(array(
 	'headTitle' 	=> 'Datum',

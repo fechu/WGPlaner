@@ -21,6 +21,16 @@ class PurchaseController extends AbstractAccountController
 	/**
 	 * Lists all purchases for of an account.
 	 * If a purchaseId is present in the route it will be forwarded to show that purchase.
+	 *
+	 * This action accepts additional GET parameters:
+	 *
+	 *  Both of the following 2 date parameters are optional. If both are not set, the current
+	 *  month will be taken as default. If both are set, the timespan is shown. And if
+	 *  only 1 is set, the other one will be ignored (it won't be pulled to the current month default).
+	 *
+	 * 	start-date: Will show only purchases after (and including) this day.
+	 * 	end-date:	Will show only purchases before (and including) this day.
+	 *
 	 */
 	public function indexAction()
 	{
@@ -43,10 +53,27 @@ class PurchaseController extends AbstractAccountController
 			return;
 		}
 
+		// Get start and end-date
+		$startDate = $this->getDateFromRoute("start-date");
+		$endDate = $this->getDateFromRoute("end-date");
 
+		// If neither startDate nor endDate is set, we chose the
+		// current month as a default.
+		if (!$startDate && !$endDate) {
+			$startDate = new \DateTime(date("Y-m-01"));
+			$endDate = new \DateTime(date("Y-m-t"));
+		}
+
+		// Get the purchases in the date range.
+		/* @var $repository \Application\Entity\Repository\PurchaseRepository */
+		$repository = $this->em->getRepository('Application\Entity\Purchase');
+		$purchases = $repository->findInRange($startDate, $endDate, $account);
 
 		return array(
 			'account'	=> $account,
+			'purchases'	=> $purchases,
+			'startDate'	=> $startDate,
+			'endDate'	=> $endDate,
 		);
 	}
 

@@ -40,4 +40,39 @@ class AbstractAccountController extends ActionController
 
 		return $repo->find($id);
 	}
+
+	/**
+	 * Gets a string from the route (GET parameter) and tries to get a date out of it.
+	 * The date needs to have the following format:
+	 *
+	 * Day-Month-Year
+	 *
+	 * e.g:
+	 *
+	 * 3.7.1992
+	 *
+	 * @param string $key The key under which to find the date in the parameter bag.
+	 * @return A date when the operation is successful or false otherwise.
+	 */
+	protected function getDateFromRoute($key)
+	{
+		$dateString = $this->params()->fromQuery($key, false);
+		if ($dateString !== false) {
+			// Try to parse it.
+			/* @var $date \DateTime */
+			$date = \DateTime::createFromFormat("d-m-Y", $dateString);
+
+			if ($date !== false) {
+				$date->setTime(0, 0, 0);
+			}
+
+			// $date is now either a valid DateTime object or false because
+			// createFromFormat returns false on failure.
+			return $date;
+		}
+		else {
+			return false;
+		}
+
+	}
 }
