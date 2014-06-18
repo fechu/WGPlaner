@@ -9,6 +9,8 @@ namespace Application\Entity;
 
 use SMCommon\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Console\Application;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Entity\Repository\PurchaseRepository")
@@ -64,6 +66,15 @@ class Purchase extends AbstractEntity
 	 */
 	protected $account;
 
+	/**
+	 * The bills to which the purchase belongs to.
+	 * A purchase can be added to multiple bills if needed.
+	 *
+	 * @var ArrayCollection
+	 * @ORM\ManyToMany(targetEntity="Application\Entity\Bill", mappedBy="purchases", cascade={"persist"})
+	 */
+	protected $bills;
+
 
 	/**
 	 * If the purchase was created through the API.
@@ -79,6 +90,8 @@ class Purchase extends AbstractEntity
 
 		$this->setDate(new \DateTime());
 		$this->setCreatedWithAPI(false);
+
+		$this->bills = new ArrayCollection();
 	}
 
 	public function setDate($date)
@@ -180,6 +193,27 @@ class Purchase extends AbstractEntity
 		$this->createdWithAPI = $createdWithAPI;
 	}
 
+	/**
+	 * Add this purchase to a bill.
+	 * @param \Application\Entity\Bill $bill
+	 */
+	public function addToBill($bill)
+	{
+		$this->bills[] = $bill;
 
+		// Check and set if needed the inverse side.
+		if (in_array($this, $bill->getPurchases()) == false) {
+			$bill->addPurchases(array($this));
+		}
+	}
+
+	/**
+	 * Get the bills in which this purchase is listed.
+	 * @return array
+	 */
+	public function getBills()
+	{
+		return $this->bills->toArray();
+	}
 
 }

@@ -74,12 +74,22 @@ class User extends AbstractEntity implements UserInterface
 	 */
 	protected $accounts;
 
+
+	/**
+	 * The bills which the user is associated with.
+	 *
+	 * @var ArrayCollection
+	 * @ORM\ManyToMany(targetEntity="Application\Entity\Bill", mappedBy="users", cascade={"persist"})
+	 */
+	protected $bills;
+
 	public function __construct()
 	{
 		parent::__construct();
 
 		$this->purchases = new ArrayCollection();
 		$this->accounts = new ArrayCollection();
+		$this->bills = new ArrayCollection();
 	}
 
 	public function setUsername($username)
@@ -185,5 +195,24 @@ class User extends AbstractEntity implements UserInterface
 	public function addAccount($account)
 	{
 		$this->accounts[] = $account;
+	}
+
+	/**
+	 * Add a bill to the user.
+	 * The naming is not optimal. Actually this means, that the user is associated with the bill. E.g. he has
+	 * to pay something or he gets money.
+	 * @param unknown $bill
+	 */
+	public function addBill($bill)
+	{
+		$this->bills[] = $bill;
+	}
+
+	/**
+	 * Get the bills in which the user is involved.
+	 */
+	public function getBills()
+	{
+		return $this->bills->toArray();
 	}
 }
