@@ -64,6 +64,13 @@ class PurchaseController extends AbstractAccountController
 			$endDate = new \DateTime(date("Y-m-t"));
 		}
 
+		// Check if the dates are switched.
+		if ($startDate > $endDate) {
+			$temp = $startDate;
+			$startDate = $endDate;
+			$endDate = $temp;
+		}
+
 		// Get the purchases in the date range.
 		/* @var $repository \Application\Entity\Repository\PurchaseRepository */
 		$repository = $this->em->getRepository('Application\Entity\Purchase');
