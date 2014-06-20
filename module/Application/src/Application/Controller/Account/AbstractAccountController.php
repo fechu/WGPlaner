@@ -49,7 +49,7 @@ class AbstractAccountController extends ActionController
 	 *
 	 * e.g:
 	 *
-	 * 3.7.1992
+	 * 3-7-1992
 	 *
 	 * @param string $key The key under which to find the date in the parameter bag.
 	 * @return A date when the operation is successful or false otherwise.

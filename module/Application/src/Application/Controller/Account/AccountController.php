@@ -10,6 +10,7 @@ namespace Application\Controller\Account;
 use Application\Form\AccountForm;
 use Application\Entity\Account;
 use Application\Entity\Purchase;
+use Application\Form\DaterangeForm;
 
 class AccountController extends AbstractAccountController
 {
@@ -39,6 +40,51 @@ class AccountController extends AbstractAccountController
 
 		return array(
 			'accounts' => $accounts,
+		);
+	}
+
+
+	public function selectDateAction()
+	{
+		$account = $this->getAccount();
+		if (!$account) {
+			$this->getResponse()->setStatusCode(404);
+			return;
+		}
+
+		$form = new DaterangeForm();
+
+		/* @var $request \Zend\Http\Request */
+		$request = $this->getRequest();
+		if ($request->isPost()) {
+			$form->setData($request->getPost());
+
+			if ($form->isValid()) {
+				// Construct the route to which the user gets redirected.
+				$startDate = $form->getStartDate();
+				$formattedStartDate = $startDate->format('d-m-Y');
+				$endDate = $form->getEndDate();
+				$formattedEndDate = $endDate->format('d-m-Y');
+
+				$params = array(
+					'accountid' => $account->getId(),
+					''
+				);
+				$options = array(
+					'query' => array(
+						'start-date' 	=> $formattedStartDate,
+						'end-date' 		=> $formattedEndDate,
+					)
+				);
+				// Redirect
+				return $this->redirect()->toRoute('accounts/list-action', $params, $options);
+			}
+		}
+
+
+		return array(
+				'account' => $account,
+				'form' => $form
 		);
 	}
 
