@@ -54,6 +54,7 @@ class PurchaseRepository extends EntityRepository
 	public function findInRange($startDate, $endDate, $account = NULL)
 	{
 		$query = $this->createQueryBuilder('purchase');
+		$query->orderBy("purchase.date", "ASC");
 
 		// Set start date
 		if ($startDate !== NULL) {
