@@ -91,7 +91,9 @@ class BillController extends AbstractAccountController
 				$repo = $this->em->getRepository('Application\Entity\Purchase');
 
 				// Find and add the purchases
-				$purchases = $repo->findInRange($form->getStartDate(), $form->getEndDate(), $account);
+				$purchases = $repo->findInRange($form->getStartDate(),
+												$form->getEndDate(),
+												$account);
 				$bill->addPurchases($purchases);
 
 				$this->em->flush();

@@ -9,6 +9,7 @@ namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use SMCommon\Entity\AbstractEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Objects of this type describe the relationship of a user with a bill.
@@ -34,11 +35,11 @@ class UserBillShare extends AbstractEntity
 	/**
 	 * The user who's share is described by this object.
 	 *
-	 * Unidirectional - OneToMany
+	 * Unidirectional - OneToMany (Needed due to doctrine limitations)
 	 *
-	 * @var \Application\Entity\User
+	 * @var ArrayCollection
 	 *
-	 * @ORM\ManyToMany(targetEntity="User")
+	 * @ORM\ManyToMany(targetEntity="\Application\Entity\User")
 	 */
 	protected $user;
 
@@ -56,6 +57,7 @@ class UserBillShare extends AbstractEntity
 	{
 		// Set default values
 		$this->share = 1;
+		$this->user = new ArrayCollection();
 	}
 
 	public function getShare()
@@ -72,12 +74,14 @@ class UserBillShare extends AbstractEntity
 
 	public function getUser()
 	{
-		return $this->user;
+		$user = $this->user->first();
+		return ($user != false) ? $user : NULL;
 	}
 
 	public function setUser($user)
 	{
-		$this->user = $user;
+		$this->user->clear();
+		$this->user->add($user);
 	}
 
 	public function getBill()
@@ -89,7 +93,5 @@ class UserBillShare extends AbstractEntity
 	{
 		$this->bill = $bill;
 	}
-
-
 
 }

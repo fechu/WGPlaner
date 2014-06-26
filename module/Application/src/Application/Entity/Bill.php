@@ -29,7 +29,11 @@ class Bill extends AbstractEntity
 	 *
 	 * @var ArrayCollection
 	 *
-	 * @ORM\OneToMany(targetEntity="\Application\Entity\UserBillShare", mappedBy="bill")
+	 * @ORM\OneToMany(
+	 * 					targetEntity="\Application\Entity\UserBillShare",
+	 * 					mappedBy="bill",
+	 * 					cascade={"persist"}
+	 * 				)
 	 */
 	protected $userShares;
 
@@ -62,7 +66,6 @@ class Bill extends AbstractEntity
 			$purchases = array($purchases);
 		}
 
-		$users = array();
 		/* @var $purchase \Application\Entity\Purchase */
 		foreach ($purchases as $purchase) {
 			$this->purchases[] = $purchase;
@@ -72,17 +75,11 @@ class Bill extends AbstractEntity
 		       $purchase->addToBill($this);
 	       }
 
-	       // Store the user to add it later
-	       $users[] = $purchase->getUser();
+	       // Add the user to this bill
+			$this->addUser($purchase->getUser());
 
 		}
 
-		// We want only unique users
-		$users = array_unique($users);
-		// Add them with default share
-		foreach ($users as $user) {
-			$this->addUser($user);
-		}
 
 	}
 
