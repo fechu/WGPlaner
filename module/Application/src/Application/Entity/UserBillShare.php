@@ -55,6 +55,8 @@ class UserBillShare extends AbstractEntity
 
 	public function __construct()
 	{
+		parent::__construct();
+
 		// Set default values
 		$this->share = 1;
 		$this->user = new ArrayCollection();
