@@ -107,6 +107,21 @@ return array(
                 	),
                 ),
 			),
+			'bills' => array(
+				'type'    => 'Segment',
+				'options' => array(
+                	'route'		=> '/:accountid/bills[/:billid][/:action]',
+                	'constraints' => array(
+                		'accountid'			=> '[0-9]+',
+                		'billid'			=> '[0-9]+',
+                		'action'    		=> '[a-zA-Z][a-zA-Z0-9_-]*',
+                	),
+                	'defaults' => array(
+                		'controller'	=> 'Bill',
+                		'action'		=> 'index'
+                	),
+                ),
+			),
 		),
 	),
 );

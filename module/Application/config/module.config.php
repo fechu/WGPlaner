@@ -36,6 +36,7 @@ return array(
             'Application\Controller\Account\Account' 	=> 'Application\Controller\Account\AccountController',
             'Application\Controller\Account\User'		=> 'Application\Controller\Account\UserController',
             'Application\Controller\Account\Purchase'	=> 'Application\Controller\Account\PurchaseController',
+            'Application\Controller\Account\Bill'		=> 'Application\Controller\Account\BillController',
             'Application\Controller\Settings'			=> 'Application\Controller\SettingsController',
         ),
     ),
