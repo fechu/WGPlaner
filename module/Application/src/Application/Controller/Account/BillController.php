@@ -19,6 +19,15 @@ class BillController extends AbstractAccountController
 
 	public function indexAction()
 	{
+		$account = $this->getAccount();
 
+		/* @var $billRepo \Application\Entity\Repository\BillRepository */
+		$billRepo = $this->em->getRepository('Application\Entity\Bill');
+		$bills = $billRepo->findForAccount($account);
+
+		return array(
+			'account' 	=> $account,
+			'bills'		=> $bills,
+		);
 	}
 }

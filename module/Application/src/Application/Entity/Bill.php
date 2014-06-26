@@ -37,7 +37,7 @@ class Bill extends AbstractEntity
 	 * This is actually a one to many unidirectional relationship. But doctrine handles this as
 	 * a many to many with a unique constraint in the jointable.
 	 *
-	 * @ORM\ManyToMany(targetEntity="Application\Entity\Purchase", mappedBy="bills")
+	 * @ORM\ManyToMany(targetEntity="Application\Entity\Purchase", inversedBy="bills")
 	 */
 	protected $purchases;
 

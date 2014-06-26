@@ -1,0 +1,54 @@
+<?php
+use Application\Entity\Bill;
+/* @var $this SMCommon\View\Renderer\PhpRenderer */
+echo $this->pageHeader('Abrechnungen');
+
+$table = $this->table();
+$table->setData($this->bills);
+
+$table->addColumn(array(
+	'headTitle' 	=> 'Name',
+	'dataMethod'	=> function(Bill $bill) {
+		$viewUrl = $this->url(
+				'accounts/bills',
+				array(
+					'accountid' => $this->account->getId(),
+					'billid'	=> $bill->getId(),
+					'action'	=> 'view',
+				)
+		);
+		return $this->prettyprint()->link($viewUrl, $bill->getName());
+	}
+));
+
+$table->addColumn(array(
+	'headTitle' 	=> 'Aktionen',
+	'dataMethod'	=> function(Bill $bill) {
+
+		// Edit button
+		$viewUrl = $this->url(
+				'accounts/bills',
+				array(
+					'action' 	=> 'edit',
+					'accountid' => $this->account->getId(),
+					'billid'	=> $bill->getId(),
+				)
+		);
+
+		return $this->prettyprint()->button($viewUrl, "Anzeigen");
+	}
+));
+
+$parameters = array(
+	'action' 	=> 'create',
+	'accountid' => $this->account->getId(),
+);
+$createBillUrl = $this->url('accounts/bills', $parameters);
+
+?>
+
+
+<?php echo $table; ?>
+<span class="pull-right">
+	<a class="btn" href="<?php echo $createBillUrl; ?>">Abrechnung erstellen</a>
+</span>
