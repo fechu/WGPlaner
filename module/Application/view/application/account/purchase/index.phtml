@@ -7,7 +7,14 @@ use SMCommon\View\Helper\FormatDate;
 /* @var $dateFormatter SMCommon\View\Helper\FormatDate */
 $dateFormatter = $this->plugin('formatDate');
 $subtitle = $dateFormatter->formatRange($this->startDate, $this->endDate, FormatDate::FORMAT_DATE);
-echo $this->pageHeader($this->account->getName(), $subtitle);
+
+$params = array(
+		'action' 	=> "select-date",
+		'accountid'	=> $this->account->getId(),
+);
+$url = $this->url('accounts/list-action', $params);
+
+echo $this->pageHeader($this->account->getName(), '<a href="'.$url .'">'. $subtitle .'</a>');
 
 $table = $this->table();
 $table->setData($this->purchases);
@@ -25,11 +32,21 @@ $table->addColumn(array('Geschäft', 'getStore'));
 // Each user has its own column
 foreach ($this->account->getUsers() as $user) {
 	$table->addColumn(array(
-		'headTitle' 	=> $user->getFullname(),
-		'dataMethod'	=> function(Purchase $purchase) use ($user) {
+		'headTitle' 		=> $user->getFullname(),
+		'dataMethod'		=> function(Purchase $purchase) use ($user) {
 			if ($purchase->getUser() == $user) {
 				return number_format($purchase->getAmount(), 2) . " CHF";
 			}
+		},
+		'footerData'		=> function($purchases) use ($user) {
+			$totalAmount = 0;
+			foreach ($purchases as $purchase) {
+				if ($purchase->getUser() == $user) {
+					$totalAmount += $purchase->getAmount();
+				}
+			}
+
+			return "<b>" . number_format($totalAmount, 2). " CHF</b>";
 		}
 	));
 }
