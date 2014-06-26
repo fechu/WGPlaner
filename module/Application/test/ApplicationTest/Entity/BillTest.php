@@ -25,6 +25,10 @@ class BillTest extends \PHPUnit_Framework_TestCase
 		$this->assertNotNull($this->bill, 'Bill was not created successfully');
 	}
 
+	///////////////////////////////////////////////////////////////////////
+	// Name
+	///////////////////////////////////////////////////////////////////////
+
 	public function testSetName()
 	{
 		$name = "September 2012";
@@ -43,6 +47,10 @@ class BillTest extends \PHPUnit_Framework_TestCase
 		$this->bill->setName($invalidName);	// Should throw exception
 	}
 
+	///////////////////////////////////////////////////////////////////////
+	// User
+	///////////////////////////////////////////////////////////////////////
+
 	public function testHasNoUsersByDefault()
 	{
 		$this->assertCount(0, $this->bill->getUsers());
@@ -56,9 +64,12 @@ class BillTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertContains($user, $this->bill->getUsers(), "Should contain user");
 
-		// Check if inverse side is also set
-		$this->assertContains($this->bill, $user->getBills(), "Inverse side of relationship was not set");
 	}
+
+	///////////////////////////////////////////////////////////////////////
+	// Purchases
+	///////////////////////////////////////////////////////////////////////
+
 
 	public function testHasNoPurchasesByDefault()
 	{
@@ -77,4 +88,63 @@ class BillTest extends \PHPUnit_Framework_TestCase
 		$this->assertContains($this->bill, $purchase->getBills(), "Inverse side of relationship was not set");
 	}
 
+	public function testAddingPurchaseWithNewUserAddsUserToBill()
+	{
+		$user = new User();
+		$purchase = new Purchase();
+		$purchase->setUser($user);
+
+		$this->bill->addPurchases($purchase);
+
+		$share = $this->bill->getUserShare($user);
+		$this->assertNotNull($share, "Share should have been created for the new user");
+	}
+
+	///////////////////////////////////////////////////////////////////////
+	// User Shares
+	///////////////////////////////////////////////////////////////////////
+
+	public function testHasNoUserSharesByDefault()
+	{
+		$this->assertCount(0,$this->bill->getUserShares());
+	}
+
+	public function testAddUserWithShare()
+	{
+		$user = new User();
+
+		$this->bill->addUser($user, 2);
+
+		$this->assertCount(1, $this->bill->getUserShares(), "Should now contain a user share");
+	}
+
+	public function testGetShareForUser()
+	{
+		$user = new User();
+		$this->bill->addUser($user, 2);
+
+		$share = $this->bill->getUserShare($user);
+
+		$this->assertEquals($user, $share->getUser(), "The user of the share should be the user");
+		$this->assertEquals(2, $share->getShare(), "Should be the same as set.");
+	}
+
+	public function testAddingUserWithShareTwiceUpdatesShare()
+	{
+		$user = new User();
+		$this->bill->addUser($user, 2);
+
+		$this->assertCount(1, $this->bill->getUserShares());
+
+		// Add a second time
+		$this->bill->addUser($user, 3);
+
+		// Make sure it is not added again
+		$this->assertCount(1, $this->bill->getUserShares());
+
+		// Check if the share was updated
+		$share = $this->bill->getUserShare($user);
+		$this->assertEquals(3, $share->getShare(), "Share should have been updated");
+
+	}
 }

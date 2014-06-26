@@ -47,7 +47,7 @@ class UserBillShare extends AbstractEntity
 	 *
 	 * @var \Application\Entity\Bill;
 	 *
-	 * @ORM\ManyToOne(targetEntity="Bill")
+	 * @ORM\ManyToOne(targetEntity="\Application\Entity\Bill", inversedBy="userShares")
 	 */
 	protected $bill;
 

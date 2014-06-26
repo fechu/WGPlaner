@@ -24,12 +24,14 @@ class Bill extends AbstractEntity
 
 	/**
 	 * The user(s) that have to pay or get money from this bill.
+	 * This are not directly user objects. UserBillShare objects are used to describe which
+	 * user has to pay what part of the amount.
 	 *
 	 * @var ArrayCollection
 	 *
-	 * @ORM\ManyToMany(targetEntity="\Application\Entity\User", inversedBy="bills")
+	 * @ORM\OneToMany(targetEntity="\Application\Entity\UserBillShare", mappedBy="bill")
 	 */
-	protected $users;
+	protected $userShares;
 
 	/**
 	 * The purchases which belong to this bill.
@@ -46,7 +48,7 @@ class Bill extends AbstractEntity
 		parent::__construct();
 
 		$this->purchases = new ArrayCollection();
-		$this->users = new ArrayCollection();
+		$this->userShares = new ArrayCollection();
 	}
 
 	/**
@@ -55,16 +57,33 @@ class Bill extends AbstractEntity
 	 */
 	public function addPurchases($purchases)
 	{
+		if (!is_array($purchases)) {
+			// Put the object in an array
+			$purchases = array($purchases);
+		}
+
+		$users = array();
 		/* @var $purchase \Application\Entity\Purchase */
 		foreach ($purchases as $purchase) {
 			$this->purchases[] = $purchase;
 
 			// Check (and set if needed) the inverse side
-			if (in_array($this, $purchase->getBills()) == false) {
-				$purchase->addToBill($this);
-			}
+	       if (in_array($this, $purchase->getBills()) == false) {
+		       $purchase->addToBill($this);
+	       }
+
+	       // Store the user to add it later
+	       $users[] = $purchase->getUser();
 
 		}
+
+		// We want only unique users
+		$users = array_unique($users);
+		// Add them with default share
+		foreach ($users as $user) {
+			$this->addUser($user);
+		}
+
 	}
 
 	/**
@@ -98,17 +117,21 @@ class Bill extends AbstractEntity
 	 * Add a user to the account.
 	 *
 	 * @param \Application\Entity\User $user
+	 * @param float $share	The share the user has to pay.
 	 */
-	public function addUser($user)
+	public function addUser($user, $share = 1)
 	{
-		if (!$this->users->contains($user)) {
-			$this->users[] = $user;
+		$userShare = $this->getUserShare($user);
 
-			// Set inverse side too.
-			if (in_array($this, $user->getBills()) == false) {
-				$user->addBill($this);
-			}
+		if (!$userShare) {
+			// Share does not yet exist. Create one.
+			$userShare = new UserBillShare();
+			$userShare->setUser($user);
+			$this->userShares[] = $userShare;
 		}
+
+		// Set share
+		$userShare->setShare($share);
 	}
 
 	/**
@@ -116,7 +139,36 @@ class Bill extends AbstractEntity
 	 */
 	public function getUsers()
 	{
-		return $this->users->toArray();
+		// Get all the users out of the user shares
+		return array_map(function(UserBillShare $userShare) {
+			return $userShare->getUser();
+		}, $this->getUserShares());
+	}
+
+	/**
+	 * Get all user shares
+	 */
+	public function getUserShares()
+	{
+		return $this->userShares->toArray();
+	}
+
+	/**
+	 * Get the share for a specific user.
+	 *
+	 * @param \Application\Entity\UserBillShare $user
+	 * @return \Application\Entity\UserBillShare
+	 */
+	public function getUserShare($user)
+	{
+		// Search the share belonging to the user.
+		foreach ($this->userShares as $share) {
+			if ($share->getUser() == $user) {
+				return $share;
+			}
+		}
+
+		return NULL;
 	}
 
 }

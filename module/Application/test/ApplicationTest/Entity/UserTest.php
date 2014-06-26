@@ -111,11 +111,4 @@ class UserTest extends \PHPUnit_Framework_TestCase
 		$this->assertNotEquals($oldKey, $this->user->getAPIKey(), 'API Key should change when a new one is generated.');
 	}
 
-	public function testAddBill()
-	{
-		$bill = new Bill();
-		$this->user->addBill($bill);
-
-		$this->assertContains($bill, $this->user->getBills(), "Bill should now be in bills list");
-	}
 }
