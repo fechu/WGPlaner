@@ -325,12 +325,9 @@ class Table extends AbstractHelper
 	{
 		$hasFooter = false;
 
-		$footer = "<tr>";
+		$footer = '<tr>';
 
-		if ($this->getShowNumberColumn()) {
-			// We need to compensate this row. Otherwise the cells are shifted to the lift.
-			$footer .= "<td></td>";
-		}
+		$emptyCount = 1;
 
 		foreach ($this->columns as $column) {
 			// Do only something if we have a footer.
@@ -338,11 +335,17 @@ class Table extends AbstractHelper
 
 				$hasFooter = true;
 
+				// Render the empty cells before.
+				if ($emptyCount > 0) {
+					$footer .= '<td colspan="'. $emptyCount .'"></td>';
+					$emptyCount = 0;
+				}
+
 
 				$dataContainer = $column['footerData'];
 				if (is_string($dataContainer)) {
 					// Just show the static string
-					$footer .= "<td>" . $dataContainer . "</td>";
+					$footer .= '<td>' . $dataContainer . "</td>";
 				}
 				else {
 					$rf = new \ReflectionFunction($dataContainer);
@@ -356,9 +359,15 @@ class Table extends AbstractHelper
 				}
 			}
 			else {
-				// Just an empty cell
-				$footer .= "<td></td>";
+
+				// Let's remember how many empty cell there was.
+				$emptyCount++;
 			}
+		}
+
+		// Render empty cells (if we have)
+		if ($emptyCount > 0) {
+			$footer .= '<td colspan="'. $emptyCount .'"></td>';
 		}
 
 		$footer .= "</tr>";
