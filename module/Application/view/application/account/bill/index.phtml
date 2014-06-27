@@ -35,7 +35,19 @@ $table->addColumn(array(
 				)
 		);
 
-		return $this->prettyprint()->button($viewUrl, "Anzeigen");
+		$html = $this->prettyprint()->button($viewUrl, "Anzeigen");
+
+		// Add the remove button
+		$deleteUrl = $this->url(
+				'accounts/bills',
+				array(
+					'action' 	=> 'delete',
+					'accountid'	=> $this->account->getId(),
+					'billid'	=> $bill->getId()
+		));
+
+        $html .= " " . $this->prettyprint()->button($deleteUrl, "Löschen", "danger");
+		return $html;
 	}
 ));
 

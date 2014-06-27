@@ -1,0 +1,13 @@
+<?php
+/* @var $this SMCommon\View\Renderer\PhpRenderer */
+echo $this->pageHeader('Abrechnung Löschen', $this->bill->getName());
+?>
+
+<div class="alert alert-block alert-error">
+<h4>Achtung!</h4>
+Möchten Sie die Abrechnung "<?php echo $this->bill->getName();?>" wirklich löschen? Dieser Vorgang kann nicht Rückgängig gemacht werden.
+</div>
+
+<?php
+echo $this->bootstrapForm($this->form, 'horizontal');
+?>

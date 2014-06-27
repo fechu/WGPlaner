@@ -32,7 +32,7 @@ class Bill extends AbstractEntity
 	 * @ORM\OneToMany(
 	 * 					targetEntity="\Application\Entity\UserBillShare",
 	 * 					mappedBy="bill",
-	 * 					cascade={"persist"}
+	 * 					cascade={"persist", "remove"}
 	 * 				)
 	 */
 	protected $userShares;

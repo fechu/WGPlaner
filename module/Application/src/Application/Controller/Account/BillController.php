@@ -12,6 +12,7 @@ use Application\Entity\Purchase;
 use Application\Form\BillForm;
 use Application\Entity\Bill;
 use Application\Form\DaterangeForm;
+use SMCommon\Form\DeleteForm;
 
 class BillController extends AbstractAccountController
 {
@@ -114,6 +115,37 @@ class BillController extends AbstractAccountController
 			'form' 		=> $form,
 		);
 
+	}
+
+	public function deleteAction()
+	{
+		$bill = $this->getBill();
+		if (!$bill) {
+			$this->getResponse()->setStatusCode(404);
+			$this->logger->info("Tried to delete bill with ID " .
+								$this->getId('bill') .
+								", but bill does not exist.");
+		}
+
+		$form = new DeleteForm();
+
+		/* @var $request \Zend\Http\Request */
+		$request = $this->getRequest();
+		if ($request->isPost()) {
+			// Delete the bill
+			$this->em->remove($bill);
+			$this->em->flush();
+
+			$params = array(
+				'accountid' => $this->getId('account')
+			);
+			return $this->redirect()->toRoute('accounts/bills', $params);
+		}
+
+		return array(
+			'form' => $form,
+			'bill' => $bill,
+		);
 	}
 
 	/**
