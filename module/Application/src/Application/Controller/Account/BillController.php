@@ -155,4 +155,24 @@ class BillController extends AbstractAccountController
 	{
 
 	}
+
+	/**
+	 * List the users that belong to this bill.
+	 */
+	public function usersAction()
+	{
+		$bill = $this->getBill();
+
+		// We need a bill
+		if (!$bill) {
+			$this->getRequest()->setStatusCode(404);
+			return;
+		}
+
+		return array(
+			'account'	=> $this->getAccount(),
+			'bill' 		=> $bill,
+		);
+
+	}
 }
