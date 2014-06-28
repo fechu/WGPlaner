@@ -13,6 +13,7 @@ use Application\Form\BillForm;
 use Application\Entity\Bill;
 use Application\Form\DaterangeForm;
 use SMCommon\Form\DeleteForm;
+use Application\Form\SelectUserForm;
 
 class BillController extends AbstractAccountController
 {
@@ -153,7 +154,40 @@ class BillController extends AbstractAccountController
 	 */
 	public function addUserAction()
 	{
+		$form = new SelectUserForm($this->em);
 
+		$bill = $this->getBill();
+		if (!$bill) {
+			$this->getRequest()->setStatusCode(404);
+			return;
+		}
+
+		/* @var $request \Zend\Http\Request */
+		$request = $this->getRequest();
+
+		if ($request->isPost()) {
+			$form->setData($request->getPost());
+			if ($form->isValid()) {
+				$user = $form->getSelectedUser();
+
+				// Add the user to the bill
+				$bill->addUser($user);
+				$this->em->flush();
+
+				// Redirect to the users list
+				return $this->redirect()->toRoute('accounts/bills', array(
+						'action' 	=> 'users',
+						'accountid'	=> $this->getAccount()->getId(),
+						'billid'	=> $bill->getId(),
+				));
+			}
+		}
+
+		return array(
+				'form'		=> $form,
+				'account' 	=> $this->getAccount(),
+				'bill'		=> $bill,
+		);
 	}
 
 	/**
