@@ -147,4 +147,14 @@ class BillTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(3, $share->getShare(), "Share should have been updated");
 
 	}
+
+	public function testAddingUserShareSetsBillOfUserShare()
+	{
+		$user = new User();
+		$this->bill->addUser($user);
+
+		$share = $this->bill->getUserShare($user);
+
+		$this->assertEquals($this->bill, $share->getBill(), "Should have set the bill of the share.");
+	}
 }

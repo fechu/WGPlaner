@@ -125,6 +125,9 @@ class Bill extends AbstractEntity
 			$userShare = new UserBillShare();
 			$userShare->setUser($user);
 			$this->userShares[] = $userShare;
+
+			// Set inverse side
+			$userShare->setBill($this);
 		}
 
 		// Set share
