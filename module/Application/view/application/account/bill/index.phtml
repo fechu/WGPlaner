@@ -37,6 +37,18 @@ $table->addColumn(array(
 
 		$html = $this->prettyprint()->button($viewUrl, "Anzeigen");
 
+		// User Button
+		$userUrl = $this->url(
+				'accounts/bills',
+				array(
+						'action' 	=> 'users',
+						'accountid'	=> $this->account->getId(),
+						'billid'	=> $bill->getId(),
+				)
+		);
+
+		$html .= " " . $this->prettyprint()->button($userUrl, "Benutzer");
+
 		// Add the remove button
 		$deleteUrl = $this->url(
 				'accounts/bills',
