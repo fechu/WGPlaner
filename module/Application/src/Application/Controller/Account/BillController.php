@@ -155,6 +155,7 @@ class BillController extends AbstractAccountController
 	public function addUserAction()
 	{
 		$form = new SelectUserForm($this->em);
+		$form->getActionCollection()->setSubmitButtonTitle("Hinzufügen");
 
 		$bill = $this->getBill();
 		if (!$bill) {
