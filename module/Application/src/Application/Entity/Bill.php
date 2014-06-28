@@ -77,18 +77,23 @@ class Bill extends AbstractEntity
 
 	       // Add the user to this bill
 			$this->addUser($purchase->getUser());
-
 		}
-
-
 	}
 
 	/**
 	 * Get the purchases that are covered by this bill.
 	 */
-	public function getPurchases()
+	public function getPurchases($user = NULL)
 	{
-		return $this->purchases->toArray();
+		if ($user != NULL) {
+			$callback = function(Purchase $purchase) use ($user) {
+				return $purchase->getUser() == $user;
+			};
+			return array_filter($this->purchases->toArray(), $callback);
+		}
+		else {
+			return $this->purchases->toArray();
+		}
 	}
 
 	public function setName($name)

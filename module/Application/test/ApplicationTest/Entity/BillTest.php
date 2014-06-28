@@ -88,6 +88,46 @@ class BillTest extends \PHPUnit_Framework_TestCase
 		$this->assertContains($this->bill, $purchase->getBills(), "Inverse side of relationship was not set");
 	}
 
+	/**
+	 * @todo There's a strange bug, when the users don't have usernames
+	 */
+	public function testAddMultiplePurchases()
+	{
+		$user1 = new User();
+		$user1->setUsername("Hansi");
+		$purchase1 = new Purchase();
+		$purchase1->setUser($user1);
+
+		$user2 = new User();
+		$user2->setUsername("Peterli");
+		$purchase2 = new Purchase();
+		$purchase2->setUser($user2);
+
+		$this->bill->addPurchases(array($purchase1, $purchase2));
+
+		$this->assertCount(2, $this->bill->getPurchases());
+	}
+
+	public function testGetPurchasesForUser()
+	{
+		$user1 = new User();
+		$user1->setUsername("Hansi");
+		$purchase1 = new Purchase();
+		$purchase1->setUser($user1);
+
+		$user2 = new User();
+		$user2->setUsername("Peterli");
+		$purchase2 = new Purchase();
+		$purchase2->setUser($user2);
+
+		$this->bill->addPurchases(array($purchase1, $purchase2));
+
+		$purchases = $this->bill->getPurchases($user1);
+		$this->assertCount(1, $purchases, "Should only return purchases of user1");
+		$purchase = $purchases[0];
+		$this->assertEquals($user1, $purchase->getUser(), "Should be purchase of user 1");
+	}
+
 	public function testAddingPurchaseWithNewUserAddsUserToBill()
 	{
 		$user = new User();
