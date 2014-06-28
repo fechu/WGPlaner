@@ -14,7 +14,6 @@ $table->addColumn(array(
 				array(
 					'accountid' => $this->account->getId(),
 					'billid'	=> $bill->getId(),
-					'action'	=> 'view',
 				)
 		);
 		return $this->prettyprint()->link($viewUrl, $bill->getName());
@@ -29,7 +28,6 @@ $table->addColumn(array(
 		$viewUrl = $this->url(
 				'accounts/bills',
 				array(
-					'action' 	=> 'edit',
 					'accountid' => $this->account->getId(),
 					'billid'	=> $bill->getId(),
 				)

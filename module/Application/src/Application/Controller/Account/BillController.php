@@ -24,6 +24,16 @@ class BillController extends AbstractAccountController
 
 	public function indexAction()
 	{
+		// If we have an account ID we redirect to the view action.
+		if ($id = $this->getId()) {
+			return $this->forward()->dispatch('Application\Controller\Account\Bill', array(
+					'__NAMESPACE__'		=> 'Application\Controller\Account',
+					'action' 			=> 'view',
+					'accountid'			=> $this->getId('account'),
+					'billid'			=> $id,
+			));
+		}
+
 		$account = $this->getAccount();
 
 		/* @var $billRepo \Application\Entity\Repository\BillRepository */
@@ -33,6 +43,15 @@ class BillController extends AbstractAccountController
 		return array(
 			'account' 	=> $account,
 			'bills'		=> $bills,
+		);
+	}
+
+	public function viewAction()
+	{
+		$bill = $this->getBill();
+
+		return array(
+			'bill' => $this->getBill(),
 		);
 	}
 
