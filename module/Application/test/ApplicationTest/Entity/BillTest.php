@@ -13,188 +13,246 @@ use Application\Entity\Purchase;
 
 class BillTest extends \PHPUnit_Framework_TestCase
 {
-	protected $bill;
+    /* @var $bill Bill */
+    protected $bill;
 
-	public function setUp()
-	{
-		$this->bill = new Bill();
-	}
+    public function setUp()
+    {
+        $this->bill = new Bill();
+    }
 
-	public function testSuccessfulCreation()
-	{
-		$this->assertNotNull($this->bill, 'Bill was not created successfully');
-	}
+    public function testSuccessfulCreation()
+    {
+        $this->assertNotNull($this->bill, 'Bill was not created successfully');
+    }
 
-	///////////////////////////////////////////////////////////////////////
-	// Name
-	///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    // Name
+    ///////////////////////////////////////////////////////////////////////
 
-	public function testSetName()
-	{
-		$name = "September 2012";
+    public function testSetName()
+    {
+        $name = "September 2012";
 
-		$this->bill->setName($name);
-		$this->assertEquals($name, $this->bill->getName(), 'Name was not set correctly');
-	}
+        $this->bill->setName($name);
+        $this->assertEquals($name, $this->bill->getName(), 'Name was not set correctly');
+    }
 
+    public function testNonStringNameThrowsException()
+    {
+        $this->setExpectedException('InvalidArgumentException');
 
-	public function testNonStringNameThrowsException()
-	{
-		$this->setExpectedException('InvalidArgumentException');
+        $invalidName = array();
 
-		$invalidName = array();
+        $this->bill->setName($invalidName);	// Should throw exception
+    }
 
-		$this->bill->setName($invalidName);	// Should throw exception
-	}
+    ///////////////////////////////////////////////////////////////////////
+    // User
+    ///////////////////////////////////////////////////////////////////////
 
-	///////////////////////////////////////////////////////////////////////
-	// User
-	///////////////////////////////////////////////////////////////////////
+    public function testHasNoUsersByDefault()
+    {
+        $this->assertCount(0, $this->bill->getUsers());
+    }
 
-	public function testHasNoUsersByDefault()
-	{
-		$this->assertCount(0, $this->bill->getUsers());
-	}
+    public function testAddUser()
+    {
+        $user = new User();
 
-	public function testAddUser()
-	{
-		$user = new User();
+        $this->bill->addUser($user);
 
-		$this->bill->addUser($user);
+        $this->assertContains($user, $this->bill->getUsers(), "Should contain user");
 
-		$this->assertContains($user, $this->bill->getUsers(), "Should contain user");
+    }
 
-	}
+    ///////////////////////////////////////////////////////////////////////
+    // Purchases
+    ///////////////////////////////////////////////////////////////////////
 
-	///////////////////////////////////////////////////////////////////////
-	// Purchases
-	///////////////////////////////////////////////////////////////////////
+    public function testHasNoPurchasesByDefault()
+    {
+        $this->assertCount(0, $this->bill->getPurchases());
+    }
 
+    public function testAddPurchase()
+    {
+        $purchase = new Purchase();
 
-	public function testHasNoPurchasesByDefault()
-	{
-		$this->assertCount(0, $this->bill->getPurchases());
-	}
+        $this->bill->addPurchases(array($purchase));
 
-	public function testAddPurchase()
-	{
-		$purchase = new Purchase();
+        $this->assertContains($purchase, $this->bill->getPurchases(), "Purchase was not added to bill");
 
-		$this->bill->addPurchases(array($purchase));
+        // Check if inverse side is set
+        $this->assertContains($this->bill, $purchase->getBills(), "Inverse side of relationship was not set");
+    }
 
-		$this->assertContains($purchase, $this->bill->getPurchases(), "Purchase was not added to bill");
+    /**
+     * @todo There's a strange bug, when the users don't have usernames
+     */
+    public function testAddMultiplePurchases()
+    {
+        $user1 = new User();
+        $user1->setUsername("Hansi");
+        $purchase1 = new Purchase();
+        $purchase1->setUser($user1);
 
-		// Check if inverse side is set
-		$this->assertContains($this->bill, $purchase->getBills(), "Inverse side of relationship was not set");
-	}
+        $user2 = new User();
+        $user2->setUsername("Peterli");
+        $purchase2 = new Purchase();
+        $purchase2->setUser($user2);
 
-	/**
-	 * @todo There's a strange bug, when the users don't have usernames
-	 */
-	public function testAddMultiplePurchases()
-	{
-		$user1 = new User();
-		$user1->setUsername("Hansi");
-		$purchase1 = new Purchase();
-		$purchase1->setUser($user1);
+        $this->bill->addPurchases(array($purchase1, $purchase2));
 
-		$user2 = new User();
-		$user2->setUsername("Peterli");
-		$purchase2 = new Purchase();
-		$purchase2->setUser($user2);
+        $this->assertCount(2, $this->bill->getPurchases());
+    }
 
-		$this->bill->addPurchases(array($purchase1, $purchase2));
+    public function testGetPurchasesForUser()
+    {
+        $user1 = new User();
+        $user1->setUsername("Hansi");
+        $purchase1 = new Purchase();
+        $purchase1->setUser($user1);
 
-		$this->assertCount(2, $this->bill->getPurchases());
-	}
+        $user2 = new User();
+        $user2->setUsername("Peterli");
+        $purchase2 = new Purchase();
+        $purchase2->setUser($user2);
 
-	public function testGetPurchasesForUser()
-	{
-		$user1 = new User();
-		$user1->setUsername("Hansi");
-		$purchase1 = new Purchase();
-		$purchase1->setUser($user1);
+        $this->bill->addPurchases(array($purchase1, $purchase2));
 
-		$user2 = new User();
-		$user2->setUsername("Peterli");
-		$purchase2 = new Purchase();
-		$purchase2->setUser($user2);
+        $purchases = $this->bill->getPurchases($user1);
+        $this->assertCount(1, $purchases, "Should only return purchases of user1");
+        $purchase = $purchases[0];
+        $this->assertEquals($user1, $purchase->getUser(), "Should be purchase of user 1");
+    }
 
-		$this->bill->addPurchases(array($purchase1, $purchase2));
+    public function testAddingPurchaseWithNewUserAddsUserToBill()
+    {
+        $user = new User();
+        $purchase = new Purchase();
+        $purchase->setUser($user);
 
-		$purchases = $this->bill->getPurchases($user1);
-		$this->assertCount(1, $purchases, "Should only return purchases of user1");
-		$purchase = $purchases[0];
-		$this->assertEquals($user1, $purchase->getUser(), "Should be purchase of user 1");
-	}
+        $this->bill->addPurchases($purchase);
 
-	public function testAddingPurchaseWithNewUserAddsUserToBill()
-	{
-		$user = new User();
-		$purchase = new Purchase();
-		$purchase->setUser($user);
+        $share = $this->bill->getUserShare($user);
+        $this->assertNotNull($share, "Share should have been created for the new user");
+    }
 
-		$this->bill->addPurchases($purchase);
+    ///////////////////////////////////////////////////////////////////////
+    // User Shares
+    ///////////////////////////////////////////////////////////////////////
 
-		$share = $this->bill->getUserShare($user);
-		$this->assertNotNull($share, "Share should have been created for the new user");
-	}
+    public function testHasNoUserSharesByDefault()
+    {
+        $this->assertCount(0,$this->bill->getUserShares());
+    }
 
-	///////////////////////////////////////////////////////////////////////
-	// User Shares
-	///////////////////////////////////////////////////////////////////////
+    public function testAddUserWithShare()
+    {
+        $user = new User();
 
-	public function testHasNoUserSharesByDefault()
-	{
-		$this->assertCount(0,$this->bill->getUserShares());
-	}
+        $this->bill->addUser($user, 2);
 
-	public function testAddUserWithShare()
-	{
-		$user = new User();
+        $this->assertCount(1, $this->bill->getUserShares(), "Should now contain a user share");
+    }
 
-		$this->bill->addUser($user, 2);
+    public function testGetShareForUser()
+    {
+        $user = new User();
+        $this->bill->addUser($user, 2);
 
-		$this->assertCount(1, $this->bill->getUserShares(), "Should now contain a user share");
-	}
+        $share = $this->bill->getUserShare($user);
 
-	public function testGetShareForUser()
-	{
-		$user = new User();
-		$this->bill->addUser($user, 2);
+        $this->assertEquals($user, $share->getUser(), "The user of the share should be the user");
+        $this->assertEquals(2, $share->getShare(), "Should be the same as set.");
+    }
 
-		$share = $this->bill->getUserShare($user);
+    public function testAddingUserWithShareTwiceUpdatesShare()
+    {
+        $user = new User();
+        $this->bill->addUser($user, 2);
 
-		$this->assertEquals($user, $share->getUser(), "The user of the share should be the user");
-		$this->assertEquals(2, $share->getShare(), "Should be the same as set.");
-	}
+        $this->assertCount(1, $this->bill->getUserShares());
 
-	public function testAddingUserWithShareTwiceUpdatesShare()
-	{
-		$user = new User();
-		$this->bill->addUser($user, 2);
+        // Add a second time
+        $this->bill->addUser($user, 3);
 
-		$this->assertCount(1, $this->bill->getUserShares());
+        // Make sure it is not added again
+        $this->assertCount(1, $this->bill->getUserShares());
 
-		// Add a second time
-		$this->bill->addUser($user, 3);
+        // Check if the share was updated
+        $share = $this->bill->getUserShare($user);
+        $this->assertEquals(3, $share->getShare(), "Share should have been updated");
 
-		// Make sure it is not added again
-		$this->assertCount(1, $this->bill->getUserShares());
+    }
 
-		// Check if the share was updated
-		$share = $this->bill->getUserShare($user);
-		$this->assertEquals(3, $share->getShare(), "Share should have been updated");
+    public function testAddingUserShareSetsBillOfUserShare()
+    {
+        $user = new User();
+        $this->bill->addUser($user);
 
-	}
+        $share = $this->bill->getUserShare($user);
 
-	public function testAddingUserShareSetsBillOfUserShare()
-	{
-		$user = new User();
-		$this->bill->addUser($user);
+        $this->assertEquals($this->bill, $share->getBill(), "Should have set the bill of the share.");
+    }
 
-		$share = $this->bill->getUserShare($user);
+    ////////////////////////////////////////////////////////////////////////
+    // Calculations
+    ////////////////////////////////////////////////////////////////////////
 
-		$this->assertEquals($this->bill, $share->getBill(), "Should have set the bill of the share.");
-	}
+    public function testGetAmountReturns0IfBillHasNoPurchases()
+    {
+        $this->assertCount(0, $this->bill->getPurchases(), "Should not have any purchases");
+
+        $this->assertEquals(0, $this->bill->getAmount(), "Should have 0 amount by default");
+    }
+
+    public function testGetAmountReturnsTotalAmount()
+    {
+        $purchase = new Purchase();
+        $purchase->setAmount(5.5);
+
+        $this->bill->addPurchases($purchase);
+
+        $this->assertEquals(5.5, $this->bill->getAmount(), "Should have amount of single bill");
+    }
+
+    public function testGetTotalAmountWithMultiplePurchases()
+    {
+        $purchase1 = new Purchase();
+        $purchase1->setAmount(5.5);
+
+        $purchase2 = new Purchase();
+        $purchase2->setAmount(4.5);
+
+        $this->bill->addPurchases(array($purchase1, $purchase2));
+
+        $this->assertEquals(10, $this->bill->getAmount(), "Should sum purchases to get amount");
+    }
+
+    public function testGetAmountOfUserUsesOnlyPurchasesOfThatUser()
+    {
+        $user1 = new User();
+        $user1->setUsername("Fechu");
+
+        $purchase1 = new Purchase();
+        $purchase1->setUser($user1);
+        $purchase1->setAmount(0.5);
+
+        $user2 = new User();
+        $user2->setUsername("Not Fechu");
+
+        $purchase2 = new Purchase();
+        $purchase2->setUser($user2);
+        $purchase2->setAmount(1.0);
+
+        $this->bill->addPurchases(array($purchase1, $purchase2));
+
+        $this->assertEquals(0.5, $this->bill->getAmount($user1), "Should only use user 1 purchases");
+        $this->assertEquals(1.0, $this->bill->getAmount($user2), "Should only use user 2 purchases");
+        
+
+    }
+
 }
