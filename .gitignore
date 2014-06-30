@@ -9,3 +9,6 @@ nbproject
 composer.lock
 vendor/bin
 data/application.log
+
+tags
+vendor.tags
