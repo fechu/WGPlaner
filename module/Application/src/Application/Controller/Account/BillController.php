@@ -13,7 +13,7 @@ use Application\Form\BillForm;
 use Application\Entity\Bill;
 use Application\Form\DaterangeForm;
 use SMCommon\Form\DeleteForm;
-use Application\Form\SelectUserForm;
+use Application\Form\UserShareForm;
 
 class BillController extends AbstractAccountController
 {
@@ -175,7 +175,7 @@ class BillController extends AbstractAccountController
      */
     public function addUserAction()
     {
-        $form = new SelectUserForm($this->em);
+        $form = new UserShareForm($this->em);
         $form->getActionCollection()->setSubmitButtonTitle("Hinzufügen");
 
         $bill = $this->getBill();
@@ -192,9 +192,10 @@ class BillController extends AbstractAccountController
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 $user = $form->getSelectedUser();
+                $share = $form->getShare();
 
                 // Add the user to the bill
-                $bill->addUser($user);
+                $bill->addUser($user, floatval($share));
                 $this->em->flush();
 
                 // Redirect to the users list
@@ -229,8 +230,7 @@ class BillController extends AbstractAccountController
 
         return array(
             'account'	=> $this->getAccount(),
-            'bill' 		=> $bill,
+            'bill' 	=> $bill,
         );
-
     }
 }
