@@ -17,216 +17,220 @@ use Application\Form\SelectUserForm;
 
 class BillController extends AbstractAccountController
 {
-	public function __construct()
-	{
-		$this->defaultId = 'bill';
-	}
+    public function __construct()
+    {
+        $this->defaultId = 'bill';
+    }
 
-	public function indexAction()
-	{
-		// If we have an account ID we redirect to the view action.
-		if ($id = $this->getId()) {
-			return $this->forward()->dispatch('Application\Controller\Account\Bill', array(
-					'__NAMESPACE__'		=> 'Application\Controller\Account',
-					'action' 			=> 'view',
-					'accountid'			=> $this->getId('account'),
-					'billid'			=> $id,
-			));
-		}
+    public function indexAction()
+    {
+        // If we have an account ID we redirect to the view action.
+        if ($id = $this->getId()) {
+            return $this->forward()->dispatch('Application\Controller\Account\Bill', array(
+                    '__NAMESPACE__' => 'Application\Controller\Account',
+                    'action' 	    => 'view',
+                    'accountid'	    => $this->getId('account'),
+                    'billid'	    => $id,
+            ));
+        }
 
-		$account = $this->getAccount();
+        $account = $this->getAccount();
 
-		/* @var $billRepo \Application\Entity\Repository\BillRepository */
-		$billRepo = $this->em->getRepository('Application\Entity\Bill');
-		$bills = $billRepo->findForAccount($account);
+        /* @var $billRepo \Application\Entity\Repository\BillRepository */
+        $billRepo = $this->em->getRepository('Application\Entity\Bill');
+        $bills = $billRepo->findForAccount($account);
 
-		return array(
-			'account' 	=> $account,
-			'bills'		=> $bills,
-		);
-	}
+        return array(
+            'account' 	=> $account,
+            'bills'	=> $bills,
+        );
+    }
 
-	public function viewAction()
-	{
-		$bill = $this->getBill();
+    public function viewAction()
+    {
+        $bill = $this->getBill();
 
-		return array(
-			'bill' => $this->getBill(),
-		);
-	}
+        return array(
+            'bill' => $this->getBill(),
+        );
+    }
 
-	public function createAction()
-	{
-		// Create form and bind new bill to the form.
-		$form = new BillForm();
-		$bill = new Bill();
-		$form->bind($bill);
+    public function createAction()
+    {
+        // Create form and bind new bill to the form.
+        $form = new BillForm();
+        $bill = new Bill();
+        $form->bind($bill);
 
+        /* @var $request \Zend\Http\Request */
+        $request = $this->getRequest();
 
-		/* @var $request \Zend\Http\Request */
-		$request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
 
-		if ($request->isPost()) {
-			$form->setData($request->getPost());
-			if ($form->isValid()) {
+                // Persist the bill
+                $this->em->persist($bill);
+                $this->em->flush();
 
-				// Persist the bill
-				$this->em->persist($bill);
-				$this->em->flush();
+                $parameters = array(
+                    'accountid' => $this->getId('account'),
+                    'billid'	=> $bill->getId(),
+                    'action'	=> 'add-purchases',
+                );
 
-				$parameters = array(
-					'accountid' => $this->getId('account'),
-					'billid'	=> $bill->getId(),
-					'action'	=> 'add-purchases',
-				);
-				return $this->redirect()->toRoute('accounts/bills', $parameters);
-			}
-		}
+                return $this->redirect()->toRoute('accounts/bills', $parameters);
+            }
+        }
 
-		return array(
-				'form' => $form,
-		);
-	}
+        return array(
+            'form' => $form,
+        );
+    }
 
-	/**
-	 * Action to add purchases to a bill.
-	 */
-	public function addPurchasesAction()
-	{
-		$account = $this->getAccount();
-		$bill = $this->getBill();
+    /**
+     * Action to add purchases to a bill.
+     */
+    public function addPurchasesAction()
+    {
+        $account = $this->getAccount();
+        $bill = $this->getBill();
 
-		$form = new DaterangeForm();
-		$form->getActionCollection()->setSubmitButtonTitle('Hinzufügen');
+        $form = new DaterangeForm();
+        $form->getActionCollection()->setSubmitButtonTitle('Hinzufügen');
 
-		/* @var $request \Zend\Http\Request */
-		$request = $this->getRequest();
+        /* @var $request \Zend\Http\Request */
+        $request = $this->getRequest();
 
-		if ($request->isPost()) {
-			$form->setData($request->getPost());
-			if ($form->isValid()) {
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
 
-				// Select all purchases in the timespan from this account and add
-				// them to the bill.
-				/* @var $repo \Application\Entity\Repository\PurchaseRepository */
-				$repo = $this->em->getRepository('Application\Entity\Purchase');
+                // Select all purchases in the timespan from this account and add
+                // them to the bill.
+                /* @var $repo \Application\Entity\Repository\PurchaseRepository */
+                $repo = $this->em->getRepository('Application\Entity\Purchase');
 
-				// Find and add the purchases
-				$purchases = $repo->findInRange($form->getStartDate(),
-												$form->getEndDate(),
-												$account);
-				$bill->addPurchases($purchases);
+                // Find and add the purchases
+                $purchases = $repo->findInRange($form->getStartDate(),
+                                                $form->getEndDate(),
+                                                $account);
+                $bill->addPurchases($purchases);
 
-				$this->em->flush();
+                $this->em->flush();
 
-				// Redirect to the bill.
-				$params = array(
-					'accountid' => $account->getId(),
-					'billid'	=> $bill->getId(),
-					'action'	=> 'view',
-				);
-				$this->redirect()->toRoute('accounts/bills', $params);
-			}
-		}
+                // Redirect to the bill.
+                $params = array(
+                    'accountid' => $account->getId(),
+                    'billid'	=> $bill->getId(),
+                    'action'	=> 'view',
+                );
+                $this->redirect()->toRoute('accounts/bills', $params);
+            }
+        }
 
-		return array(
-			'account' 	=> $account,
-			'bill' 		=> $bill,
-			'form' 		=> $form,
-		);
+        return array(
+            'account' 	=> $account,
+            'bill' 	=> $bill,
+            'form' 	=> $form,
+        );
 
-	}
+    }
 
-	public function deleteAction()
-	{
-		$bill = $this->getBill();
-		if (!$bill) {
-			$this->getResponse()->setStatusCode(404);
-			$this->logger->info("Tried to delete bill with ID " .
-								$this->getId('bill') .
-								", but bill does not exist.");
-		}
+    public function deleteAction()
+    {
+        $bill = $this->getBill();
+        if (!$bill) {
+            $this->getResponse()->setStatusCode(404);
+            $this->logger->info("Tried to delete bill with ID " .
+                                $this->getId('bill') .
+                                ", but bill does not exist.");
+            return;
+        }
 
-		$form = new DeleteForm();
+        $form = new DeleteForm();
 
-		/* @var $request \Zend\Http\Request */
-		$request = $this->getRequest();
-		if ($request->isPost()) {
-			// Delete the bill
-			$this->em->remove($bill);
-			$this->em->flush();
+        /* @var $request \Zend\Http\Request */
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            // Delete the bill
+            $this->em->remove($bill);
+            $this->em->flush();
 
-			$params = array(
-				'accountid' => $this->getId('account')
-			);
-			return $this->redirect()->toRoute('accounts/bills', $params);
-		}
+            $params = array(
+                'accountid' => $this->getId('account')
+            );
 
-		return array(
-			'form' => $form,
-			'bill' => $bill,
-		);
-	}
+            return $this->redirect()->toRoute('accounts/bills', $params);
+        }
 
-	/**
-	 * Add an user to a bill.
-	 */
-	public function addUserAction()
-	{
-		$form = new SelectUserForm($this->em);
-		$form->getActionCollection()->setSubmitButtonTitle("Hinzufügen");
+        return array(
+            'form' => $form,
+            'bill' => $bill,
+        );
+    }
 
-		$bill = $this->getBill();
-		if (!$bill) {
-			$this->getRequest()->setStatusCode(404);
-			return;
-		}
+    /**
+     * Add an user to a bill.
+     */
+    public function addUserAction()
+    {
+        $form = new SelectUserForm($this->em);
+        $form->getActionCollection()->setSubmitButtonTitle("Hinzufügen");
 
-		/* @var $request \Zend\Http\Request */
-		$request = $this->getRequest();
+        $bill = $this->getBill();
+        if (!$bill) {
+            $this->getRequest()->setStatusCode(404);
 
-		if ($request->isPost()) {
-			$form->setData($request->getPost());
-			if ($form->isValid()) {
-				$user = $form->getSelectedUser();
+            return;
+        }
 
-				// Add the user to the bill
-				$bill->addUser($user);
-				$this->em->flush();
+        /* @var $request \Zend\Http\Request */
+        $request = $this->getRequest();
 
-				// Redirect to the users list
-				return $this->redirect()->toRoute('accounts/bills', array(
-						'action' 	=> 'users',
-						'accountid'	=> $this->getAccount()->getId(),
-						'billid'	=> $bill->getId(),
-				));
-			}
-		}
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $user = $form->getSelectedUser();
 
-		return array(
-				'form'		=> $form,
-				'account' 	=> $this->getAccount(),
-				'bill'		=> $bill,
-		);
-	}
+                // Add the user to the bill
+                $bill->addUser($user);
+                $this->em->flush();
 
-	/**
-	 * List the users that belong to this bill.
-	 */
-	public function usersAction()
-	{
-		$bill = $this->getBill();
+                // Redirect to the users list
+                return $this->redirect()->toRoute('accounts/bills', array(
+                        'action' 	=> 'users',
+                        'accountid'	=> $this->getAccount()->getId(),
+                        'billid'	=> $bill->getId(),
+                ));
+            }
+        }
 
-		// We need a bill
-		if (!$bill) {
-			$this->getRequest()->setStatusCode(404);
-			return;
-		}
+        return array(
+                'form'	    => $form,
+                'account'   => $this->getAccount(),
+                'bill'      => $bill,
+        );
+    }
 
-		return array(
-			'account'	=> $this->getAccount(),
-			'bill' 		=> $bill,
-		);
+    /**
+     * List the users that belong to this bill.
+     */
+    public function usersAction()
+    {
+        $bill = $this->getBill();
 
-	}
+        // We need a bill
+        if (!$bill) {
+            $this->getRequest()->setStatusCode(404);
+
+            return;
+        }
+
+        return array(
+            'account'	=> $this->getAccount(),
+            'bill' 		=> $bill,
+        );
+
+    }
 }
