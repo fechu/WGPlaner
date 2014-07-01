@@ -195,6 +195,23 @@ class Bill extends AbstractEntity
     }
 
     /**
+     * Get the amount which a user has to pay per share. 
+     * This is nothing else then the total amount divided by the total share.
+     */
+    public function getAmountPerShare()
+    {
+        $totalAmount = $this->getAmount();
+        $totalShares = $this->getTotalUserShare();
+
+        if ($totalShares == 0) {
+            return 0; // By definition
+        }
+        else {
+            return $totalAmount / $totalShares;
+        }
+    }
+
+    /**
      * Get the total amount of all purchases or the amount of the purchases
      * of a user.
      *
@@ -237,11 +254,9 @@ class Bill extends AbstractEntity
             return $this->getAmount();
         } else {
             // We need to do the actual calculation
-            // Let's first calculate how muche 1 share is worth.
-            $totalAmount = $this->getAmount();
-            $totalShare = $this->getTotalUserShare();
 
-            $shareValue = $totalAmount / $totalShare;
+            // Get the value per share
+            $shareValue = $this->getAmountPerShare();
 
             // Get the share object for the requested user.
             $share = $this->getUserShare($user);

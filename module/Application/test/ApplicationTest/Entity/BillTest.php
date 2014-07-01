@@ -11,8 +11,8 @@ use Application\Entity\Bill;
 use Application\Entity\User;
 use Application\Entity\Purchase;
 
-class BillTest extends \PHPUnit_Framework_TestCase
-{
+class BillTest extends \PHPUnit_Framework_TestCase {
+
     /* @var $bill Bill */
     protected $bill;
 
@@ -197,6 +197,24 @@ class BillTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->bill, $share->getBill(), "Should have set the bill of the share.");
     }
 
+    public function testGetUserSharesTotalReturns0WithoutUsers()
+    {
+        $this->assertEquals(0, $this->bill->getTotalUserShare(), "Should be zero without users");
+    }
+
+    public function testGetTotalUserShareReturnsSumOfShares()
+    {
+        $user1 = new User();
+        $user1->setUsername("Fechu");
+        $user2 = new User();
+        $user2->setUsername("Pingu");
+
+        $this->bill->addUser($user1, 2);
+        $this->bill->addUser($user2, 1);
+
+        $this->assertEquals(3, $this->bill->getTotalUserShare(), "Should be sum of shares");
+    }
+
     ////////////////////////////////////////////////////////////////////////
     // Calculations
     ////////////////////////////////////////////////////////////////////////
@@ -314,6 +332,28 @@ class BillTest extends \PHPUnit_Framework_TestCase
         // user1 should now be billed 2/3 and user2 1/3. 
         $this->assertEquals(2, $this->bill->getBillableAmount($user1), "Should get 2/3 billed");
         $this->assertEquals(1, $this->bill->getBillableAmount($user2), "Should get 1/3 billed");
+    }
+
+    public function testGetAmountPerShareReturns0IfBillHasNoPurchases()
+    {
+        $this->assertEquals(0, $this->bill->getAmountPerShare(), "Should not have any average");
+    }
+
+    public function testGetAmountPerShare()
+    {
+        // This tests just a random sample
+
+        $user = new User();
+        $user->setUsername("Mario");
+        $this->addPurchases($user, array(2));
+        $this->bill->addUser($user, 2); // Set non default share
+
+        $user2 = new User();
+        $user->setUsername("Luigi");
+        $this->addPurchases($user2, array(4));
+
+        $amountPerShare = $this->bill->getAmountPerShare();
+        $this->assertEquals(2, $amountPerShare, "Should have calculated the right way");
     }
 
     ////////////////////////////////////////////////////////////////////////
