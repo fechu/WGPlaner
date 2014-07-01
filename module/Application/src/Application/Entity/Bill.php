@@ -10,7 +10,6 @@ namespace Application\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use SMCommon\Entity\AbstractEntity;
-use Application\Entity\Purchase;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Entity\Repository\BillRepository")
@@ -84,8 +83,8 @@ class Bill extends AbstractEntity
     /**
      * Get the purchases that are covered by this bill.
      *
-     * @param User $user    A user of which you want to get purchases. If NULL, the all purchases
-     *                      of the bill will be returned.
+     * @param User $user A user of which you want to get purchases. If NULL, the all purchases
+     *                   of the bill will be returned.
      */
     public function getPurchases($user = NULL)
     {
@@ -179,12 +178,30 @@ class Bill extends AbstractEntity
     }
 
     /**
-     * Get the total amount of all purchases or the amount of the purchases 
-     * of a user. 
+     * Get the sum of all shares together.
+     *
+     * This is mostly used internally, but is public if you want easy access to this data.
+     *
+     * @return float The sum of all shares
+     */
+    public function getTotalUserShare()
+    {
+        $sum = 0;
+        foreach ($this->userShares as $share) {
+            $sum += $share->getShare();
+        }
+
+        return $sum;
+    }
+
+    /**
+     * Get the total amount of all purchases or the amount of the purchases
+     * of a user.
      *
      * @param $user An user of which you want to get the total amount. If NULL, the total
      *              amount of all users will be returned.
      * @return float
+     *
      * @author Sandro Meier
      **/
     public function getAmount($user = NULL)
@@ -199,6 +216,38 @@ class Bill extends AbstractEntity
         }
 
         return $sum;
+    }
+
+    /**
+     * Get amount a user has to pay.
+     *
+     * This method takes the user shares into consideration when calculating
+     * the amounts a user has to pay.
+     *
+     * @param User $user The user for which you want to get the amount he has to pay. If
+     *                   this is NULL, the method will return the total amount as
+     *                   getAmount does.
+     *
+     * @return float
+     */
+    public function getBillableAmount($user = NULL)
+    {
+        if ($user === NULL) {
+            // By definition we return the total amount
+            return $this->getAmount();
+        } else {
+            // We need to do the actual calculation
+            // Let's first calculate how muche 1 share is worth.
+            $totalAmount = $this->getAmount();
+            $totalShare = $this->getTotalUserShare();
+
+            $shareValue = $totalAmount / $totalShare;
+
+            // Get the share object for the requested user.
+            $share = $this->getUserShare($user);
+
+            return $shareValue * $share->getShare();
+        }
     }
 
 }

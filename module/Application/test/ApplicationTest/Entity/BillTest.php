@@ -220,13 +220,10 @@ class BillTest extends \PHPUnit_Framework_TestCase
 
     public function testGetTotalAmountWithMultiplePurchases()
     {
-        $purchase1 = new Purchase();
-        $purchase1->setAmount(5.5);
+        $user = new User();
+        $user->setUsername("Testuser");
 
-        $purchase2 = new Purchase();
-        $purchase2->setAmount(4.5);
-
-        $this->bill->addPurchases(array($purchase1, $purchase2));
+        $this->addPurchases($user, array(4.5, 5.5));
 
         $this->assertEquals(10, $this->bill->getAmount(), "Should sum purchases to get amount");
     }
@@ -235,24 +232,118 @@ class BillTest extends \PHPUnit_Framework_TestCase
     {
         $user1 = new User();
         $user1->setUsername("Fechu");
-
-        $purchase1 = new Purchase();
-        $purchase1->setUser($user1);
-        $purchase1->setAmount(0.5);
+        $this->addPurchases($user1, 0.5);
 
         $user2 = new User();
         $user2->setUsername("Not Fechu");
-
-        $purchase2 = new Purchase();
-        $purchase2->setUser($user2);
-        $purchase2->setAmount(1.0);
-
-        $this->bill->addPurchases(array($purchase1, $purchase2));
+        $this->addPurchases($user2, 1.0);
 
         $this->assertEquals(0.5, $this->bill->getAmount($user1), "Should only use user 1 purchases");
         $this->assertEquals(1.0, $this->bill->getAmount($user2), "Should only use user 2 purchases");
-        
-
     }
 
+    public function testGetAmountOfUserWithMultiplePurchasesReturnsCorrectSum()
+    {
+        $user1 = new User();
+        $user1->setUsername("Fechu");
+        $this->addPurchases($user1, array(1,2));
+
+        $user2 = new User();
+        $user2->setUsername("Not Fechu");
+        $this->addPurchases($user2, array(3,4));
+
+        $this->assertEquals(3, $this->bill->getAmount($user1), "Should sum up purchases of user1");
+        $this->assertEquals(7, $this->bill->getAmount($user2), "Should sum up purchases of user2");
+    }
+
+    public function testGetBillableAmountReturns0WhenTheBillHasNoPurchases()
+    {
+        $this->assertEquals(0, $this->bill->getBillableAmount(), "Should be 0 by definition");
+    }
+
+    public function testGetBillableAmountReturnsTotalAmountIfUserArgumentIsNull()
+    {
+        // Add 2 purchases for first user
+        $user1 = new User();
+        $user1->setUsername("Fechu");
+        $this->addPurchases($user1, array(1.0, 2.0));
+
+        // Add 2 purchases for second user
+        $user2 = new User();
+        $user2->setUsername("Not Fechu");
+        $this->addPurchases($user2, array(3.0, 4.0));
+
+        $billable = $this->bill->getBillableAmount();
+        $totalAmount = $this->bill->getAmount();
+
+        $this->assertEquals($totalAmount, $billable, "Should be equal if no user given");
+    }
+
+    public function testGetBillableAmountIsTotalDividedByNumberOfUsers()
+    {
+        // By default if you add a user (s)he will be added with a share of 1.
+        // So all users have share one, which results in a nomral split.
+
+        $user1 = new User();
+        $user1->setUsername("Fechu");
+        $this->addPurchases($user1, array(2, 2));
+
+        $user2 = new User();
+        $user2->setUsername("Yoda");
+        $this->addPurchases($user2, array(3, 3));
+
+        // The billable amount should now be 5 for each user.
+        $this->assertEquals(5, $this->bill->getBillableAmount($user1), "Should be 5");
+        $this->assertEquals(5, $this->bill->getBillableAmount($user2), "Should be 5");
+    }
+
+    public function testGetBillableAmountTakesSharesIntoConsideration()
+    {
+        $user1 = new User();
+        $user1->setUsername("Fechu");
+        $this->addPurchases($user1, array(1));
+
+        $user2 = new User();
+        $user2->setUsername("Yoda");
+        $this->addPurchases($user2, array(2));
+
+        // Set different shares
+        $this->bill->addUser($user1, 2);
+        $this->bill->addUser($user2, 1);
+
+        // user1 should now be billed 2/3 and user2 1/3. 
+        $this->assertEquals(2, $this->bill->getBillableAmount($user1), "Should get 2/3 billed");
+        $this->assertEquals(1, $this->bill->getBillableAmount($user2), "Should get 1/3 billed");
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    // Helper Methods
+    ////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Adds for the given user one or multiple purchases. Depending on the $amounts parameter
+     *
+     * @param User        $user    The user for which to add paramters
+     * @param array|float $amounts A float or an array of floats. The method will add
+     *                             a purchase for every float wich the float as amount.
+     */
+    private function addPurchases($user, $amounts)
+    {
+        if (is_float($amounts) || is_integer($amounts)) {
+            // Wrap the value into an array
+            $amounts = array($amounts);
+        }
+
+        // Add purchases
+        $purchases = array();
+        foreach ($amounts as $amount) {
+            $purchase = new Purchase();
+            $purchase->setUser($user);
+            $purchase->setAmount($amount);
+
+            $purchases[] = $purchase;
+        }
+
+        $this->bill->addPurchases($purchases);
+    }
 }
