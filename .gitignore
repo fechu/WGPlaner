@@ -10,5 +10,8 @@ composer.lock
 vendor/bin
 data/application.log
 
+# Swap files
+*.swp
+
 tags
 vendor.tags
