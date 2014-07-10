@@ -8,6 +8,7 @@
 namespace ApplicationTest\Entity;
 
 use Application\Entity\Purchase;
+use Application\Entity\Bill;
 
 class PurchaseTest extends \PHPUnit_Framework_TestCase
 {
@@ -36,6 +37,18 @@ class PurchaseTest extends \PHPUnit_Framework_TestCase
 
 		$this->purchase->setCreatedWithAPI(false);
 		$this->assertFalse($this->purchase->getCreatedWithAPI(), "Should have changed value again");
+	}
+
+	public function testAddToBill()
+	{
+		$bill = new Bill();
+
+		$this->purchase->addToBill($bill);
+
+		$this->assertContains($bill, $this->purchase->getBills(), "Bill should be listed in purchase's bills");
+
+		// Check also that the inverse side is set
+		$this->assertContains($this->purchase, $bill->getPurchases(), "Purchase should be assigned to bill");
 	}
 
 }

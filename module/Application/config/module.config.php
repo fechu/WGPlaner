@@ -32,11 +32,12 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' 				=> 'Application\Controller\IndexController',
+            'Application\Controller\Index' 		=> 'Application\Controller\IndexController',
             'Application\Controller\Account\Account' 	=> 'Application\Controller\Account\AccountController',
-            'Application\Controller\Account\User'		=> 'Application\Controller\Account\UserController',
+            'Application\Controller\Account\User'	=> 'Application\Controller\Account\UserController',
             'Application\Controller\Account\Purchase'	=> 'Application\Controller\Account\PurchaseController',
-            'Application\Controller\Settings'			=> 'Application\Controller\SettingsController',
+            'Application\Controller\Account\Bill'	=> 'Application\Controller\Account\BillController',
+            'Application\Controller\Settings'		=> 'Application\Controller\SettingsController',
         ),
     ),
     'view_manager' => array(
@@ -58,55 +59,55 @@ return array(
 
     // Doctrine configuration
     'doctrine' => array(
-    	'driver' => array(
-    		'application_entities' => array(
-    			'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-    			'cache' => 'array',
-    			'paths' => array(
-    				__DIR__ . '/../src/Application/Entity',
-    			),
-    		),
+        'driver' => array(
+            'application_entities' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    __DIR__ . '/../src/Application/Entity',
+                ),
+            ),
 
-    		// default metadata driver, aggregates all other drivers into a single one.
-    		// Override `orm_default` only if you know what you're doing
-    		'orm_default' => array(
-	    		'drivers' => array(
-	    			// register `my_annotation_driver` for any entity under namespace `My\Namespace`
-	    			'Application\Entity' => 'application_entities'
-	    		)
+            // default metadata driver, aggregates all other drivers into a single one.
+            // Override `orm_default` only if you know what you're doing
+            'orm_default' => array(
+                'drivers' => array(
+                    // register `my_annotation_driver` for any entity under namespace `My\Namespace`
+                    'Application\Entity' => 'application_entities'
+                )
             )
         ),
     ),
 
     // Navigation
     'navigation' => array(
-    	'default' => array(
-    		array(
-    			'label' => 'Konten',
-    			'route' => 'accounts',
-    			'order' => -1,
-    			'pages' => array(
-    				array(
-    					'label'		=> 'Aktuelle Listen',
-    					'route'		=> 'accounts/action',
-    					'action'	=> 'index',
-    					'visible'	=> false,
-    				),
-    				array(
-    					'label'		=> 'Nicht aktive Listen',
-    					'route'		=> 'accounts/action',
-    					'action'	=> 'not-active',
-    					'visible'	=> false,
-    				),
-    				array(
-    					'label'		=> 'Einkauf hinzufügen',
-    					'route'		=> 'accounts/action',
-    					'action'	=> 'add-purchase',
-    					'visible'	=> false,
-    				),
-    			),
-    		),
-    	),
+        'default' => array(
+            array(
+                'label' => 'Konten',
+                'route' => 'accounts',
+                'order' => -1,
+                'pages' => array(
+                    array(
+                        'label'		=> 'Aktuelle Listen',
+                        'route'		=> 'accounts/action',
+                        'action'	=> 'index',
+                        'visible'	=> false,
+                    ),
+                    array(
+                        'label'		=> 'Nicht aktive Listen',
+                        'route'		=> 'accounts/action',
+                        'action'	=> 'not-active',
+                        'visible'	=> false,
+                    ),
+                    array(
+                        'label'		=> 'Einkauf hinzufügen',
+                        'route'		=> 'accounts/action',
+                        'action'	=> 'add-purchase',
+                        'visible'	=> false,
+                    ),
+                ),
+            ),
+        ),
     ),
 
 );

@@ -10,6 +10,7 @@ namespace Application\Controller\Account;
 use SMCommon\Controller\AbstractActionController as ActionController;
 use Application\Entity\Account;
 use Application\Entity\Purchase;
+use Application\Entity\Bill;
 
 class AbstractAccountController extends ActionController
 {
@@ -37,6 +38,20 @@ class AbstractAccountController extends ActionController
 
 		/* @var $repo \Application\Entity\Repository\PurchaseRepository */
 		$repo = $this->em->getRepository('Application\Entity\Purchase');
+
+		return $repo->find($id);
+	}
+
+	/**
+	 * Takes the billid from the route and fetches the bill.
+	 * @return Bill
+	 */
+	protected function getBill()
+	{
+		$id = $this->getId('bill');
+
+		/* @var $repo \Application\Entity\Repository\BillRepository */
+		$repo = $this->em->getRepository('Application\Entity\Bill');
 
 		return $repo->find($id);
 	}

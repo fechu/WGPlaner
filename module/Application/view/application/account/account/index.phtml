@@ -57,11 +57,11 @@ $table->addColumn(array(
 
 		$result .= $this->prettyprint()->splitButton($editButtonGroup);
 
-		// Details about the purchase list.
-		$purchasesUrl = $this->url('accounts/list-action', array(
-			'accountid' => $account->getId(),
+		// Add bill button
+		$addPurchaseUrl = $this->url('accounts/bills', array(
+			'accountid'	=> $account->getId(),
 		));
-		$result .= $this->prettyprint()->button($purchasesUrl, 'Details');
+		$result .= $this->prettyprint()->button($addPurchaseUrl, 'Abrechnungen');
 
 		// Add purchase button
 		$addPurchaseUrl = $this->url('accounts/purchases', array(

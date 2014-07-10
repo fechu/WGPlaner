@@ -74,12 +74,14 @@ class User extends AbstractEntity implements UserInterface
 	 */
 	protected $accounts;
 
+
 	public function __construct()
 	{
 		parent::__construct();
 
 		$this->purchases = new ArrayCollection();
 		$this->accounts = new ArrayCollection();
+		$this->bills = new ArrayCollection();
 	}
 
 	public function setUsername($username)
@@ -186,4 +188,5 @@ class User extends AbstractEntity implements UserInterface
 	{
 		$this->accounts[] = $account;
 	}
+
 }

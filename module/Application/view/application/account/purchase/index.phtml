@@ -16,40 +16,9 @@ $url = $this->url('accounts/list-action', $params);
 
 echo $this->pageHeader($this->account->getName(), '<a href="'.$url .'">'. $subtitle .'</a>');
 
-$table = $this->table();
+$table = $this->purchasetable();
 $table->setData($this->purchases);
-
-$table->addColumn(array(
-	'headTitle' 	=> 'Datum',
-	'dataMethod'	=> function (Purchase $purchase) {
-		return $this->formatDate($purchase->getDate(), FormatDate::FORMAT_DATE);
-	}
-));
-
-$table->addColumn(array('Geschäft', 'getStore'));
-
-
-// Each user has its own column
-foreach ($this->account->getUsers() as $user) {
-	$table->addColumn(array(
-		'headTitle' 		=> $user->getFullname(),
-		'dataMethod'		=> function(Purchase $purchase) use ($user) {
-			if ($purchase->getUser() == $user) {
-				return number_format($purchase->getAmount(), 2) . " CHF";
-			}
-		},
-		'footerData'		=> function($purchases) use ($user) {
-			$totalAmount = 0;
-			foreach ($purchases as $purchase) {
-				if ($purchase->getUser() == $user) {
-					$totalAmount += $purchase->getAmount();
-				}
-			}
-
-			return "<b>" . number_format($totalAmount, 2). " CHF</b>";
-		}
-	));
-}
+$table->addUserColumns($this->account->getUsers());
 
 $table->addColumn(array(
 	'headTitle' 	=> 'Aktionen',

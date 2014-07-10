@@ -2499,7 +2499,7 @@ class UnitOfWork implements PropertyChangedListener
 
             $id = array($class->identifier[0] => $id);
         }
-        
+
         $idHash = implode(' ', $id);
 
         if (isset($this->identityMap[$class->rootEntityName][$idHash])) {
@@ -2896,7 +2896,7 @@ class UnitOfWork implements PropertyChangedListener
 
         return isset($values[$class->identifier[0]]) ? $values[$class->identifier[0]] : null;
     }
- 
+
     /**
      * Tries to find an entity with the given identifier in the identity map of
      * this UnitOfWork.
