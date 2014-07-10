@@ -51,26 +51,18 @@ class PurchaseTable extends Table
         $this->addColumn(array('Geschäft', 'getStore'));
     }
 
-    public function addUserColumns()
+    /**
+     * Add a column for each user in the $users array. 
+     *
+     * The column contains the amount of the purchase if the purchase belongs to that users
+     * column. Otherwise it is just empty. 
+     *
+     * @param $users    An array containing users. For each user a column will be added.
+     */
+    public function addUserColumns($users)
     {
-        // @TODO Fix this
-        // Get the account from the first purchase. This is a little hacky, butt will
-        // work at the moment as only purcheses of the same account are showed in a 
-        // purchase table.
-        $firstPurchase = isset($this->data[0]) ? $this->data[0] : NULL;
-
-        if (!$firstPurchase) {
-            // Nothing to list. There's no sence in adding user columns
-            return;
-        }
-
-        // Get the account
-        $account = $firstPurchase ? $firstPurchase->getAccount() : NULL;
-    
-
-
-        // Each user has its own column
-        foreach ($account->getUsers() as $user) {
+        // Add a column for each user
+        foreach ($users as $user) {
             $this->addColumn(array(
                 'headTitle' 	=> $user->getFullname(),
                 'dataMethod'	=> function(Purchase $purchase) use ($user) {

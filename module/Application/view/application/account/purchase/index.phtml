@@ -18,7 +18,7 @@ echo $this->pageHeader($this->account->getName(), '<a href="'.$url .'">'. $subti
 
 $table = $this->purchasetable();
 $table->setData($this->purchases);
-$table->addUserColumns();
+$table->addUserColumns($this->account->getUsers());
 
 $table->addColumn(array(
 	'headTitle' 	=> 'Aktionen',

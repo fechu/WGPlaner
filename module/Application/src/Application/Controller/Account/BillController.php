@@ -46,6 +46,9 @@ class BillController extends AbstractAccountController
         );
     }
 
+    /**
+     * View a bill
+     */
     public function viewAction()
     {
         $bill = $this->getBill();
