@@ -9,6 +9,7 @@ nbproject
 composer.lock
 vendor/bin
 data/application.log
+data/DoctrineORMModule
 
 # Swap files
 *.swp
