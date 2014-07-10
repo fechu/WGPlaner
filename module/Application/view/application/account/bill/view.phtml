@@ -1,4 +1,10 @@
 <?php
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
 echo $this->pageHeader($this->bill->getName(), 'Abrechnung');
+
+// Create the table which lists all the purchases and the user
+$table = $this->purchasetable();
+$table->setData($this->bill->getPurchases());
+$table->addUserColumns($this->bill->getUsers());
+echo $table;
 ?>
