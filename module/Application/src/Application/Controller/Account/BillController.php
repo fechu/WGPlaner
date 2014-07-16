@@ -54,7 +54,8 @@ class BillController extends AbstractAccountController
         $bill = $this->getBill();
 
         return array(
-            'bill' => $this->getBill(),
+            'account'   => $this->getAccount(),
+            'bill'      => $this->getBill(),
         );
     }
 

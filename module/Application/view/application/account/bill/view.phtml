@@ -78,6 +78,17 @@ $table->addUserColumns($this->bill->getUsers());
     <?php echo $table ?>   
   </div>
 </div>
+<span class="pull-right">
+    <?php 
+        $addUserUrl = $this->url('accounts/bills', array(
+            'action' 			=> 'add-user',
+            'accountid'			=> $this->account->getId(),
+            'billid'			=> $this->bill->getId(),
+        ));
+    ?>
+    <?php echo $this->prettyprint()->button($addUserUrl, 'Benutzer hinzufügen')?>
+</span>
+
 
 <script>
 $('#tab a').click(function (e) {
