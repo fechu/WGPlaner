@@ -38,7 +38,7 @@ class Account extends AbstractEntity
 	 * a many to many with a unique constraint in the jointable.
 	 *
 	 * @ORM\OneToMany(targetEntity="Application\Entity\Purchase", mappedBy="account")
-     * @ORM\OrderBy({"date" = "ASC"})
+         * @ORM\OrderBy({"date" = "ASC"})
 	 */
 	protected $purchases;
 
