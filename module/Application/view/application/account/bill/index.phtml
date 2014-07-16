@@ -1,7 +1,7 @@
 <?php
 use Application\Entity\Bill;
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
-echo $this->pageHeader('Abrechnungen');
+echo $this->pageHeader('Abrechnungen', $this->account->getName());
 
 $table = $this->table();
 $table->setData($this->bills);
