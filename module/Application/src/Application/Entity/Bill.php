@@ -44,6 +44,7 @@ class Bill extends AbstractEntity
      * a many to many with a unique constraint in the jointable.
      *
      * @ORM\ManyToMany(targetEntity="Application\Entity\Purchase", inversedBy="bills")
+     * @ORM\OrderBy({"date" = "ASC"})
      */
     protected $purchases;
 
