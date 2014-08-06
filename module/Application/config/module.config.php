@@ -88,10 +88,17 @@ return array(
                 'order' => -1,
                 'pages' => array(
                     array(
-                        'label'		=> 'Aktuelle Listen',
+                        'label'		=> 'Alle Konten',
                         'route'		=> 'accounts/action',
-                        'action'	=> 'index',
-                        'visible'	=> false,
+                    ),
+                    array(
+                        'route'         => 'accounts/action',
+                        'divider'       => true,
+                    ),
+                    array(
+                        'label'		=> 'Archiv',
+                        'route'		=> 'accounts/action',
+                        'action'	=> 'archive',
                     ),
                 ),
             ),

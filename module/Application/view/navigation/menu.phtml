@@ -5,9 +5,32 @@
     
     ?>
 
-    <?php foreach ($container as $page) : ?>
-    <li <?php echo $page->isActive() ? ' class="active"' : ''; ?>>
-        <a href="<?php echo $page->getHref(); ?>"><?php echo $page->getLabel() ?></a>
+    <?php 
+    foreach ($container as $page) : 
+        $hasChildren = $page->hasPages(); 
+    ?>
+    <?php if (!$hasChildren) : ?>
+        <li class="dropdown <?php echo $page->isActive() ? ' active' : ''; ?>">
+        <a href="<?php echo $page->getHref() ?>"><?php echo $page->getLabel() ?></a>
+    <?php else: ?>
+        <li class="<?php echo $page->isActive() ? 'active' : ''; ?>"> 
+
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $page->getLabel() ?></a>
+        
+            <ul class="dropdown-menu">
+                <?php foreach ($page as $child) : ?>
+                <?php if ($child->get("divider")) : ?>
+                    <li class="divider">
+                <?php else: ?>
+                    <li>
+                        <a href="<?php echo $child->getHref();?>">
+                            <?php echo $child->getLabel(); ?>
+                        </a>
+                <?php endif; ?>
+                </li>
+                <?php endforeach; ?> 
+            </ul>
+    <?php endif; ?>
     </li>
     <?php endforeach; ?>
     
