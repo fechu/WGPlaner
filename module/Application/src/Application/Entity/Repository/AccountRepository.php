@@ -15,10 +15,14 @@ use Doctrine\ORM\EntityRepository;
 class AccountRepository extends EntityRepository
 {
 
+    /**
+     * Finds all accounts for a user which are not archived.
+     */
 	public function findForUser($user, $orderBy = NULL, $limit = NULL, $offset = NULL, $returnQueryBuilder = false)
 	{
 		$queryBuilder = $this->createQueryBuilder('account');
 		$this->restrictUser($queryBuilder, $user);
+                $queryBuilder->andWhere('account.archived = 0');
 
 		if ($returnQueryBuilder) {
 			return $queryBuilder;
@@ -26,6 +30,22 @@ class AccountRepository extends EntityRepository
 
 		return $queryBuilder->getQuery()->getResult();
 	}
+
+        /**
+         * Finds all accounts for a user which are archived.
+         */
+        public function findArchivedForUser($user, $orderBy = NULL, $limit = NULL, $offset = NULL, $returnQueryBuilder = false)
+        {
+            $queryBuilder = $this->createQueryBuilder('account');
+            $this->restrictUser($queryBuilder, $user);
+            $queryBuilder->andWhere('account.archived = 1');
+
+            if ($returnQueryBuilder) {
+                return $queryBuilder;
+            }
+
+            return $queryBuilder->getQuery()->getResult();
+        }
 
 	/**
 	 * Restrict a query builder to only select lists of $user.

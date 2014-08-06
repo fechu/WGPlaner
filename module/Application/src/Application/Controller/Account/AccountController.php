@@ -29,14 +29,28 @@ class AccountController extends AbstractAccountController
         // If we have an account ID we redirect to the showPurchase action.
         if ($id = $this->getId()) {
             return $this->forward()->dispatch('Application\Controller\Account\Purchase', array(
-                '__NAMESPACE__'		=> 'Application\Controller\Account',
-                'action' 			=> 'index',
-                'accountid'			=> $id,
+                '__NAMESPACE__'	    => 'Application\Controller\Account',
+                'action' 	    => 'index',
+                'accountid'	    => $id,
             ));
         }
         /** @var $repo \Application\Entity\Repository\AccountRepository */
         $repo = $this->em->getRepository('Application\Entity\Account');
         $accounts = $repo->findForUser($this->identity());
+
+        return array(
+            'accounts' => $accounts,
+        );
+    }
+
+    /**
+     * List all archived accounts for the user.
+     */
+    public function archiveAction()
+    {
+        /** @var $repo \Application\Entity\Repository\AccountRepository */
+        $repo = $this->em->getRepository('Application\Entity\Account');
+        $accounts = $repo->findArchivedForUser($this->identity());
 
         return array(
             'accounts' => $accounts,
@@ -138,6 +152,7 @@ class AccountController extends AbstractAccountController
         if (!$account) {
             // not found
             $this->getResponse()->setStatusCode(404);
+
             return;
         }
 
