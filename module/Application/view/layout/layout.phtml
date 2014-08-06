@@ -48,6 +48,7 @@ echo $this->doctype();
          			/* @var $navigation \Zend\View\Helper\Navigation\Menu */
 		        	$navigation = $this->navigation('navigation')->menu();
 		        	$navigation->setUlClass('nav');
+                                $navigation->setPartial('navigation/menu');
 		        	echo $navigation;
 		        	 ?>
 		        	<ul class="nav pull-right">

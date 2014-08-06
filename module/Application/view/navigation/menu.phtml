@@ -1,0 +1,14 @@
+<ul class="nav">
+    <?php
+    /** @var $container \Zend\Navigation\Navigation */
+    $container = $this->container;
+    
+    ?>
+
+    <?php foreach ($container as $page) : ?>
+    <li <?php echo $page->isActive() ? ' class="active"' : ''; ?>>
+        <a href="<?php echo $page->getHref(); ?>"><?php echo $page->getLabel() ?></a>
+    </li>
+    <?php endforeach; ?>
+    
+</ul>

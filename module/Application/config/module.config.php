@@ -93,18 +93,6 @@ return array(
                         'action'	=> 'index',
                         'visible'	=> false,
                     ),
-                    array(
-                        'label'		=> 'Nicht aktive Listen',
-                        'route'		=> 'accounts/action',
-                        'action'	=> 'not-active',
-                        'visible'	=> false,
-                    ),
-                    array(
-                        'label'		=> 'Einkauf hinzufügen',
-                        'route'		=> 'accounts/action',
-                        'action'	=> 'add-purchase',
-                        'visible'	=> false,
-                    ),
                 ),
             ),
         ),
