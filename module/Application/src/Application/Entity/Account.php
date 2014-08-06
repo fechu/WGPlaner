@@ -138,6 +138,17 @@ class Account extends AbstractEntity
     }
 
     /**
+     * Synonim for isArchived. 
+     * 
+     * Exists only for naming consistency.
+     */
+    public function getArchived()
+    {
+        return $this->isArchived();
+    }
+    
+
+    /**
      * Archive this account.
      */
     public function archive()
