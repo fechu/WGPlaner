@@ -96,6 +96,11 @@ class PrettyPrint extends AbstractHelper
 		}
 		return '<a href="'. $url .'" class="'. $class .'">' . $title . '</a> '; 
 	}
+
+        public function alert($message, $style = "info")
+        {
+            return '<div class="alert alert-'. $style .'">' . $message . '</div>';
+        }
 }
 
 ?>

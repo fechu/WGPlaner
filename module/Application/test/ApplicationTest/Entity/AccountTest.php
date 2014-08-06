@@ -53,4 +53,23 @@ class AccountTest extends \PHPUnit_Framework_TestCase
 
 		$this->account->setName($invalidName);	// Should throw exception
 	}
+
+        public function testArchivedIsFalseByDefault()
+        {
+            $this->assertFalse($this->account->isArchived());
+        }
+
+        public function testSetArchivedChangesArchivedFlag()
+        {
+            $this->account->setArchived(true);
+            $this->assertTrue($this->account->isArchived());
+        }
+
+        public function testArchivedChangesArchivedFlag()
+        {
+            $this->account->archive();
+            $this->assertTrue($this->account->isArchived());
+        }
+        
+        
 }

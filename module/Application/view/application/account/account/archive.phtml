@@ -1,0 +1,86 @@
+<?php
+use Application\Entity\Account;
+use SMCommon\View\Helper\FormatDate;
+/* @var $this SMCommon\View\Renderer\PhpRenderer */
+echo $this->pageHeader('Archiv');
+
+$table = $this->table();
+$table->setData($this->accounts);
+
+$table->addColumn(array(
+    'headTitle' 	=> 'Name',
+    'dataMethod'	=> function(Account $account) {
+        $listUrl = $this->url(
+            'accounts/list-action',
+            array(
+                'accountid' => $account->getId()
+            )
+        );
+        return $this->prettyprint()->link($listUrl, $account->getName());
+    }
+));
+
+$table->addColumn(array(
+    'headTitle' 	=> 'Aktionen',
+    'dataMethod'	=> function(Account $account) {
+        $result = '';
+
+        $editButtonGroup = array();
+
+        // Edit button
+        $editUrl = $this->url(
+            'accounts/list-action',
+            array(
+                'action' 	=> 'edit',
+                'accountid' => $account->getId()
+            )
+        );
+        $editButtonGroup[] = array(
+            'title' => 'Bearbeiten',
+            'url'	=> $editUrl
+        );
+
+        // Add the edit button in the submenu again.
+        $editButtonGroup[] = array(
+            'title' => 'Einfkaufsliste bearbeiten',
+            'url'	=> $editUrl
+        );
+
+        // Edit users (for submenu)
+        $editUsersUrl = $this->url('accounts/users', array(
+            'accountid'=> $account->getId(),
+        ));
+        $editButtonGroup[] = array(
+            'title' => 'Benutzer bearbeiten',
+            'url'	=> $editUsersUrl
+        );
+
+        $result .= $this->prettyprint()->splitButton($editButtonGroup);
+
+        // Add bill button
+        $addPurchaseUrl = $this->url('accounts/bills', array(
+            'accountid'	=> $account->getId(),
+        ));
+        $result .= $this->prettyprint()->button($addPurchaseUrl, 'Abrechnungen');
+
+        // Add purchase button
+        $addPurchaseUrl = $this->url('accounts/purchases', array(
+            'action' 	=> 'add',
+            'accountid'	=> $account->getId(),
+        ));
+        $result .= $this->prettyprint()->button($addPurchaseUrl, 'Einkauf hinzufügen');
+
+
+        return $result;
+    }
+));
+
+$addAccountUrl = $this->url('accounts/action', array('action' => 'create'));
+
+?>
+
+
+<?php echo $table; ?>
+<span class="pull-right">
+        <a class="btn" href="<?php echo $addAccountUrl; ?>">Konto erstellen</a>
+</span>

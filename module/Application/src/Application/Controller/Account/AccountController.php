@@ -15,152 +15,165 @@ use Application\Form\DaterangeForm;
 class AccountController extends AbstractAccountController
 {
 
-	public function __construct()
-	{
-		// Default id for account objects in the route
-		$this->defaultId = 'account';
-	}
+    public function __construct()
+    {
+        // Default id for account objects in the route
+        $this->defaultId = 'account';
+    }
 
-	/**
-	 * List all accounts that the user has access to.
-	 */
-	public function indexAction()
-	{
-		// If we have an account ID we redirect to the showPurchase action.
-		if ($id = $this->getId()) {
-			return $this->forward()->dispatch('Application\Controller\Account\Purchase', array(
-				'__NAMESPACE__'		=> 'Application\Controller\Account',
-				'action' 			=> 'index',
-				'accountid'			=> $id,
-			));
-		}
-		/** @var $repo \Application\Entity\Repository\AccountRepository */
-		$repo = $this->em->getRepository('Application\Entity\Account');
-		$accounts = $repo->findForUser($this->identity());
+    /**
+     * List all accounts that the user has access to.
+     */
+    public function indexAction()
+    {
+        // If we have an account ID we redirect to the showPurchase action.
+        if ($id = $this->getId()) {
+            return $this->forward()->dispatch('Application\Controller\Account\Purchase', array(
+                '__NAMESPACE__'	    => 'Application\Controller\Account',
+                'action' 	    => 'index',
+                'accountid'	    => $id,
+            ));
+        }
+        /** @var $repo \Application\Entity\Repository\AccountRepository */
+        $repo = $this->em->getRepository('Application\Entity\Account');
+        $accounts = $repo->findForUser($this->identity());
 
-		return array(
-			'accounts' => $accounts,
-		);
-	}
+        return array(
+            'accounts' => $accounts,
+        );
+    }
 
+    /**
+     * List all archived accounts for the user.
+     */
+    public function archiveAction()
+    {
+        /** @var $repo \Application\Entity\Repository\AccountRepository */
+        $repo = $this->em->getRepository('Application\Entity\Account');
+        $accounts = $repo->findArchivedForUser($this->identity());
 
-	public function selectDateAction()
-	{
-		$account = $this->getAccount();
-		if (!$account) {
-			$this->getResponse()->setStatusCode(404);
-			return;
-		}
+        return array(
+            'accounts' => $accounts,
+        );
+    }
 
-		$form = new DaterangeForm();
+    public function selectDateAction()
+    {
+        $account = $this->getAccount();
+        if (!$account) {
+            $this->getResponse()->setStatusCode(404);
 
-		/* @var $request \Zend\Http\Request */
-		$request = $this->getRequest();
-		if ($request->isPost()) {
-			$form->setData($request->getPost());
+            return;
+        }
 
-			if ($form->isValid()) {
-				// Construct the route to which the user gets redirected.
-				$startDate = $form->getStartDate();
-				$formattedStartDate = $startDate->format('d-m-Y');
-				$endDate = $form->getEndDate();
-				$formattedEndDate = $endDate->format('d-m-Y');
+        $form = new DaterangeForm();
 
-				$params = array(
-					'accountid' => $account->getId(),
-					''
-				);
-				$options = array(
-					'query' => array(
-						'start-date' 	=> $formattedStartDate,
-						'end-date' 		=> $formattedEndDate,
-					)
-				);
-				// Redirect
-				return $this->redirect()->toRoute('accounts/list-action', $params, $options);
-			}
-		}
+        /* @var $request \Zend\Http\Request */
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
 
+            if ($form->isValid()) {
+                // Construct the route to which the user gets redirected.
+                $startDate = $form->getStartDate();
+                $formattedStartDate = $startDate->format('d-m-Y');
+                $endDate = $form->getEndDate();
+                $formattedEndDate = $endDate->format('d-m-Y');
 
-		return array(
-				'account' => $account,
-				'form' => $form
-		);
-	}
+                $params = array(
+                    'accountid' => $account->getId(),
+                    ''
+                );
+                $options = array(
+                    'query' => array(
+                        'start-date' 	=> $formattedStartDate,
+                        'end-date' 		=> $formattedEndDate,
+                    )
+                );
+                // Redirect
+                return $this->redirect()->toRoute('accounts/list-action', $params, $options);
+            }
+        }
 
-	/**
-	 * Create a new account.
-	 */
-	public function createAction()
-	{
-		// Create form and bind new account to form.
-		$form = new AccountForm();
-		$account = new Account();
-		$form->bind($account);
+        return array(
+                'account' => $account,
+                'form' => $form
+        );
+    }
 
+    /**
+     * Create a new account.
+     */
+    public function createAction()
+    {
+        // Create form and bind new account to form.
+        $form = new AccountForm();
+        $account = new Account();
+        $form->bind($account);
 
-		/* @var $request \Zend\Http\Request */
-		$request = $this->getRequest();
+        /* @var $request \Zend\Http\Request */
+        $request = $this->getRequest();
 
-		if ($request->isPost()) {
-			$form->setData($request->getPost());
-			if ($form->isValid()) {
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
 
-				// Add the logged in user to the account to make sure he has
-				// the right to change the account.
-				$account->addUser($this->identity());
+                // Add the logged in user to the account to make sure he has
+                // the right to change the account.
+                $account->addUser($this->identity());
 
-				// Persist the account
-				$this->em->persist($account);
-				$this->em->flush();
+                // Persist the account
+                $this->em->persist($account);
+                $this->em->flush();
 
-				return $this->redirect()->toRoute('accounts');
-			}
-		}
+                return $this->redirect()->toRoute('accounts');
+            }
+        }
 
-		return array(
-			'form' => $form,
-		);
-	}
+        return array(
+            'form' => $form,
+        );
+    }
 
-	public function editAction()
-	{
-		// To edit an account we require an ID.
-		if (!($id = $this->requireId())) {
-			return;
-		}
+    public function editAction()
+    {
+        // To edit an account we require an ID.
+        if (!($id = $this->requireId())) {
+            return;
+        }
 
-		$form = new AccountForm();
+        $form = new AccountForm();
 
-		/* @var $repo \Application\Entity\Repository\AccountRepository */
-		$repo = $this->em->getRepository('Application\Entity\Account');
+        /* @var $repo \Application\Entity\Repository\AccountRepository */
+        $repo = $this->em->getRepository('Application\Entity\Account');
 
-		$account = $repo->find($id);
+        $account = $repo->find($id);
 
-		if (!$account) {
-			// not found
-			$this->getResponse()->setStatusCode(404);
-			return;
-		}
+        if (!$account) {
+            // not found
+            $this->getResponse()->setStatusCode(404);
 
-		$form->bind($account);
+            return;
+        }
 
-		/* @var $request \Zend\Http\Request */
-		$request = $this->getRequest();
+        $form->bind($account);
 
-		if ($request->isPost()) {
-			$form->setData($request->getPost());
-			if ($form->isValid()) {
-				// Persist the account
-				$this->em->flush($account);
+        /* @var $request \Zend\Http\Request */
+        $request = $this->getRequest();
 
-				return $this->redirect()->toRoute('accounts');
-			}
-		}
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                // Persist the account
+                $this->em->flush($account);
 
-		return array(
-			'form' 			=> $form,
-			'account'	 	=> $account
-		);
-	}
+                return $this->redirect()->toRoute('accounts');
+            }
+        }
+
+        return array(
+            'form' 	=> $form,
+            'account'	=> $account
+        );
+    }
 }

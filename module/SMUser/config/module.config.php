@@ -102,26 +102,6 @@ return array(
              array(
                  'label' => 'Benutzer',
                  'route' => 'user',
-                 'pages' => array(
-                     array(
-                         'label' 	=> 'Bearbeiten',
-                         'route' 	=> 'user/action',
-                     	 'action'	=> 'edit',
-                     	 'visible' 	=> false,
-                     ),
-                 	array(
-                 		'label' 	=> 'Passwort ändern',
-                 		'route' 	=> 'user/action',
-                 		'action'	=> 'change-password',
-                 		'visible' 	=> false,
-                 	),
-                 	array(
-                 		'label'		=> 'Erstellen',
-                 		'route'		=> 'user/action',
-                 		'action'	=> 'create',
-                 		'visible' 	=> false
-                 	)
-                 ),
              ),
          ),
      ),

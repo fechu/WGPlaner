@@ -16,6 +16,11 @@ $url = $this->url('accounts/list-action', $params);
 
 echo $this->pageHeader($this->account->getName(), '<a href="'.$url .'">'. $subtitle .'</a>');
 
+// Perhaps we have a archived account
+if ($this->account->isArchived()) {
+    echo $this->prettyprint()->alert("Dieses Konto ist archiviert.", "warning");
+}
+
 $table = $this->purchasetable();
 $table->setData($this->purchases);
 $table->addUserColumns($this->account->getUsers());

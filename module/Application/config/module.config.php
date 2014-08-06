@@ -88,26 +88,20 @@ return array(
                 'order' => -1,
                 'pages' => array(
                     array(
-                        'label'		=> 'Aktuelle Listen',
+                        'label'		=> 'Alle Konten',
                         'route'		=> 'accounts/action',
-                        'action'	=> 'index',
-                        'visible'	=> false,
                     ),
                     array(
-                        'label'		=> 'Nicht aktive Listen',
-                        'route'		=> 'accounts/action',
-                        'action'	=> 'not-active',
-                        'visible'	=> false,
+                        'route'         => 'accounts/action',
+                        'divider'       => true,
                     ),
                     array(
-                        'label'		=> 'Einkauf hinzufügen',
+                        'label'		=> 'Archiv',
                         'route'		=> 'accounts/action',
-                        'action'	=> 'add-purchase',
-                        'visible'	=> false,
+                        'action'	=> 'archive',
                     ),
                 ),
             ),
         ),
     ),
-
 );
