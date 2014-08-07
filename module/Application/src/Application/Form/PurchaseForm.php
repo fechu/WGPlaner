@@ -45,4 +45,12 @@ class PurchaseForm extends AbstractForm
         {
             return $this->fieldset->hasSlip();
         }
+
+        /**
+         * Sets the default value of the hasSlip checkbox.
+         */
+        public function setHasSlip($hasSlip)
+        {
+            $this->fieldset->setHasSlip($hasSlip);
+        }
 }

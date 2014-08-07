@@ -153,4 +153,13 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
             return $element->getValue();
         }
 
+
+        /**
+         * Sets the default value of the hasSlip checkbox.
+         */
+        public function setHasSlip($hasSlip)
+        {
+            $element = $this->get('hasSlip');
+            $element->setAttribute('value', (bool)$hasSlip);
+        }
 }
