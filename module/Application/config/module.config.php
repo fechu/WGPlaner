@@ -83,22 +83,26 @@ return array(
     'navigation' => array(
         'default' => array(
             array(
+                'id'    => 'accounts',
                 'label' => 'Konten',
                 'route' => 'accounts',
                 'order' => -1,
                 'pages' => array(
-                    array(
-                        'label'		=> 'Alle Konten',
-                        'route'		=> 'accounts/action',
-                    ),
+                    // The NavigationFactory will insert all not archived accounts here.
                     array(
                         'route'         => 'accounts/action',
                         'divider'       => true,
                     ),
                     array(
+                        'label'		=> 'Alle Konten',
+                        'route'		=> 'accounts/action',
+                        'icon'          => 'icon-th-list'
+                    ),
+                    array(
                         'label'		=> 'Archiv',
                         'route'		=> 'accounts/action',
                         'action'	=> 'archive',
+                        'icon'          => 'icon-folder-close'
                     ),
                 ),
             ),

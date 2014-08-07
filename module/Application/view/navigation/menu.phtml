@@ -11,7 +11,9 @@
     ?>
     <?php if (!$hasChildren) : ?>
         <li class="dropdown <?php echo $page->isActive() ? ' active' : ''; ?>">
-        <a href="<?php echo $page->getHref() ?>"><?php echo $page->getLabel() ?></a>
+        <a href="<?php echo $page->getHref() ?>">
+            <?php echo $page->getLabel() ?>
+        </a>
     <?php else: ?>
         <li class="<?php echo $page->isActive() ? 'active' : ''; ?>"> 
 
@@ -24,6 +26,9 @@
                 <?php else: ?>
                     <li>
                         <a href="<?php echo $child->getHref();?>">
+                            <?php if ($child->get('icon')) : ?>
+                            <i class="<?php echo $child->get('icon'); ?>"></i>
+                            <?php endif; ?>
                             <?php echo $child->getLabel(); ?>
                         </a>
                 <?php endif; ?>

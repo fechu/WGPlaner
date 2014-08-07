@@ -64,7 +64,13 @@ class Module implements AutoloaderProviderInterface,
                     $repo = $entityManager->getRepository('Application\Entity\User');
 
                     return $repo;
-                }
+                },
+
+                /**
+                 * Custom navigation factory which loads the dynamic menu
+                 */
+                'Navigation' => 'Application\Navigation\NavigationFactory',
+                
             ),
         );
     }
