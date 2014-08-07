@@ -71,5 +71,15 @@ class AccountTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue($this->account->isArchived());
         }
         
+        public function testSlipEnabledDefaultIsSetToTrueByDefault()
+        {
+            // We want to have slips enabled by default
+            $this->assertTrue($this->account->getSlipEnabledDefault());
+        }
         
+        public function testSetSlipEnabledDefaultChangesValue()
+        {
+            $this->account->setSlipEnabledDefault(false);
+            $this->assertFalse($this->account->getSlipEnabledDefault());
+        }
 }
