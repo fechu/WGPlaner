@@ -32,6 +32,15 @@ class Account extends AbstractEntity
     protected $archived;
 
     /**
+     * Setting for adding new purchases to this account. 
+     *
+     * This flag defines if the slip number field should be enabled by default.
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $slipEnabledDefault;
+
+    /**
      * The user(s) that can add/remove/edit purchases in this list..
      *
      * @var ArrayCollection
@@ -58,6 +67,7 @@ class Account extends AbstractEntity
         $this->purchases = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->archived = false;
+        $this->slipEnabledDefault = true;
     }
 
     /**
@@ -164,4 +174,20 @@ class Account extends AbstractEntity
         $this->archived = (bool) $flag;
     }
 
+    ////////////////////////////////////////////////////////////////////////
+    // Slip enabled default
+    ////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Set the default value for the slipEnabledProperty
+     */
+    public function setSlipEnabledDefault($defaultValue)
+    {
+        $this->slipEnabledDefault = $defaultValue;
+    }
+
+    public function getSlipEnabledDefault()
+    {
+        return $this->slipEnabledDefault;
+    }
 }
