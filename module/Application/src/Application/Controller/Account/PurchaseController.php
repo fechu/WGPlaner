@@ -96,6 +96,7 @@ class PurchaseController extends AbstractAccountController
 
         $purchase = new Purchase();
         $form->bind($purchase);
+        $form->setHasSlip($account->getSlipEnabledDefault());
 
         /* @var $request \Zend\Http\Request */
         $request = $this->getRequest();
