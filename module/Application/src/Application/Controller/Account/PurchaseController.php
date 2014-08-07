@@ -143,11 +143,17 @@ class PurchaseController extends AbstractAccountController
 
         /* @var $request \Zend\Http\Request */
         $request = $this->getRequest();
+        $postData = $request->getPost();
         if ($request->isPost()) {
-            $form->setData($request->getPost());
+            $form->setData($postData);
             if ($form->isValid()) {
-                                var_dump($purchase);
-                                die();
+
+                // Check if the hasSlip checkbox is unchecked. If so, we have to remove the
+                // slip number.
+                if (!$form->hasSlip()) {
+                    $purchase->setSlipNumber(NULL);
+                }
+
                 // Got valid data.
                 $this->em->flush();
 

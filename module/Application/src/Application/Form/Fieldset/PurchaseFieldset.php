@@ -143,4 +143,14 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 		$element = $this->get('slipNumber');
 		$element->setValue($number);
 	}
+
+        /**
+         * Get the value of the hasSlip checkbox.
+         */
+        public function hasSlip()
+        {
+            $element = $this->get('hasSlip');
+            return $element->getValue();
+        }
+
 }

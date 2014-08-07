@@ -37,4 +37,12 @@ class PurchaseForm extends AbstractForm
 		// Forward to the fieldset.
 		$this->fieldset->setSlipNumber($number);
 	}
+
+        /**
+         * Get the value of the hasSlip checkbox.
+         */
+        public function hasSlip()
+        {
+            return $this->fieldset->hasSlip();
+        }
 }
