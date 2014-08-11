@@ -46,9 +46,6 @@ class PurchaseTest extends \PHPUnit_Framework_TestCase
 		$this->purchase->addToBill($bill);
 
 		$this->assertContains($bill, $this->purchase->getBills(), "Bill should be listed in purchase's bills");
-
-		// Check also that the inverse side is set
-		$this->assertContains($this->purchase, $bill->getPurchases(), "Purchase should be assigned to bill");
 	}
 
 }

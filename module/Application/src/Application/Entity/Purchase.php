@@ -195,16 +195,15 @@ class Purchase extends AbstractEntity
 
 	/**
 	 * Add this purchase to a bill.
+	 *
+	 * @warning This does not set the inverse side. So use bill->addPurchases() instead, if
+	 *	    you don't want to update the inverse side automatically.
+	 *
 	 * @param \Application\Entity\Bill $bill
 	 */
 	public function addToBill($bill)
 	{
 		$this->bills[] = $bill;
-
-		// Check and set if needed the inverse side.
-		if (in_array($this, $bill->getPurchases()) == false) {
-			$bill->addPurchases(array($this));
-		}
 	}
 
 	/**
