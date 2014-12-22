@@ -17,7 +17,7 @@ apt-get install -y php5 > /dev/null
 
 # Install php extensions
 echo "Installing PHP 5.4 Extensions"
-apt-get install -y curl php5-curl php5-gd php5-mcrypt php5-mysql php5-intl > /dev/null
+apt-get install -y curl php5-curl php5-gd php5-mcrypt php5-mysql php5-intl php-apc > /dev/null
 
 echo "Preparing MySQL"
 apt-get install -y debconf-utils
