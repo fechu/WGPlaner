@@ -1,14 +1,14 @@
 <?php
 /**
  * @file DeleteFilter.php
- * @date Aug 7, 2013 
+ * @date Aug 7, 2013
  * @author Sandro Meier
  */
- 
+
 namespace SMCommon\Doctrine\Filter;
 
 use Doctrine\ORM\Query\Filter\SQLFilter;
-use Doctrine\Orm\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadata;
 
 /**
  * A filter that filters all value that have 'deleted' = 1.

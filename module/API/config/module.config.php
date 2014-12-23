@@ -22,6 +22,7 @@ return array(
 			'API\Controller\Purchase' 		=> 'API\Controller\PurchaseController',
 			'API\Controller\Account'		=> 'API\Controller\AccountController',
 			'API\Controller\Data'			=> 'API\Controller\DataController',
+			'API\Controller\Statistic'		=> 'API\Controller\StatisticController',
 		),
 	),
 

@@ -6,7 +6,6 @@ use Zend\Loader\AutoloaderFactory;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\ServiceManager;
 use RuntimeException;
-use R;
 
 putenv("ZF2_PATH=vendor/zendframework/zendframework/library");
 
@@ -29,12 +28,12 @@ class Bootstrap
         if (($path = static::findParentPath('module')) !== $zf2ModulePaths[0]) {
             $zf2ModulePaths[] = $path;
         }
-        
+
         // Composer autoloading
         if (file_exists('vendor/autoload.php')) {
             $loader = include 'vendor/autoload.php';
         }
-        
+
         static::initAutoloader();
 
         // use ModuleManager to load this module and it's dependencies
@@ -51,7 +50,7 @@ class Bootstrap
         $serviceManager->setService('ApplicationConfig', $config);
         $serviceManager->get('ModuleManager')->loadModules();
         static::$serviceManager = $serviceManager;
-        
+
     }
 
     public static function getServiceManager()

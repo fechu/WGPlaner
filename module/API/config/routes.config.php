@@ -36,6 +36,21 @@ return array(
 						),
 					),
 
+					// Statistics
+					'statistic' => array(
+						'type'    => 'Segment',
+						'options' => array(
+							'route'			=> '/statistics/:action',
+							'constraints' 	=> array(
+								'action'    		=> '[a-zA-Z][a-zA-Z0-9_-]*',
+							),
+							'defaults' => array(
+								'__NAMESPACE__' => 'API\Controller',
+								'controller'	=> 'Statistic',
+							),
+						),
+					),
+
 					// account data.
 					'accounts' => array(
 						'type'    => 'Segment',
