@@ -4,7 +4,7 @@
 	"homepage" : "http://framework.zend.com/",
 	"require" : {
 		"php" : ">=5.4.0",
-		"zendframework/zendframework" : "2.2.*",
+		"zendframework/zendframework" : "2.3.*",
 		"doctrine/doctrine-orm-module" : "0.7.*",
 		"zucchi/zucchi" : "dev-master",
 		"zucchi/bootstrap" : "dev-master"
@@ -13,5 +13,10 @@
 		"zendframework/zend-developer-tools" : "*",
 		"zendframework/zftool" : "dev-master",
 		"phpunit/phpunit" : "4.1.*"
+	},
+	"autoload" : {
+		"classmap" : [
+			"vendor/jpgraph/src"
+		]
 	}
 }

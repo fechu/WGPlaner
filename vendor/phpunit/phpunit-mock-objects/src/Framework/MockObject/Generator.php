@@ -268,11 +268,19 @@ class PHPUnit_Framework_MockObject_Generator
                 $object = $class->newInstanceArgs($arguments);
             }
         } else {
-            $class = new ReflectionClass($className);
+            $class = new ReflectionClass('ReflectionClass');
+            $hasNewInstanceWithoutConstructor = $class->hasMethod('newInstanceWithoutConstructor');;
 
-            if ($this->isInternalClass($class) || version_compare(PHP_VERSION, '5.4.0', '<')) {
+            $class      = new ReflectionClass($className);
+            $isInternal = $this->isInternalClass($class);
+
+            if ($isInternal || !$hasNewInstanceWithoutConstructor) {
                 $object = unserialize(
-                    sprintf('O:%d:"%s":0:{}', strlen($className), $className)
+                    sprintf('%s:%d:"%s":0:{}',
+                        (version_compare(PHP_VERSION, '5.4', '>') && $class->implementsInterface("Serializable") ? "C" : "O"),
+                        strlen($className),
+                        $className
+                    )
                 );
             } else {
                 $object = $class->newInstanceWithoutConstructor();

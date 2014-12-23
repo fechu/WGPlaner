@@ -44,6 +44,8 @@ class TableHelper extends Helper
      * @param int $layout self::LAYOUT_*
      *
      * @return TableHelper
+     *
+     * @throws InvalidArgumentException when the table layout is not known
      */
     public function setLayout($layout)
     {
@@ -218,7 +220,7 @@ class TableHelper extends Helper
     /**
      * Sets cell padding type.
      *
-     * @param int     $padType STR_PAD_*
+     * @param int $padType STR_PAD_*
      *
      * @return TableHelper
      */
