@@ -53,6 +53,36 @@ class PurchaseRepository extends EntityRepository
 	 */
 	public function findInRange($startDate, $endDate, $account = NULL)
 	{
+		$query = $this->getRangeQueryBuilder($startDate, $endDate, $account);
+		return $query->getQuery()->getResult();
+	}
+
+	/**
+	 * Find the total of all purchases on a daily basis in an interval.
+	 * @param \DateTime $startDate
+	 * @param \DateTime $endDate
+	 * @param Account $account
+	 */
+	public function findDailyAmountInRange($startDate, $endDate, $account = NULL)
+	{
+		$query = $this->getRangeQueryBuilder($startDate, $endDate, $account);
+
+		// Adjust the query to sum up the daily amounts.
+		$query->select('purchase.date AS date', 'SUM(purchase.amount) AS amount');
+		$query->groupBy('purchase.date');
+
+		$result = $query->getQuery()->getResult();
+		return $result;
+	}
+
+	/**
+	 * Creates a query builder which selects all purchases in a date range.
+	 * @param \DateTime $startDate All purchases after this date will be selected. Can be NULL.
+	 * @param \DateTime $endDate All purchases before this date will be selected. Can be NULL.
+	 * @param Account $account Only purchases assigned to this account will be selected. Can be NULL.
+	 */
+	protected function getRangeQueryBuilder($startDate, $endDate, $account = NULL)
+	{
 		$query = $this->createQueryBuilder('purchase');
 		$query->orderBy("purchase.date", "ASC");
 
@@ -75,7 +105,6 @@ class PurchaseRepository extends EntityRepository
 			$query->setParameter('account', $account);
 		}
 
-		return $query->getQuery()->getResult();
+		return $query;
 	}
-
 }

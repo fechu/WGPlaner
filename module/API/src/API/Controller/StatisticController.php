@@ -8,6 +8,8 @@
 namespace API\Controller;
 
 use Zend\View\Model\JsonModel;
+use API\Statistic\AccountGraph;
+use API\Statistic\MonthAccountGraph;
 
 /**
  *
@@ -19,23 +21,56 @@ class StatisticController extends AbstractRestfulController
 
 	public function testAction()
 	{
-		$width = 1200;
-		$height = 500;
+		$repo = $this->em->getRepository('Application\Entity\Account');
+		$account = $repo->findOneBy(array());
+		$accountGraph = new MonthAccountGraph($account, new \DateTime(), $this->em);
 
-		$graph = new \Graph($width, $height);
-
-		$graph->SetScale('intint');
-		$graph->title->Set('Sunspot example');
-		$graph->xaxis->title->Set('(year from 1701)');
-		$graph->yaxis->title->Set('(# sunspots)');
-
-		$ydata = array(1.2,5.2,4.5,5.5,10.0,0.8,7.7);
-		$lineplot = new \LinePlot($ydata);
-
-		$graph->Add($lineplot);
+		$graph = $accountGraph->getGraph();
 
 		$graph->Stroke();
 
+	}
+
+	/**
+	 * Returns a bar graph containing the monthly expenses in an account.
+	 */
+	public function monthExpensesAction()
+	{
+		/// TODO Implement acess rights
+
+		$repo = $this->em->getRepository('Application\Entity\Account');
+		$accountId = $this->params()->fromQuery('accountid',-1);
+		$account = $repo->find($accountId);
+
+		// Get the month
+		$month = $this->params()->fromQuery('month', date('Y-m'));
+		$month = new \DateTime($month);
+
+		if ($account) {
+			// Create the graph
+			$accountGraph = new MonthAccountGraph($account, $month, $this->em);
+
+			// Set size
+			$size = $this->getGraphSize();
+			$accountGraph->setWidth($size[0]);
+			$accountGraph->setHeight($size[1]);
+
+			// Render the graph
+			$accountGraph->getGraph()->Stroke();
+		}
+		else {
+		  	$this->getResponse()->setStatusCode(404);
+		}
+	}
+
+	/**
+	 * Reads the width and height of the requested graph from GET parameters
+	 */
+	protected function getGraphSize()
+	{
+		$width = $this->params()->fromQuery('width', 600);
+		$height = $this->params()->fromQuery('height', 250);
+		return array($width, $height);
 	}
 
 	public function storesAction()
