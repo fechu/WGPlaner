@@ -10,6 +10,7 @@ namespace API\Controller;
 use Zend\View\Model\JsonModel;
 use API\Statistic\AccountGraph;
 use API\Statistic\MonthAccountGraph;
+use API\Statistic\YearAccountGraph;
 
 /**
  *
@@ -22,8 +23,8 @@ class StatisticController extends AbstractRestfulController
 	public function testAction()
 	{
 		$repo = $this->em->getRepository('Application\Entity\Account');
-		$account = $repo->findOneBy(array());
-		$accountGraph = new MonthAccountGraph($account, new \DateTime(), $this->em);
+		$account = $repo->find(2);
+		$accountGraph = new YearAccountGraph($account, new \DateTime() ,$this->em);
 
 		$graph = $accountGraph->getGraph();
 

@@ -58,7 +58,7 @@ class AccountGraph extends Graph {
 		// Configure the graph
 		$graph = new \Graph($this->getWidth(), $this->getHeight());
 		$graph->title->Set($this->account->getName());
-		$graph->SetScale('datlin');
+		$graph->SetScale('textlin');
 
 		// Set margin depending on date type
 		if ($this->dateFormatType == self::DATE_FORMAT_TYPE_FULL) {
@@ -72,12 +72,9 @@ class AccountGraph extends Graph {
 		$graph->yaxis->title->Set('Expenses (CHF)');
 		$graph->yaxis->SetTitleMargin(30);
 		$graph->xaxis->SetLabelAngle(90);
-		$graph->xaxis->scale->SetDateFormat($this->dateFormatType);
 
 		// Add the barplot
-		$barplot = new \BarPlot($data[1], $data[0]);
-		$barplot->SetWidth($this->getWidth() / 50);
-
+		$barplot = new \BarPlot($data[1]);
 
 		$graph->Add($barplot);
 
