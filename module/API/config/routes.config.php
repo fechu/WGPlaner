@@ -45,8 +45,8 @@ return array(
 								'action'    		=> '[a-zA-Z][a-zA-Z0-9_-]*',
 							),
 							'defaults' => array(
-								'__NAMESPACE__' => 'API\Controller',
-								'controller'	=> 'Statistic',
+								'__NAMESPACE__' => 'API\Controller\Statistic',
+								'controller'	=> 'Graph',
 							),
 						),
 					),
