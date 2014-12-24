@@ -12,6 +12,7 @@ use API\Statistic\AccountGraph;
 use API\Statistic\MonthAccountGraph;
 use API\Statistic\YearAccountGraph;
 use API\Controller\AbstractRestfulController;
+use API\Statistic\StoresGraph;
 
 /**
  *
@@ -20,12 +21,58 @@ use API\Controller\AbstractRestfulController;
  * All methods accept the following GET paramters. Each method may also accept additional paramters.
  * Check out their description.
  *
- *   width:  The width of the returned image. Default: 600
- *   height: The height of the returned image. Default: 250
+ *   width:  The width of the returned image.
+ *   height: The height of the returned image.
  *
  */
 class GraphController extends AbstractRestfulController
 {
+
+	/**
+	 * Returns a pie chart containing the absolute counts of the stores of the purchases.
+	 *
+	 * The following GET parameters can be used
+	 * accountid: The ID of the account. Can also be NULL.
+	 * startdate: A date of the form Y-m-d
+	 * enddate: A date of the form Y-m-d
+	 * max_store_count: The maximal number of stores which should be shown. All others are combined
+	 * 					 in a "others" section.
+	 * height: Default 500
+	 * width: Default 500
+	 */
+	public function storeCountAction()
+	{
+		// Implement Access Rights
+
+		// Get start & end date
+		$startdate = $this->params()->fromQuery('startdate', null);
+		$enddate = $this->params()->fromQuery('enddate', null);
+		if ($startdate) {
+			$startdate = new \DateTime($startdate);
+		}
+		if ($enddate) {
+			$enddate = new \DateTime($enddate);
+		}
+
+		// Get the max_store_number
+		$maxStoreNumber = intval($this->params()->fromQuery('max_store_count', -1));
+
+		// Get the account
+		$account = $this->getAccount();
+
+		// Get the size
+		$size = $this->getGraphSize(500,500);
+
+		// Create and configure the graph.
+		$graph = new StoresGraph($this->em, $startdate, $enddate, $account);
+		$graph->setMaxStoreCount($maxStoreNumber);
+
+		// Adjust the size
+		$graph->setWidth($size[0]);
+		$graph->setHeight($size[1]);
+
+		$graph->getGraph()->Stroke();
+	}
 
 	/**
 	 * Returns a bar graph containing the yearly expenses grouped by month.
@@ -103,10 +150,10 @@ class GraphController extends AbstractRestfulController
 	/**
 	 * Reads the width and height of the requested graph from GET parameters
 	 */
-	protected function getGraphSize()
+	protected function getGraphSize($defaultWidth = 600, $defaultHeight = 250)
 	{
-		$width = $this->params()->fromQuery('width', 600);
-		$height = $this->params()->fromQuery('height', 250);
+		$width = $this->params()->fromQuery('width', $defaultWidth);
+		$height = $this->params()->fromQuery('height', $defaultHeight);
 		return array($width, $height);
 	}
 

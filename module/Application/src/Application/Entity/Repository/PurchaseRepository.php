@@ -210,6 +210,29 @@ class PurchaseRepository extends EntityRepository
 		return $data;
 	}
 
+
+	/**
+	 * Returns an array with stores and how much they appear overall pairs.
+	 *
+	 * @param \DateTime $startdate
+	 * @param \DateTime $enddate
+	 * @param Account $account
+	 */
+	public function findStoreCountsInRange($startDate, $endDate, $account = NULL)
+	{
+		$query = $this->getRangeQueryBuilder($startDate, $endDate, $account);
+
+		// Adjust the query
+		$query->select('purchase.store, COUNT(purchase.id) AS purchase_count');
+		$query->groupBy('purchase.store');
+		$query->orderBy('purchase_count', 'DESC');
+
+		$result = $query->getQuery()->getResult();
+
+		// Bring it into an associative array.
+		return $result;
+	}
+
 	/**
 	 * Creates a query builder which selects all purchases in a date range.
 	 * @param \DateTime $startDate All purchases after this date will be selected. Can be NULL.
