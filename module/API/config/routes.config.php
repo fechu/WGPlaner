@@ -40,13 +40,21 @@ return array(
 					'statistic' => array(
 						'type'    => 'Segment',
 						'options' => array(
-							'route'			=> '/statistics/:action',
-							'constraints' 	=> array(
-								'action'    		=> '[a-zA-Z][a-zA-Z0-9_-]*',
-							),
-							'defaults' => array(
-								'__NAMESPACE__' => 'API\Controller\Statistic',
-								'controller'	=> 'Graph',
+							'route'			=> '/statistics',
+						),
+						'child_routes' => array(
+							'graph' => array(
+								'type'    => 'Segment',
+								'options' => array(
+									'route'			=> '/graph/:action',
+									'constraints' 	=> array(
+										'action'    		=> '[a-zA-Z][a-zA-Z0-9_-]*',
+									),
+									'defaults' => array(
+										'__NAMESPACE__' => 'API\Controller\Statistic',
+										'controller'	=> 'Graph',
+									),
+								),
 							),
 						),
 					),

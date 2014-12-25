@@ -70,7 +70,7 @@ class Module implements AutoloaderProviderInterface,
                  * Custom navigation factory which loads the dynamic menu
                  */
                 'Navigation' => 'Application\Navigation\NavigationFactory',
-                
+
             ),
         );
     }
@@ -81,6 +81,7 @@ class Module implements AutoloaderProviderInterface,
             'invokables' => array(
                 'usertable'	=> 'Application\View\Helper\UserTable',
                 'purchasetable' => 'Application\View\Helper\PurchaseTable',
+            	'graphs' => 'Application\View\Helper\Graphs',
             )
         );
     }

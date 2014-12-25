@@ -82,7 +82,6 @@ class AccountController extends AbstractAccountController
 
                 $params = array(
                     'accountid' => $account->getId(),
-                    ''
                 );
                 $options = array(
                     'query' => array(

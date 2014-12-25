@@ -36,6 +36,10 @@ $table->addColumn(array(
 	}
 ));
 
+?>
+<h3>Ausgaben</h3>
+<?php
+
 echo $table;
 
 $addPurchsaeUrl = $this->url('accounts/purchases', array(
@@ -44,5 +48,31 @@ $addPurchsaeUrl = $this->url('accounts/purchases', array(
 ));
 ?>
 
-
 <span class="pull-right"><a class="btn" href="<?php echo $addPurchsaeUrl ?>">Einkauf hinzufügen</a></span>
+
+<?php
+// Prepare urls for statistics
+$startdate = $this->startDate->format('Y-m-d');
+$enddate = $this->endDate->format('Y-m-d');
+$monthlyExpensesUrl = $this->graphs()->monthlyExpensesGraph(
+	$this->account,
+	$this->endDate->format('Y-m'),
+	600,
+    350
+);
+$storesCountUrl = $this->graphs()->storeCountGraph(
+	$this->account,
+	$startdate,
+	$enddate,
+ 	-1,
+	600,
+	400
+);
+?>
+
+<h3>Statistics</h3>
+<div class="row">
+	<div class="span6"><img src="<?php echo $monthlyExpensesUrl; ?>"></div>
+	<div class="span6"><img src="<?php echo $storesCountUrl; ?>"></div>
+</div>
+

@@ -33,8 +33,9 @@ class GraphController extends AbstractRestfulController
 	 *
 	 * The following GET parameters can be used
 	 * accountid: The ID of the account. Can also be NULL.
-	 * startdate: A date of the form Y-m-d
-	 * enddate: A date of the form Y-m-d
+	 * startdate: A date of the form Y-m-d. If not given, all purchases will be used til enddate.
+	 * enddate: A date of the form Y-m-d. If not given, all purchases from startdate onwards
+	 * 			will be used.
 	 * max_store_count: The maximal number of stores which should be shown. All others are combined
 	 * 					 in a "others" section.
 	 * height: Default 500
