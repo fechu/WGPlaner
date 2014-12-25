@@ -44,13 +44,16 @@ class StoresGraph extends Graph {
 
 		$graph->title->Set('Store count');
 
-		$plot = new \PiePlot($data[1]);
-		$plot->SetLabels($labels);
-		$plot->SetGuideLines();
-		$plot->SetGuideLinesAdjust(1.4);
-		$plot->SetLabelType(PIE_VALUE_ABS);
+		if (count($data[1])) {
+			// We got data. So let's plot it!
+			$plot = new \PiePlot($data[1]);
+			$plot->SetLabels($labels);
+			$plot->SetGuideLines();
+			$plot->SetGuideLinesAdjust(1.4);
+			$plot->SetLabelType(PIE_VALUE_ABS);
 
-		$graph->Add($plot);
+        	$graph->Add($plot);
+		}
 
 		$this->graph = $graph;
 	}
