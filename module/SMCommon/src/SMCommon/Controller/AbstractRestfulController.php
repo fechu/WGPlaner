@@ -150,6 +150,19 @@ abstract class AbstractRestfulController extends ZendRestfulController implement
 		);
 	}
 
+	protected function forbiddenResponse($details = null)
+	{
+		/* @var $response \Zend\Http\Response */
+		$response = $this->getResponse();
+
+		$response->setStatusCode(403);
+
+		return $this->generateErrorViewModel(
+					'Forbidden!',
+					$details
+		);
+	}
+
 	protected function badRequestResponse($details = null)
 	{
 		/* @var $response \Zend\Http\Response */

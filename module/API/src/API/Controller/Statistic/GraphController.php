@@ -13,6 +13,7 @@ use API\Statistic\MonthAccountGraph;
 use API\Statistic\YearAccountGraph;
 use API\Controller\AbstractRestfulController;
 use API\Statistic\StoresGraph;
+use Application\Entity\Account;
 
 /**
  *
@@ -43,7 +44,15 @@ class GraphController extends AbstractRestfulController
 	 */
 	public function storeCountAction()
 	{
-		// Implement Access Rights
+		// Get the account
+		$account = $this->getAccount();
+
+		if ($account != NULL) {
+			// Check if the user has access to that account
+			if (!in_array($this->identity(), $account->getUsers())) {
+				return $this->forbiddenResponse('You have no access to this account.');
+			}
+		}
 
 		// Get start & end date
 		$startdate = $this->params()->fromQuery('startdate', null);
@@ -57,9 +66,6 @@ class GraphController extends AbstractRestfulController
 
 		// Get the max_store_number
 		$maxStoreNumber = intval($this->params()->fromQuery('max_store_count', -1));
-
-		// Get the account
-		$account = $this->getAccount();
 
 		// Get the size
 		$size = $this->getGraphSize(500,500);
@@ -85,10 +91,14 @@ class GraphController extends AbstractRestfulController
 	 */
 	public function yearlyExpensesAction()
 	{
-		// Implement Access Rights
-
 		// Get the account
 		$account = $this->getAccount();
+		if ($account != NULL) {
+			// Check if the user has access to that account
+			if (!in_array($this->identity(), $account->getUsers())) {
+				return $this->forbiddenResponse('You have no access to this account.');
+			}
+		}
 
 		// Get the year
 		$year = intval($this->params()->fromQuery('year', -1));
@@ -109,7 +119,7 @@ class GraphController extends AbstractRestfulController
 			$graph->getGraph()->Stroke();
 		}
 		else {
-			$this->getResponse()->setStatusCode(404);
+			return $this->badRequestResponse('GET parameter accountid is required.');
 		}
 	}
 
@@ -123,9 +133,13 @@ class GraphController extends AbstractRestfulController
 	 */
 	public function monthlyExpensesAction()
 	{
-		/// TODO Implement acess rights
-
 		$account = $this->getAccount();
+		if ($account != NULL) {
+			// Check if the user has access to that account
+			if (!in_array($this->identity(), $account->getUsers())) {
+				return $this->forbiddenResponse('You have no access to this account.');
+			}
+		}
 
 		// Get the month
 		$month = $this->params()->fromQuery('month', date('Y-m'));
@@ -144,7 +158,7 @@ class GraphController extends AbstractRestfulController
 			$accountGraph->getGraph()->Stroke();
 		}
 		else {
-		  	$this->getResponse()->setStatusCode(404);
+			return $this->badRequestResponse('GET parameter accountid is required.');
 		}
 	}
 
@@ -160,6 +174,7 @@ class GraphController extends AbstractRestfulController
 
 	/**
 	 * Fetches the account based on the ID provided with the accountid GET parameter.
+	 * @return Account
 	 */
 	protected function getAccount()
 	{
