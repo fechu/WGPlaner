@@ -27,24 +27,19 @@ class AccountController extends AbstractRestfulController
 		$repo = $this->em->getRepository('Application\Entity\Account');
 
 		$user = $this->identity();
-		if ($user) {
 
-			// Active or all lists
-        	$lists = $repo->findForUser($user);
+		// Active or all lists
+       	$lists = $repo->findForUser($user);
 
-			$accounts = array_map(function($account) {
-				/* @var $list \Application\Entity\Account */
-				return array(
-					"id"	=> $account->getId(),
-					"name" 	=> $account->getName(),
-				);
-			}, $lists);
+		$accounts = array_map(function($account) {
+			/* @var $list \Application\Entity\Account */
+			return array(
+				"id"	=> $account->getId(),
+				"name" 	=> $account->getName(),
+			);
+		}, $lists);
 
-
-			return new JsonModel(array('account' => $accounts));
-		}
-		else {
-			return $this->invalidAPIKeyResponse();
+		return new JsonModel(array('account' => $accounts));
 		}
 	}
 }
