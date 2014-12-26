@@ -13,6 +13,8 @@ use Zend\Mvc\MvcEvent;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
+use Application\Acl\Acl;
+use Zend\View\Model\ViewModel;
 
 class Module implements AutoloaderProviderInterface,
                         ServiceProviderInterface,
@@ -30,6 +32,17 @@ class Module implements AutoloaderProviderInterface,
 
         // Enable the soft delete filter by default. If you want the delete objects to, you have to manually disable this filter.
         $entityManager->getFilters()->enable('soft_delete');
+
+
+        // Setup acl check if a user is logged in.
+        // If no user is logged in, SMUser handles it.
+        $identityService = $serviceManager->get('smuser.identity');
+        if ($identityService->getIdentity() != NULL) {
+        	$e->getApplication()->getEventManager()->attach('route', array($this, 'checkAcl'));
+        }
+
+        // Setup a listener which listenes for the dispatch.error event
+        $eventManager->attach('dispatch.error', array($this, 'processDispatchError'));
     }
 
     public function getConfig()
@@ -72,6 +85,9 @@ class Module implements AutoloaderProviderInterface,
                 'Navigation' => 'Application\Navigation\NavigationFactory',
 
             ),
+            'invokables' => array(
+            	'acl'	=> 'Application\Acl\Acl',
+            ),
         );
     }
 
@@ -84,5 +100,79 @@ class Module implements AutoloaderProviderInterface,
             	'graphs' => 'Application\View\Helper\Graphs',
             )
         );
+    }
+
+    public function checkAcl(MvcEvent $e)
+    {
+    	/* @var $request \Zend\Http\Request */
+    	$request = $e->getRequest();
+
+		// Check if the request contains an accountid. If yes, let's check if the user is allowed
+		// to access that account
+		$accountid = $e->getRouteMatch()->getParam('accountid', -1);
+		if ($accountid != -1) {
+
+    		$user = $e->getApplication()->getServiceManager()->get('smuser.identity')->getIdentity();
+    		$sm = $e->getApplication()->getServiceManager();
+    		$entityManager = $sm->get('doctrine.entitymanager.orm_default');
+    		$account = $entityManager->find('Application\Entity\Account', $accountid);
+
+    		if ($account) {
+    			/* @var $acl \Application\Acl\Acl */
+    			$acl = $sm->get('acl');
+    			if (!$acl->isAllowed($user, $account)) {
+    				// The user is not allowed to view this account.
+    				$logger = $sm->get('Zend\Log');
+    				$arguments = array(
+    					'user' => $user,
+    					'account' => $account
+    				);
+    				$logger->info(
+    						'User tried to access account which he is not allowed to',
+    						$arguments
+    				);
+
+    				// Let's trigger an error!
+					$e->setError(Acl::ACL_ACCESS_DENIED);
+					$e->setParam('route', $e->getRouteMatch()->getMatchedRouteName());
+					$e->getApplication()->getEventManager()->trigger('dispatch.error', $e);
+    			}
+    		}
+		}
+
+		// We do nothing... All checks passed.
+    }
+
+    /**
+     * Processes dispatch.error events.
+     * This method will only handle errors which have ACL_ACCESS_DENIED as error set.
+     */
+    public function processDispatchError(MvcEvent $event)
+    {
+    	$error = $event->getError();
+
+    	// Check if we got an access denied error.
+    	if ($error != Acl::ACL_ACCESS_DENIED) {
+    		return;
+    	}
+
+    	$baseModel = new ViewModel();
+    	$baseModel->setTemplate('layout/layout');
+
+    	$model = new ViewModel();
+    	$model->setTemplate('error/403');
+
+    	$baseModel->addChild($model);
+    	$baseModel->setTerminal(true);
+
+    	$event->setViewModel($baseModel);
+
+    	$response = $event->getResponse();
+    	$response->setStatusCode(403);
+
+    	$event->setResponse($response);
+    	$event->setResult($baseModel);
+
+		return false;
     }
 }

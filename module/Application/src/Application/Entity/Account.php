@@ -10,11 +10,12 @@ namespace Application\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use SMCommon\Entity\AbstractEntity;
+use Zend\Permissions\Acl\Resource\ResourceInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Entity\Repository\AccountRepository")
  */
-class Account extends AbstractEntity
+class Account extends AbstractEntity implements ResourceInterface
 {
     /**
      * The name of the account
@@ -32,7 +33,7 @@ class Account extends AbstractEntity
     protected $archived;
 
     /**
-     * Setting for adding new purchases to this account. 
+     * Setting for adding new purchases to this account.
      *
      * This flag defines if the slip number field should be enabled by default.
      *
@@ -148,15 +149,15 @@ class Account extends AbstractEntity
     }
 
     /**
-     * Synonim for isArchived. 
-     * 
+     * Synonim for isArchived.
+     *
      * Exists only for naming consistency.
      */
     public function getArchived()
     {
         return $this->isArchived();
     }
-    
+
 
     /**
      * Archive this account.
@@ -189,5 +190,15 @@ class Account extends AbstractEntity
     public function getSlipEnabledDefault()
     {
         return $this->slipEnabledDefault;
+    }
+
+    public function getResourceId()
+    {
+    	return 'account';
+    }
+
+    public function __toString()
+    {
+    	return "{ Account(". $this->getId() .") name: ". $this->getName() ." }";
     }
 }

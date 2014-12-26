@@ -12,13 +12,14 @@ use SMUser\Entity\UserInterface;
 use SMCommon\Entity\AbstractEntity;
 use Zend\Crypt\Password\Bcrypt;
 use Doctrine\Common\Collections\ArrayCollection;
+use Zend\Permissions\Acl\Role\RoleInterface;
 
 /**
  * A user
  *
  * @ORM\Entity(repositoryClass="Application\Entity\Repository\UserRepository")
  */
-class User extends AbstractEntity implements UserInterface
+class User extends AbstractEntity implements UserInterface, RoleInterface
 {
 	/**
 	 * The username of the user.
@@ -187,6 +188,16 @@ class User extends AbstractEntity implements UserInterface
 	public function addAccount($account)
 	{
 		$this->accounts[] = $account;
+	}
+
+	public function getRoleId()
+	{
+		return 'user';
+	}
+
+	public function __toString()
+	{
+		return "{ User(". $this->getId() .") name: ". $this->getUsername() ."  }";
 	}
 
 }
