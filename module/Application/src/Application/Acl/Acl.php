@@ -4,6 +4,7 @@ namespace Application\Acl;
 
 use Zend\Permissions\Acl\Acl as ZendAcl;
 use Application\Acl\Assertion\AccountAssertion;
+use Application\Acl\Assertion\PurchaseAssertion;
 
 class Acl extends ZendAcl
 {
@@ -20,6 +21,7 @@ class Acl extends ZendAcl
 
 		// Add the resources
 		$this->addResource('account');
+		$this->addResource('purchase');
 
 		// Setup the rules
 		$this->setupRules();
@@ -28,7 +30,10 @@ class Acl extends ZendAcl
 	protected function setupRules()
 	{
 		// User account interaction.
-		$this->allow('user', 'account', NULL, new AccountAssertion());
+		$this->allow('user', 'account', 'view', new AccountAssertion());
+
+		// User purchase interaction
+		$this->allow('user', 'purchase', 'edit', new PurchaseAssertion());
 	}
 
 }

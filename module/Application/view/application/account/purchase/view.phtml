@@ -46,9 +46,12 @@ $purchase = $this->purchase;
 		?>
 	</div>
 </div>
+
+<?php if ($this->acl($this->identity(), $this->purchase, 'edit')) :?>
 <div class="pull-right">
 	<?php
 	$editUrl = $this->url('accounts/purchases', array('action' => 'edit'), array(), true);
 	echo $this->prettyprint()->button($editUrl, 'Bearbeiten');
 	?>
 </div>
+<?php endif; ?>

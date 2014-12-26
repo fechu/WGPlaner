@@ -11,11 +11,12 @@ use SMCommon\Entity\AbstractEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Console\Application;
 use Doctrine\Common\Collections\ArrayCollection;
+use Zend\Permissions\Acl\Resource\ResourceInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Entity\Repository\PurchaseRepository")
  */
-class Purchase extends AbstractEntity
+class Purchase extends AbstractEntity implements ResourceInterface
 {
 	/**
 	 * The date of the purchase
@@ -215,4 +216,8 @@ class Purchase extends AbstractEntity
 		return $this->bills->toArray();
 	}
 
+	public function getResourceId()
+	{
+		return 'purchase';
+	}
 }

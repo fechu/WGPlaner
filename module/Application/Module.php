@@ -98,6 +98,7 @@ class Module implements AutoloaderProviderInterface,
                 'usertable'	=> 'Application\View\Helper\UserTable',
                 'purchasetable' => 'Application\View\Helper\PurchaseTable',
             	'graphs' => 'Application\View\Helper\Graphs',
+            	'acl'	=> 'Application\View\Helper\Acl',
             )
         );
     }
@@ -120,7 +121,7 @@ class Module implements AutoloaderProviderInterface,
     		if ($account) {
     			/* @var $acl \Application\Acl\Acl */
     			$acl = $sm->get('acl');
-    			if (!$acl->isAllowed($user, $account)) {
+    			if (!$acl->isAllowed($user, $account, 'view')) {
     				// The user is not allowed to view this account.
     				$logger = $sm->get('Zend\Log');
     				$arguments = array(
