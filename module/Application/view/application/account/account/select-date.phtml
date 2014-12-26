@@ -2,6 +2,38 @@
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
 echo $this->pageHeader('Zeitspanne auswählen', $this->account->getName());
 
-echo $this->bootstrapForm($this->form, 'horizontal');
+// Prepare links for intervals
+$queryThisMonth = array(
+	'startdate' => date('01-m-Y'),
+	'enddate' => date('t-m-Y')
+);
+$arguments = array(
+	'accountid' => $this->account->getId(),
+);
+$urlThisMonth = $this->url('accounts/purchases', $arguments, array('query' => $queryThisMonth));
+
+$lastMonth = new \DateTime(date('Y-m-01'));
+$lastMonth->sub(new \DateInterval("P1D"));
+$queryLastMonth = array(
+	'startdate' => $lastMonth->format('01-m-Y'),
+	'enddate' => $lastMonth->format('t-m-Y'),
+);
+$urlLastMonth = $this->url('accounts/purchases', $arguments, array('query' => $queryLastMonth));
 
 ?>
+
+<div class="row">
+
+<div class="span6">
+	<h3>Prepared intervals</h3>
+	<a href="<?php echo $urlThisMonth; ?>" class="btn">This Month</a>
+	<a href="<?php echo $urlLastMonth; ?>" class="btn">Last Month</a>
+</div>
+
+<div class="span6">
+	<h3>Custom interval</h3>
+	<?php echo $this->bootstrapForm($this->form, 'horizontal'); ?>
+</div>
+
+
+</div>

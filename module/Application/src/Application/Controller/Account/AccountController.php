@@ -85,8 +85,8 @@ class AccountController extends AbstractAccountController
                 );
                 $options = array(
                     'query' => array(
-                        'start-date' 	=> $formattedStartDate,
-                        'end-date' 		=> $formattedEndDate,
+                        'startdate' 	=> $formattedStartDate,
+                        'enddate' 		=> $formattedEndDate,
                     )
                 );
                 // Redirect

@@ -55,8 +55,8 @@ class PurchaseController extends AbstractAccountController
         }
 
         // Get start and end-date
-        $startDate = $this->getDateFromRoute("start-date");
-        $endDate = $this->getDateFromRoute("end-date");
+        $startDate = $this->getDateFromRoute("startdate");
+        $endDate = $this->getDateFromRoute("enddate");
 
         // If neither startDate nor endDate is set, we chose the
         // current month as a default.
