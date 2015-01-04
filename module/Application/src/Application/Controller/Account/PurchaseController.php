@@ -110,9 +110,16 @@ class PurchaseController extends AbstractAccountController
                 $this->em->flush();
 
                 // Show all purchases of the account
-                return $this->redirect()->toRoute('accounts/purchases', array(
-                    'accountid' 	=> $account->getId(),
-                ));
+                return $this->redirect()->toRoute(
+                		'accounts/purchases',
+                		array(
+                    		'accountid' 	=> $account->getId(),
+                		),
+                		array('query' => array(
+                			'startdate'		=> $purchase->getDate()->format('01-m-Y'),
+                			'enddate'		=> $purchase->getDate()->format('t-m-Y')
+                		))
+                );
             }
         } else {
             // Set default slip number
