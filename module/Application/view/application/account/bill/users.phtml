@@ -2,7 +2,7 @@
 use Application\View\Helper\UserTable;
 use Application\Entity\User;
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
-echo $this->pageHeader('Benutzer', $this->bill->getName());
+echo $this->pageHeader('User', $this->bill->getName());
 
 $bill = $this->bill;
 
@@ -10,7 +10,7 @@ $bill = $this->bill;
 $table = $this->usertable();
 $table->setData($this->bill->getUsers());
 $table->addColumn(array(
-    "headTitle"   => "Anteil",
+    "headTitle"   => "Part",
     "dataMethod"    => function ($user) use ($bill) {
         // Display the share of the user
         $share = $bill->getUserShare($user);
@@ -30,5 +30,5 @@ $addUserUrl = $this->url('accounts/bills', array(
 ?>
 
 <span class="pull-right">
-	<?php echo $this->prettyprint()->button($addUserUrl, 'Benutzer hinzufügen')?>
+	<?php echo $this->prettyprint()->button($addUserUrl, 'Add User')?>
 </span>

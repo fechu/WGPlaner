@@ -1,10 +1,10 @@
 <?php
 /**
  * @file PurchaseFieldset.php
- * @date Oct 13, 2013 
+ * @date Oct 13, 2013
  * @author Sandro Meier
  */
- 
+
 namespace Application\Form\Fieldset;
 
 use Zend\Form\Fieldset;
@@ -22,42 +22,42 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 	public function __construct($em)
 	{
 		parent::__construct('PurchaseFieldset');
-		
+
 		$this->setHydrator(new ClassMethods(false));
-		
+
 		// Purchase date
 		$dateSelect = new Date();
-		$dateSelect->setLabel('Datum');
+		$dateSelect->setLabel('Date');
 		$dateSelect->setName('date');
 		$dateSelect->setFormat('d.m.Y');
 		$dateSelect->setAttribute('class', 'datepicker');
 		$this->add($dateSelect);
-		
+
 		// Hat Beleg?
 		$this->add(array(
 			'name' => 'hasSlip',
 			'type' => 'Checkbox',
-			'options' => array(	
-				'label' => 'Beleg',
+			'options' => array(
+				'label' => 'Receipt',
 			),
 			'attributes' => array(
 				'id' => 'hasSlipCheckbox',
 				'value' => 1
 			)
 		));
-		
+
 		// Beleg nummer
 		$this->add(array(
 			'name' => 'slipNumber',
 			'type' => 'Text',
 			'options' => array(
-				'label' => 'Belegnummer',
+				'label' => 'Receiptnumber',
 			),
 			'attributes' => array(
 				'id' => 'slipNumber',
 			)
 		));
-		
+
 		// Store
 		// @todo Make the autocompletion with ajax calls. Especially if there are a lot stores in the future.
 		/* @var $repo \Application\Entity\Repository\PurchaseRepository */
@@ -67,7 +67,7 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 			'name' => 'store',
 			'type' => 'Text',
 			'options' => array(
-				'label' => 'Geschäft'
+				'label' => 'Store'
 			),
 			'attributes' => array(
 				'required' => 'required',
@@ -75,25 +75,25 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 				'data-source' => json_encode($uniqueStores),
 			)
 		));
-		
+
 		// Description
 		$this->add(array(
 			'name' => 'description',
 			'type' => 'Text',
 			'options' => array(
-				'label' => 'Beschreibung'
+				'label' => 'Description'
 			),
 			'attributes' => array(
 				'required' => 'required'
 			)
 		));
-		
+
 		// Amount
 		$this->add(array(
 			'name' => 'amount',
 			'type' => 'Text',
 			'options' => array(
-				'label' => 'Betrag',
+				'label' => 'Amount',
 				'bootstrap' => array(
 					'append' => 'CHF',
 				)
@@ -103,7 +103,7 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 			)
 		));
 	}
-	
+
 	public function getInputFilterSpecification()
 	{
 		return array(
@@ -132,7 +132,7 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 			),
 		);
 	}
-	
+
 	/**
 	 * Set the value of the slipNumber element
 	 * @param int $number

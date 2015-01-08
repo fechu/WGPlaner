@@ -35,7 +35,7 @@ class UserShareForm extends AbstractForm
         // Add the share field
         $numberField = new Text();
         $numberField->setName("share");
-        $numberField->setLabel("Anteil");
+        $numberField->setLabel("Share");
         $numberField->setValue("1");
         $this->add($numberField);
     }

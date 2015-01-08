@@ -1,6 +1,6 @@
-<?php 
+<?php
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
-echo $this->doctype(); 
+echo $this->doctype();
 ?>
 
 <html lang="en">
@@ -15,19 +15,19 @@ echo $this->doctype();
                         ->prependStylesheet($this->basePath() . '/css/jquery-ui.custom.min.css')
                         ->prependStylesheet($this->basePath() . '/css/bootstrap-responsive.min.css')
                         ->prependStylesheet($this->basePath() . '/css/style.css')
-                        ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css') 
+                        ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
         				->prependStylesheet($this->basePath() . '/css/jquery-ui.custom.min.css')
         ?>
 
         <!-- Scripts -->
-        <?php 
+        <?php
         $this->headScript()->prependFile($this->basePath() . '/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',));
         $this->headScript()->prependFile($this->basePath() . '/js/application/enable-datepicker.js');
 		$this->headScript()->prependFile($this->basePath() . '/js/jquery.ui.datepicker-de.js');  // German localization for Datepicker
         $this->headScript()->prependFile($this->basePath() . '/js/jquery.ui.custom.min.js');
         $this->headScript()->prependFile($this->basePath() . '/js/bootstrap.min.js');
 		$this->headScript()->prependFile($this->basePath() . '/js/jquery.min.js');
-        
+
 		echo $this->headScript();
         ?>
 
@@ -52,10 +52,10 @@ echo $this->doctype();
 		        	echo $navigation;
 		        	 ?>
 		        	<ul class="nav pull-right">
-                                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Willkommen, <?php echo $this->identity()->getFullname();?> <b class="caret"></b></a>
+                                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, <?php echo $this->identity()->getFullname();?> <b class="caret"></b></a>
                                         <ul class="dropdown-menu">
-                                            <li><a href="<?php echo $this->url('profile');?>"><i class="icon-user"></i> Profil</a>
-                                            <li><a href="<?php echo $this->url('settings');?>"><i class="icon-cog"></i> Einstellungen</a></li>
+                                            <li><a href="<?php echo $this->url('profile');?>"><i class="icon-user"></i> Profile</a>
+                                            <li><a href="<?php echo $this->url('settings');?>"><i class="icon-cog"></i> Settings</a></li>
                                             <li class="divider"></li>
                                             <li><a href="<?php echo $this->url('auth', array('action' => 'logout'));?>"><i class="icon-off"></i> Logout</a></li>
                                         </ul>
@@ -66,12 +66,12 @@ echo $this->doctype();
             </div>
         </div> <!-- Navbar -->
         <div class="container">
-        <!--  
+        <!--
         <?php echo $this->navigation('navigation')
         				->breadcrumbs()
         				->setMinDepth(0)
         				->setRenderInvisible(true)
-        				->setPartial('navigation/breadcrumb'); 
+        				->setPartial('navigation/breadcrumb');
         ?>
         -->
         <?php echo $this->content; ?>

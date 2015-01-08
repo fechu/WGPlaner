@@ -2,7 +2,7 @@
 use Application\Entity\Account;
 use SMCommon\View\Helper\FormatDate;
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
-echo $this->pageHeader('Konten');
+echo $this->pageHeader('Account');
 
 $table = $this->table();
 $table->setData($this->accounts);
@@ -21,7 +21,7 @@ $table->addColumn(array(
 ));
 
 $table->addColumn(array(
-	'headTitle' 	=> 'Aktionen',
+	'headTitle' 	=> 'Actions',
 	'dataMethod'	=> function(Account $account) {
 		$result = '';
 
@@ -36,13 +36,13 @@ $table->addColumn(array(
 				)
 		);
 		$editButtonGroup[] = array(
-			'title' => 'Bearbeiten',
+			'title' => 'Edit',
 			'url'	=> $editUrl
 		);
 
 		// Add the edit button in the submenu again.
 		$editButtonGroup[] = array(
-			'title' => 'Einfkaufsliste bearbeiten',
+			'title' => 'Edit Account',
 			'url'	=> $editUrl
 		);
 
@@ -51,7 +51,7 @@ $table->addColumn(array(
 			'accountid'=> $account->getId(),
 		));
 		$editButtonGroup[] = array(
-			'title' => 'Benutzer bearbeiten',
+			'title' => 'Edit users',
 			'url'	=> $editUsersUrl
 		);
 
@@ -61,15 +61,14 @@ $table->addColumn(array(
 		$addPurchaseUrl = $this->url('accounts/bills', array(
 			'accountid'	=> $account->getId(),
 		));
-		$result .= $this->prettyprint()->button($addPurchaseUrl, 'Abrechnungen');
+		$result .= $this->prettyprint()->button($addPurchaseUrl, 'Invoices');
 
 		// Add purchase button
 		$addPurchaseUrl = $this->url('accounts/purchases', array(
 			'action' 	=> 'add',
 			'accountid'	=> $account->getId(),
 		));
-		$result .= $this->prettyprint()->button($addPurchaseUrl, 'Einkauf hinzufügen');
-
+		$result .= $this->prettyprint()->button($addPurchaseUrl, 'Add purchase');
 
 		return $result;
 	}
@@ -82,5 +81,5 @@ $addAccountUrl = $this->url('accounts/action', array('action' => 'create'));
 
 <?php echo $table; ?>
 <span class="pull-right">
-	<a class="btn" href="<?php echo $addAccountUrl; ?>">Konto erstellen</a>
+	<a class="btn" href="<?php echo $addAccountUrl; ?>">Create account</a>
 </span>

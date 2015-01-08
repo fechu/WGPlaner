@@ -1,20 +1,20 @@
-<?php 
+<?php
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
-echo $this->pageHeader('API Einstellungen');
+echo $this->pageHeader('API Settings');
 
 $generateApiUrl = $this->url('settings/action', array('action' => 'generate-api-key'));
 ?>
 
-<h3>API Schlüssel</h3>
+<h3>API Key</h3>
 <?php if ($this->identity()->getApiKey()) : ?>
 <div class="well">
 	<?php echo $this->identity()->getApiKey();?>
 </div>
 <?php else: ?>
 <div class="alert alert-info alert-block">
-	<strong>Kein API Schlüssel</strong><br>
-	Sie haben noch keinen API Schlüssel. Dieser wird zum Beispiel für die iPhone Applikation verwendet. 
+	<strong>No API Key</strong><br>
+	You don't have an API key yet. E.g. it is used in the iPhone application.
 	<br>
-	Um einen Schlüssel zu generieren <a href="<?php echo $generateApiUrl; ?>">klicken Sie hier</a>.
+	To generate an API key <a href="<?php echo $generateApiUrl; ?>">click here</a>.
 </div>
 <?php endif;?>

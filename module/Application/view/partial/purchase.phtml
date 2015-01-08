@@ -9,27 +9,27 @@ $purchase = $this->purchase;
 
 <table class="table table-condensed">
 	<tr>
-		<td>Betrag</td>
+		<td>Amount</td>
 		<td><?php echo number_format($purchase->getAmount(), 2) ?> CHF</td>
 	</tr>
 	<tr>
-		<td>Geschäft</td>
+		<td>Store</td>
 		<td><?php echo $purchase->getStore()?></td>
 	</tr>
 	<tr>
-		<td>Datum</td>
+		<td>Date</td>
 		<td><?php echo $this->formatDate($purchase->getDate(), FormatDate::FORMAT_DATE);?></td>
 	</tr>
 	<tr>
-		<td>Belegnummer</td>
+		<td>Receipt number</td>
 		<td><?php echo ($purchase->getSlipNumber() ? $purchase->getSlipNumber() : "-")?></td>
 	</tr>
 	<tr>
-		<td>Beschreibung</td>
+		<td>Description</td>
 		<td><?php echo $purchase->getDescription() ?></td>
 	</tr>
 	<tr>
-		<td>Benutzer</td>
+		<td>User</td>
 		<td><?php
 			$userUrl = $this->url('user/action', array(
 				'id' => $purchase->getUser()->getId(),
@@ -39,7 +39,7 @@ $purchase = $this->purchase;
 		</td>
 	</tr>
 	<tr>
-		<td>Erstellt</td>
+		<td>Created</td>
 		<td>
 			<?php echo $this->formatDate($purchase->getCreated());?>
 			<?php if ($purchase->getCreatedWithAPI()): ?>
@@ -49,7 +49,7 @@ $purchase = $this->purchase;
 	</tr>
 	<?php if ($purchase->getCreated() != $purchase->getLastModified()) : ?>
 	<tr>
-		<td>Zuletzt bearbeitet</td>
+		<td>Last edited</td>
 		<td><?php echo $this->formatDate($purchase->getLastModified());?></td>
 	</tr>
 	<?php endif;?>

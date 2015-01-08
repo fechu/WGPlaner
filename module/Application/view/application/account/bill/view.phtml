@@ -1,6 +1,6 @@
 <?php
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
-echo $this->pageHeader($this->bill->getName(), 'Abrechnung');
+echo $this->pageHeader($this->bill->getName(), 'Invoice');
 
 // Create the table which lists all the purchases and the user
 $table = $this->purchasetable();
@@ -9,19 +9,19 @@ $table->addUserColumns($this->bill->getUsers());
 ?>
 
 <ul class="nav nav-tabs" id="tab">
-  <li class="active"><a href="#overview">Übersicht</a></li>
-  <li><a href="#purchases">Einkäufe</a></li>
+  <li class="active"><a href="#overview">Overview</a></li>
+  <li><a href="#purchases">Expenses</a></li>
 </ul>
 
 <div class="tab-content">
   <div class="tab-pane active" id="overview">
-    <h3>Gesamt</h3>
+    <h3>Total</h3>
     <table class="table table-condensed table-bordered">
     <thead>
         <tr>
-            <th>Einkaufssumme</th>
-            <th>Total Anteile</th>
-            <th>Pro Anteil</th>
+            <th>Purchase amount</th>
+            <th>Total share</th>
+            <th>Per part</th>
         </tr>
     </thead>
     <tbody>
@@ -33,14 +33,14 @@ $table->addUserColumns($this->bill->getUsers());
     </tbody>
     </table>
 
-    <h3>Benutzer</h3>
+    <h3>User</h3>
 
     <table class="table table-condensed table-bordered">
     <thead>
         <tr>
-            <th>Benutzer</th>
-            <th>Einkaufssumme</th>
-            <th>Anteil</th>
+            <th>User</th>
+            <th>Purchase Amount</th>
+            <th>Share</th>
             <th>Total</th>
         </tr>
     </thead>
@@ -50,7 +50,7 @@ $table->addUserColumns($this->bill->getUsers());
             <td><?php echo $user->getFullname()?></td>
             <td><?php echo number_format($this->bill->getAmount($user), 2) . " CHF";?></td>
             <td>
-                <?php 
+                <?php
                     // Share
                     $share = $this->bill->getUserShare($user)->getShare();
                     $percentage = $share / $this->bill->getTotalUserShare() * 100;
@@ -59,10 +59,10 @@ $table->addUserColumns($this->bill->getUsers());
                     // Amount to pay
                     $amount = $this->bill->getBillableAmount($user);
                     echo number_format($amount, 2) . " CHF ( " . $share . " / " . $percentage . "% )";
-                ?> 
+                ?>
             </td>
             <td>
-                <?php 
+                <?php
                     $totalPaid = $this->bill->getAmount($user);
                     $totalToPay = $this->bill->getBillableAmount($user);
                     $total = $totalPaid - $totalToPay;
@@ -75,18 +75,18 @@ $table->addUserColumns($this->bill->getUsers());
     </table>
   </div>
   <div class="tab-pane" id="purchases">
-    <?php echo $table ?>   
+    <?php echo $table ?>
   </div>
 </div>
 <span class="pull-right">
-    <?php 
+    <?php
         $addUserUrl = $this->url('accounts/bills', array(
             'action' 			=> 'add-user',
             'accountid'			=> $this->account->getId(),
             'billid'			=> $this->bill->getId(),
         ));
     ?>
-    <?php echo $this->prettyprint()->button($addUserUrl, 'Benutzer hinzufügen')?>
+    <?php echo $this->prettyprint()->button($addUserUrl, 'Add User')?>
 </span>
 
 

@@ -1,7 +1,7 @@
 <?php
 use SMCommon\View\Helper\FormatDate;
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
-echo $this->pageHeader('Einkauf');
+echo $this->pageHeader('Purchase');
 
 /* @var $purchase \Application\Entity\Purchase */
 $purchase = $this->purchase;
@@ -9,25 +9,25 @@ $purchase = $this->purchase;
 
 <div class="row">
 	<div class="span6">
-		<h3>Übersicht</h3>
+		<h3>Overview</h3>
 		<table class="table table-condensed">
 			<tr>
-				<td>Betrag</td>
+				<td>Amount</td>
 				<td><?php echo number_format($purchase->getAmount(), 2)?> CHF</td>
 			</tr>
 			<tr>
-				<td>Geschäft</td>
+				<td>Store</td>
 				<td><?php echo $purchase->getStore()?></td>
 			</tr>
 			<tr>
-				<td>Datum</td>
+				<td>Date</td>
 				<td><?php echo $this->formatDate($purchase->getDate(), FormatDate::FORMAT_DATE);?></td>
 			</tr>
 		</table>
 	</div>
 
 	<div class="span6">
-		<h3>Benutzer</h3>
+		<h3>User</h3>
 		<?php
 		echo $this->partial('partial/user/span6-gravatar', array(
 			'user' => $this->purchase->getUser(),

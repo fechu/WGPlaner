@@ -1,12 +1,12 @@
 <?php
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
-echo $this->pageHeader('Benutzer entfernen', $this->account->getName());
+echo $this->pageHeader('Remove user', $this->account->getName());
 
 ?>
 
 <div class="alert alert-block alert-error">
-<h4>Achtung!</h4>
-Möchten Sie den Benutzer "<?php echo $this->user->getFullname();?>" wirklich entfernen? Dieser Vorgang kann nicht Rückgängig gemacht werden.
+<h4>Warning</h4>
+Do you really want to delete the user "<?php echo $this->user->getFullname();?>"? You cannot undo this operation.
 </div>
 
 <?php

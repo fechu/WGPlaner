@@ -1,10 +1,10 @@
-<?php 
+<?php
 /**
- * A partial for displaying a purchase. 
- * 
- * Params: 
+ * A partial for displaying a purchase.
+ *
+ * Params:
  * user: required. The user you want to display
- * rows: optional.	Additional rows you want to display. Array of key value pairs, 
+ * rows: optional.	Additional rows you want to display. Array of key value pairs,
  * 					where the key is the title and the value the title.
  */
 
@@ -21,7 +21,7 @@ $rows = ($this->rows != NULL ? $this->rows : array());
 <div class="row">
 	<table class="table table-condensed span5">
 		<tr>
-			<td>Benutzername</td>
+			<td>Username</td>
 			<td><?php echo $user->getUsername()?></td>
 		</tr>
 		<tr>
@@ -35,7 +35,7 @@ $rows = ($this->rows != NULL ? $this->rows : array());
 		</tr>
 		<?php endforeach;?>
 	</table>
-	
+
 	<div class="pull-right">
 		<?php echo $this->gravatar($email)?>
 	</div>

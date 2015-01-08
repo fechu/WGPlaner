@@ -8,7 +8,7 @@ foreach ($this->form->getMessages() as $element) {
 <div class="row">
     <div class="span4 offset4">
       <div class="well">
-        <h2>WGPlaner Login</h2>
+        <h2>Login</h2>
         <form method="POST" action="" accept-charset="UTF-8">
         	<?php foreach ($messages as $message) :?>
            	<div class="alert alert-error">
@@ -16,8 +16,8 @@ foreach ($this->form->getMessages() as $element) {
             </div>
             <?php endforeach;?>
             <center>
-	            <input class="span3" placeholder="Benutzername" type="text" name="username">
-	            <input class="span3" placeholder="Passwort" type="password" name="password">
+	            <input class="span3" placeholder="Username" type="text" name="username">
+	            <input class="span3" placeholder="Password" type="password" name="password">
 	            <button class="btn-info btn" type="submit">Login</button>
             </center>
         </form>

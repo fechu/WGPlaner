@@ -32,7 +32,7 @@ class UserTable extends Table
 
     public function addUsernameColumn()
     {
-        $this->addColumn(array('Benutzername', 'getUsername'));
+        $this->addColumn(array('Username', 'getUsername'));
     }
 
     public function addEmailColumn()

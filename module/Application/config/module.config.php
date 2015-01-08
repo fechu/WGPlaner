@@ -85,7 +85,7 @@ return array(
         'default' => array(
             array(
                 'id'    => 'accounts',
-                'label' => 'Konten',
+                'label' => 'Accounts',
                 'route' => 'accounts',
                 'order' => -1,
                 'pages' => array(
@@ -95,12 +95,12 @@ return array(
                         'divider'       => true,
                     ),
                     array(
-                        'label'		=> 'Alle Konten',
+                        'label'		=> 'All accounts',
                         'route'		=> 'accounts/action',
                         'icon'          => 'icon-th-list'
                     ),
                     array(
-                        'label'		=> 'Archiv',
+                        'label'		=> 'Archive',
                         'route'		=> 'accounts/action',
                         'action'	=> 'archive',
                         'icon'          => 'icon-folder-close'

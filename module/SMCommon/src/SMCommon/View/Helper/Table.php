@@ -230,7 +230,7 @@ class Table extends AbstractHelper
 		if (count($this->data) == 0) {
 			// Show a no data entry
 			$colspan = count($this->columns) + ($this->showNumberColumn ? 1 : 0);
-			$table .= '<tr><td colspan="'.$colspan.'"><p align="center" style="font-weight:bold;">Keine Einträge</p></td></tr>';
+			$table .= '<tr><td colspan="'.$colspan.'"><p align="center" style="font-weight:bold;">No Entries</p></td></tr>';
 		}
 		else {
 			foreach ($this->data as $dataObject) {

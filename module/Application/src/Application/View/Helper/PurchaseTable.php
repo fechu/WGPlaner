@@ -12,7 +12,7 @@ use Application\Entity\Purchase;
 use SMCommon\View\Helper\FormatDate;
 
 /**
- * A table with a list of purchases. 
+ * A table with a list of purchases.
  *
  * The purchases sorted by date. The table consists of the following columns:
  *
@@ -20,8 +20,8 @@ use SMCommon\View\Helper\FormatDate;
  * - Date
  * - Store
  *
- * Optionally you can use the "addUserColumn" method to include a column for each user. 
- * The content of the column will be the the amount if the purchase belongs to this user. 
+ * Optionally you can use the "addUserColumn" method to include a column for each user.
+ * The content of the column will be the the amount if the purchase belongs to this user.
  *
  * If you want an actions column, you need to add it to yourself.
  */
@@ -35,27 +35,27 @@ class PurchaseTable extends Table
     }
 
     /**
-     * Adds all the default columns. 
+     * Adds all the default columns.
      */
     public function preparePurchaseColumns()
     {
         // Date Column
         $this->addColumn(array(
-            'headTitle'     => 'Datum',
+            'headTitle'     => 'Date',
             'dataMethod'    => function (Purchase $purchase) {
                 return $this->view->formatDate($purchase->getDate(), FormatDate::FORMAT_DATE);
             }
         ));
 
         // Store Column
-        $this->addColumn(array('Geschäft', 'getStore'));
+        $this->addColumn(array('Store', 'getStore'));
     }
 
     /**
-     * Add a column for each user in the $users array. 
+     * Add a column for each user in the $users array.
      *
      * The column contains the amount of the purchase if the purchase belongs to that users
-     * column. Otherwise it is just empty. 
+     * column. Otherwise it is just empty.
      *
      * @param $users    An array containing users. For each user a column will be added.
      */

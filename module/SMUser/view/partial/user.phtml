@@ -1,5 +1,5 @@
-<?php 
-// A partial for displaying a user. 
+<?php
+// A partial for displaying a user.
 
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
 /* @var $user \SMUser\Entity\UserInterface */
@@ -9,7 +9,7 @@ $email = $user->getEmailAddress();
 <div class="row">
 	<table class="table table-condensed span5">
 		<tr>
-			<td>Benutzername</td>
+			<td>Username</td>
 			<td><?php echo $user->getUsername()?></td>
 		</tr>
 		<tr>
@@ -17,7 +17,7 @@ $email = $user->getEmailAddress();
 			<td><a href="mailto:<?php echo $email;?>"><?php echo $email; ?></a></td>
 		</tr>
 	</table>
-	
+
 	<div class="pull-right">
 		<?php echo $this->gravatar($email)?>
 	</div>

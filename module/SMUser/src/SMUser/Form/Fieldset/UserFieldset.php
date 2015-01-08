@@ -1,7 +1,7 @@
-<?php	
+<?php
 /**
  * @file UserFieldset.php
- * @date Oct 3, 2013 
+ * @date Oct 3, 2013
  * @author Sandro Meier
  */
 
@@ -15,40 +15,40 @@ use Zend\Form\Element\Password;
 
 class UserFieldset extends Fieldset implements InputFilterProviderInterface
 {
-	
+
 	public function __construct()
 	{
 		parent::__construct('user');
-		
+
 		$hydrator = new ClassMethods(false);
 		$this->setHydrator($hydrator);
-		
+
 		// Username field
 		$this->add(
 			array(
 				'name' => 'username',
 				'type' => 'text',
 				'options' => array(
-					'label' => 'Benutzername',
+					'label' => 'Username',
 				),
 				'attributes' => array(
 					'required' => 'required'
 				)
 			)
 		);
-		
+
 		// Full name field
 		$this->add(array(
 			'name' => 'fullname',
 			'type' => 'text',
 			'options' => array(
-				'label' => 'Vollständiger Name'
+				'label' => 'Complete Name'
 			),
 			'attributes' => array(
 				'required' => 'required'
 			)
 		));
-		
+
 		// Email field
 		$this->add(array(
 			'name' => 'emailAddress',
@@ -58,7 +58,7 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
 			),
 		));
 	}
-	
+
 	public function getInputFilterSpecification()
 	{
 		$filters =  array(
@@ -71,14 +71,14 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
 			'emailAddress' => array(
 				'required' => false
 			),
-			
+
 			'password' => array(
 				'required' => true,
 				'validators' => array(
 					new StringLength(array('min' => 6)),
 				)
 			),
-			
+
 			'verify-password' => array(
 				'required' => true,
 				'validators' => array(
@@ -94,7 +94,7 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
 				),
 			)
 		);
-		
+
 		/*
 		 * This check is done because a filter failes silently if
 		* there's no element for it.
@@ -109,7 +109,7 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
 		}
 		return $finalFilters;
 	}
-	
+
 	public function setShowPasswordField($show)
 	{
 		if (!$this->has('password') && $show) {
@@ -117,7 +117,7 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
 			$passwordField = new Password();
 			$passwordField->setName('password');
 			$passwordField->setOptions(array(
-				'label' => 'Passwort'
+				'label' => 'Password'
 			));
 			$passwordField->setAttribute('required', true);
 			$this->add($passwordField);
@@ -126,7 +126,7 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
 			$this->remove('password');
 		}
 	}
-	
+
 	public function setShowVerifyPasswordField($show)
 	{
 		if (!$this->has('verify-password') && $show) {
@@ -134,7 +134,7 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
 			$verifyField = new Password();
 			$verifyField->setName('verify-password');
 			$verifyField->setOptions(array(
-				'label' => 'Passwort verifizieren'
+				'label' => 'Verify Password'
 			));
 			$this->add($verifyField);
 		}
@@ -142,5 +142,5 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
 			$this->remove('verify-password');
 		}
 	}
-	
+
 }

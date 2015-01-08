@@ -1,12 +1,11 @@
 <?php
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
-echo $this->pageHeader('Einkäufe hinzufügen', $this->bill->getName());
+echo $this->pageHeader('Add purchases', $this->bill->getName());
 ?>
 
 <div class="alert alert-info">
-	Wählen Sie eine Zeitspanne aus. Alle Einkäufe im
-	Konto <b><?php echo $this->account->getName() ?> </b>in der gegebenen Zeitspanne
-	werden der Abrechnung hinzugefügt.
+	Choose a timespan. All purchases belonging to the account <b><?php echo $this->account->getName() ?> </b> within the timespan will
+	be added to the invoice.
 </div>
 
 <?php echo $this->bootstrapForm($this->form, 'horizontal'); ?>

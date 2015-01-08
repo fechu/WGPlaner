@@ -1,8 +1,8 @@
-<?php 
+<?php
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
 /* @var $user SMUser\Entity\UserInterface */
 $user = $this->user;
-echo $this->pageHeader('Profil', $user->getFullname());
+echo $this->pageHeader('Profile', $user->getFullname());
 ?>
 
 <div class="row">
@@ -16,27 +16,27 @@ echo $this->pageHeader('Profil', $user->getFullname());
       </blockquote>
       <p>
         <i class="icon-envelope"></i> <?php echo $user->getEmailAddress()?> <br>
-        <?php 
+        <?php
 	 	$editUrl = $this->url('user/action', array(
 			'action' 	=> 'edit',
 			'id' 		=> $user->getId(),
 		));
-	
+
 		$changePasswordUrl = $this->url('user/action', array(
 			'action'	=> 'change-password',
 			'id'		=> $user->getId(),
 		));
 		echo $this->prettyprint()->splitButton(array(
 			array(
-				'title' => 'Bearbeiten',
+				'title' => 'Edit',
 				'url'	=> $editUrl,
 			),
 			array(
-				'title' => 'Bearbeiten',
+				'title' => 'Edit',
 				'url'	=> $editUrl,
 			),
 			array(
-				'title' => 'Password ändern',
+				'title' => 'Change Password',
 				'url'	=> $changePasswordUrl,
 			),
 		));

@@ -1,7 +1,7 @@
 <?php
 /**
  * @file PasswordFieldset.php
- * @date Oct 4, 2013 
+ * @date Oct 4, 2013
  * @author Sandro Meier
  */
 
@@ -15,49 +15,49 @@ use SMCommon\Form\Collection\ActionsCollection;
 use SMCommon\Form\AbstractForm;
 
 /**
- * Form that contains password and verify password fieldset. 
+ * Form that contains password and verify password fieldset.
  */
 class PasswordForm extends AbstractForm implements InputFilterProviderInterface
 {
 	/**
 	 * Password field.
-	 * 
+	 *
 	 * @var Password
 	 */
 	protected $passwordField;
-	
+
 	/**
 	 * Verify password field
-	 * 
+	 *
 	 * @var Password
 	 */
 	protected $verifyPasswordField;
-	
+
 	public function __construct()
 	{
 		parent::__construct('password');
-		
+
 		// Password field
 		$passwordField = new Password();
 		$passwordField->setName('password');
 		$passwordField->setOptions(array(
-			'label' => 'Passwort'
+			'label' => 'Password'
 		));
 		$passwordField->setAttribute('required', true);
 		$this->passwordField = $passwordField;
 		$this->add($passwordField);
-		
+
 		// Verify field (not added by default
 		$verifyField = new Password();
 		$verifyField->setName('verify-password');
 		$verifyField->setOptions(array(
-			'label' => 'Passwort verifizieren'
+			'label' => 'Verify password'
 		));
 		$this->verifyPasswordField = $verifyField;
 		$this->add($verifyField);
-		
+
 	}
-	
+
 	/**
 	 * Show/Hide the verify password field.
 	 */
@@ -70,7 +70,7 @@ class PasswordForm extends AbstractForm implements InputFilterProviderInterface
 			$this->remove('verify-password');
 		}
 	}
-	
+
 	public function getInputFilterSpecification()
 	{
 		$filters =  array(
@@ -80,7 +80,7 @@ class PasswordForm extends AbstractForm implements InputFilterProviderInterface
 					new StringLength(array('min' => 6)),
 				)
 			),
-		
+
 			'verify-password' => array(
 				'required' => true,
 				'validators' => array(
@@ -96,7 +96,7 @@ class PasswordForm extends AbstractForm implements InputFilterProviderInterface
 				),
 			)
 		);
-		
+
 		/*
 		 * This check is done because a filter failes silently if
 		* there's no element for it.
@@ -111,7 +111,7 @@ class PasswordForm extends AbstractForm implements InputFilterProviderInterface
 		}
 		return $finalFilters;
 	}
-	
+
 	/**
 	 * @return string|null	The password entered in the form or null if there was not entered a valid passowrd.
 	 */
@@ -119,5 +119,5 @@ class PasswordForm extends AbstractForm implements InputFilterProviderInterface
 	{
 		return $this->isValid ? $this->get('password')->getValue() : NULL;
 	}
-	
+
 }

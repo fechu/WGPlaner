@@ -30,21 +30,21 @@ class AccountForm extends AbstractForm
             )
         ));
 
-        // Slips enabled by default when adding new purchases. 
+        // Slips enabled by default when adding new purchases.
         $this->add(array(
-            'name' => 'slipEnabledDefault', 
+            'name' => 'slipEnabledDefault',
             'type' => 'checkbox',
             'options' => array(
-                'label' => 'Belege automatisch aktivieren',
+                'label' => 'Enable receipt number by default',
             ),
         ));
 
-        // Archive 
+        // Archive
         $this->add(array(
-            'name' => 'archived', 
+            'name' => 'archived',
             'type' => 'checkbox',
             'options' => array(
-                'label' => 'Archiviert'
+                'label' => 'Archived'
             ),
         ));
     }

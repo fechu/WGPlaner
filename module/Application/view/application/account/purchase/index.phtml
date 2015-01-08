@@ -18,7 +18,7 @@ echo $this->pageHeader($this->account->getName(), '<a href="'.$url .'">'. $subti
 
 // Perhaps we have a archived account
 if ($this->account->isArchived()) {
-    echo $this->prettyprint()->alert("Dieses Konto ist archiviert.", "warning");
+    echo $this->prettyprint()->alert("This account is archived.", "warning");
 }
 
 $table = $this->purchasetable();
@@ -26,7 +26,7 @@ $table->setData($this->purchases);
 $table->addUserColumns($this->account->getUsers());
 
 $table->addColumn(array(
-	'headTitle' 	=> 'Aktionen',
+	'headTitle' 	=> 'Actions',
 	'dataMethod'	=> function(Purchase $purchase) {
 		$url = $this->url('accounts/purchases', array(
 			'accountid' 	=> $this->account->getId(),
@@ -37,7 +37,7 @@ $table->addColumn(array(
 ));
 
 ?>
-<h3>Ausgaben</h3>
+<h3>Purchases</h3>
 <?php
 
 echo $table;
@@ -48,7 +48,7 @@ $addPurchsaeUrl = $this->url('accounts/purchases', array(
 ));
 ?>
 
-<span class="pull-right"><a class="btn" href="<?php echo $addPurchsaeUrl ?>">Einkauf hinzufügen</a></span>
+<span class="pull-right"><a class="btn" href="<?php echo $addPurchsaeUrl ?>">Add Purchase</a></span>
 
 <?php
 // Prepare urls for statistics
