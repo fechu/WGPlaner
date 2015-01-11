@@ -100,7 +100,7 @@ return array(
 	'navigation' => array(
          'default' => array(
              array(
-                 'label' => 'User',
+                 'label' => 'Users',
                  'route' => 'user',
              ),
          ),
