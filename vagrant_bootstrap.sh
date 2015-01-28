@@ -66,4 +66,5 @@ echo "Restart apache2"
 service apache2 restart
 
 echo "Finished Provisioning!"
-echo "HINT: Edit the error_reporting of PHP in /etc/php5/apache2.php.ini to get errors displaed."
+echo "HINT: Edit the error_reporting of PHP in /etc/php5/apache2/php.ini to get errors displaed."
+echo "HINT: Do not forget to edit apache's AllowOverride directive. Otherwise rewrites won't work!"
