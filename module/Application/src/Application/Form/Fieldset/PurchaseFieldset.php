@@ -29,7 +29,7 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 		$dateSelect = new Date();
 		$dateSelect->setLabel('Date');
 		$dateSelect->setName('date');
-		$dateSelect->setFormat('d.m.Y');
+		$dateSelect->setFormat('Y-m-d');
 		$dateSelect->setAttribute('class', 'datepicker');
 		$this->add($dateSelect);
 
