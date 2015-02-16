@@ -24,7 +24,7 @@ class DaterangeForm extends AbstractForm
 		$dateSelect = new Date();
 		$dateSelect->setLabel('Start date');
 		$dateSelect->setName('start-date');
-		$dateSelect->setFormat('d.m.Y');
+		$dateSelect->setFormat('Y-m-d');
 		$dateSelect->setAttribute('class', 'datepicker');
 		$this->add($dateSelect);
 
@@ -32,7 +32,7 @@ class DaterangeForm extends AbstractForm
 		$dateSelect = new Date();
 		$dateSelect->setLabel('End date');
 		$dateSelect->setName('end-date');
-		$dateSelect->setFormat('d.m.Y');
+		$dateSelect->setFormat('Y-m-d');
 		$dateSelect->setAttribute('class', 'datepicker');
 		$this->add($dateSelect);
 	}
