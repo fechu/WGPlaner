@@ -68,11 +68,24 @@ $storesCountUrl = $this->graphs()->storeCountGraph(
 	600,
 	400
 );
+$storesAmountUrl = $this->graphs()->storeAmountGraph(
+	$this->account,
+	$startdate,
+	$enddate,
+ 	-1,
+	600,
+	400
+);
 ?>
 
 <h3>Statistics</h3>
 <div class="row">
+	<div class="span3"></div>
 	<div class="span6"><img src="<?php echo $monthlyExpensesUrl; ?>"></div>
+	<div class="span3"></div>
+</div>
+<div class="row">
 	<div class="span6"><img src="<?php echo $storesCountUrl; ?>"></div>
+	<div class="span6"><img src="<?php echo $storesAmountUrl; ?>"></div>
 </div>
 

@@ -113,4 +113,60 @@ class Graphs extends AbstractHelper
 		$url = $urlHelper("api/statistic/graph", $params, array('query' => $query));
 		return $url;
 	}
+
+	/**
+	 * Creates an url to the api which returns a store amount overview pie chart.
+	 * @param Account $account 		The account from which the purchases are taken.
+	 * @param \DateTime|string $startdate  All purchases after this date will be used to generate the chart
+	 * @param \DateTime|string $enddate 	All purchases before this date will be used to generate the chart
+	 * @param int $maxStoreCount 	The number of stores that should be shown. The rest will be merged
+	 * 							 	into an "others" section.
+	 * @param int $width		 	The width of the graph
+	 * @param int $height 		 	The height of the graph
+	 */
+	public function storeAmountGraph(
+			$account = NULL,
+			$startdate = NULL,
+			$enddate = NULL,
+			$maxStoreCount = -1,
+			$width = NULL,
+			$height = NULL
+	) {
+		$query = array();
+		if ($account !== NULL) {
+			$query['accountid'] = $account->getId();
+		}
+
+		if ($startdate instanceof \DateTime) {
+			$query['startdate'] = $startdate->format('Y-m-d');
+		}
+		else if (is_string($startdate)) {
+			$query['startdate'] = $startdate;
+		}
+
+		if ($enddate instanceof \DateTime) {
+			$query['enddate'] = $enddate->format('Y-m-d');
+		}
+		else if (is_string($enddate)) {
+			$query['enddate'] = $enddate;
+		}
+
+		$query['max_store_count'] = intval($maxStoreCount);
+
+		if ($width != NULL) {
+			$query['width'] = intval($width);
+		}
+		if ($height != NULL) {
+			$query['height'] = intval($height);
+		}
+
+		$params = array('action' => 'store-amount');
+
+		/* @var $urlHelper \Zend\View\Helper\Url */
+		$urlHelper = $this->getView()->plugin('url');
+
+		// Create the url
+		$url = $urlHelper("api/statistic/graph", $params, array('query' => $query));
+		return $url;
+	}
 }
