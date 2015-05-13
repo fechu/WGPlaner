@@ -14,6 +14,7 @@ use API\Statistic\YearAccountGraph;
 use API\Controller\AbstractRestfulController;
 use API\Statistic\StoresGraph;
 use Application\Entity\Account;
+use API\Statistic\StoresAmountGraph;
 
 /**
  *
@@ -72,6 +73,45 @@ class GraphController extends AbstractRestfulController
 
 		// Create and configure the graph.
 		$graph = new StoresGraph($this->em, $startdate, $enddate, $account);
+		$graph->setMaxStoreCount($maxStoreNumber);
+
+		// Adjust the size
+		$graph->setWidth($size[0]);
+		$graph->setHeight($size[1]);
+
+		$graph->getGraph()->Stroke();
+	}
+
+	public function storeAmountAction()
+	{
+		// Get the account
+		$account = $this->getAccount();
+
+		if ($account != NULL) {
+			// Check if the user has access to that account
+			if (!in_array($this->identity(), $account->getUsers())) {
+				return $this->forbiddenResponse('You have no access to this account.');
+			}
+		}
+
+		// Get start & end date
+		$startdate = $this->params()->fromQuery('startdate', null);
+		$enddate = $this->params()->fromQuery('enddate', null);
+		if ($startdate) {
+			$startdate = new \DateTime($startdate);
+		}
+		if ($enddate) {
+			$enddate = new \DateTime($enddate);
+		}
+
+		// Get the max_store_number
+		$maxStoreNumber = intval($this->params()->fromQuery('max_store_count', -1));
+
+		// Get the size
+		$size = $this->getGraphSize(500,500);
+
+		// Create and configure the graph.
+		$graph = new StoresAmountGraph($this->em, $startdate, $enddate, $account);
 		$graph->setMaxStoreCount($maxStoreNumber);
 
 		// Adjust the size

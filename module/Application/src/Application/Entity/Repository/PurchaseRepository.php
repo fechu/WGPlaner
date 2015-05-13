@@ -229,7 +229,20 @@ class PurchaseRepository extends EntityRepository
 
 		$result = $query->getQuery()->getResult();
 
-		// Bring it into an associative array.
+		return $result;
+	}
+
+	public function findStoreAmountInRange($startDate, $endDate, $account = NULL)
+	{
+		$query = $this->getRangeQueryBuilder($startDate, $endDate, $account);
+
+		// Adjust the query
+		$query->select('purchase.store, SUM(purchase.amount) AS amount');
+		$query->groupBY('purchase.store');
+		$query->orderBy('amount', 'DESC');
+
+		$result = $query->getQuery()->getResult();
+
 		return $result;
 	}
 
