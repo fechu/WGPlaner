@@ -29,9 +29,8 @@ class Graphs extends AbstractHelper
 	 * @param int $width The width of the graph.
 	 * @param int $height The height of the graph.
 	 */
-	public function monthlyExpensesGraph($account, $month = NULL, $width = NULL, $height = NULL)
+	public function monthlyExpensesGraph($account, $month = NULL, $width = NULL, $height = NULL, $maxAmount = -1)
 	{
-
 		// Prepare query parameters
 		$query = array(
 			"accountid" => $account->getId()
@@ -49,6 +48,10 @@ class Graphs extends AbstractHelper
 		}
 
 		$params = array( 'action' => 'monthly-expenses');
+
+		if ($maxAmount > 0) {
+			$query["max_amount"] = $maxAmount;
+		}
 
 		/* @var $urlHelper \Zend\View\Helper\Url */
 		$urlHelper = $this->getView()->plugin('url');

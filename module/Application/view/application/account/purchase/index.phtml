@@ -54,6 +54,13 @@ $addPurchsaeUrl = $this->url('accounts/purchases', array(
 // Prepare urls for statistics
 $startdate = $this->startDate->format('Y-m-d');
 $enddate = $this->endDate->format('Y-m-d');
+$monthlyExpensesLimitedUrl = $this->graphs()->monthlyExpensesGraph(
+	$this->account,
+	$this->endDate->format('Y-m'),
+	600,
+    350,
+	200
+);
 $monthlyExpensesUrl = $this->graphs()->monthlyExpensesGraph(
 	$this->account,
 	$this->endDate->format('Y-m'),
@@ -80,9 +87,8 @@ $storesAmountUrl = $this->graphs()->storeAmountGraph(
 
 <h3>Statistics</h3>
 <div class="row">
-	<div class="span3"></div>
 	<div class="span6"><img src="<?php echo $monthlyExpensesUrl; ?>"></div>
-	<div class="span3"></div>
+	<div class="span6"><img src="<?php echo $monthlyExpensesLimitedUrl; ?>"></div>
 </div>
 <div class="row">
 	<div class="span6"><img src="<?php echo $storesCountUrl; ?>"></div>

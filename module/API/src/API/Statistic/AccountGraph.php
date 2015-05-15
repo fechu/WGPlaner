@@ -37,6 +37,13 @@ class AccountGraph extends Graph {
 	 */
 	protected $endDate;
 
+	/**
+	 * The maximum amount which should be shown in the graph.
+	 * Negative numbers indicate no maximum.
+	 * Default: -1
+	 * @var Integer
+	 */
+	protected $maxAmount;
 
 	/**
 	 * Create a new AccountGraph
@@ -57,7 +64,11 @@ class AccountGraph extends Graph {
 
 		// Configure the graph
 		$graph = new \Graph($this->getWidth(), $this->getHeight());
-		$graph->title->Set($this->account->getName());
+		$graphTitle = $this->account->getName();
+		if ($this->maxAmount > 0) {
+			$graphTitle = $graphTitle . " (Expenses up to " . $this->maxAmount . " CHF)";
+		}
+		$graph->title->Set($graphTitle);
 		$graph->SetScale('textlin');
 
 		// Set margin depending on date type
@@ -88,7 +99,7 @@ class AccountGraph extends Graph {
 	{
 		/* @var $repo \Application\Entity\Repository\PurchaseRepository */
 		$repo = $this->em->getRepository('Application\Entity\Purchase');
-		$data = $repo->findDailyAmountInRange($this->startDate, $this->endDate, $this->account);
+		$data = $repo->findDailyAmountInRange($this->startDate, $this->endDate, $this->account, $this->maxAmount);
 
 		// We need to bring the data in the right form.
 		$dates = array_map(function($entry) {
@@ -121,5 +132,12 @@ class AccountGraph extends Graph {
 		$this->endDate = $endDate;
 		return $this;
 	}
+
+	public function setMaxAmount($maxAmount) {
+		$this->maxAmount = $maxAmount;
+		return $this;
+	}
+
+
 
 }

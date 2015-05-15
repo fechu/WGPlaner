@@ -82,6 +82,19 @@ class GraphController extends AbstractRestfulController
 		$graph->getGraph()->Stroke();
 	}
 
+	/**
+	 * Returns a pie chart containing the absolute counts of the stores of the purchases.
+	 *
+	 * The following GET parameters can be used
+	 * accountid: The ID of the account. Can also be NULL.
+	 * startdate: A date of the form Y-m-d. If not given, all purchases will be used til enddate.
+	 * enddate: A date of the form Y-m-d. If not given, all purchases from startdate onwards
+	 * 			will be used.
+	 * max_store_count: The maximal number of stores which should be shown. All others are combined
+	 * 					 in a "others" section.
+	 * height: Default 500
+	 * width: Default 500
+	 */
 	public function storeAmountAction()
 	{
 		// Get the account
@@ -170,6 +183,8 @@ class GraphController extends AbstractRestfulController
 	 *  accountid: The ID of the account which should be used.
 	 *  month:  A month in the Format Y-m (e.g. 2014-05). If this is not supplied, the current month
 	 *  		will be used.
+	 * 	max_amount: The maximum amount of purchases that should be listed. Purchases with a higher
+	 * 				will just not be drawn.
 	 */
 	public function monthlyExpensesAction()
 	{
@@ -193,6 +208,10 @@ class GraphController extends AbstractRestfulController
 			$size = $this->getGraphSize();
 			$accountGraph->setWidth($size[0]);
 			$accountGraph->setHeight($size[1]);
+
+           	// Get the amount
+            $maxAmount = intval($this->params()->fromQuery('max_amount', -1));
+			$accountGraph->setMaxAmount($maxAmount);
 
 			// Render the graph
 			$accountGraph->getGraph()->Stroke();

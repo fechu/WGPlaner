@@ -64,8 +64,10 @@ class PurchaseRepository extends EntityRepository
 	 * @param \DateTime $startDate
 	 * @param \DateTime $endDate
 	 * @param Account $account
+	 * @param int $maxAmount	The maximum amount to show. All purchases that have a higher amount
+	 * 							are not taken into account.
 	 */
-	public function findDailyAmountInRange($startDate, $endDate, $account = NULL)
+	public function findDailyAmountInRange($startDate, $endDate, $account = NULL, $maxAmount = -1)
 	{
 		// Eliminate time parts in start and enddate
 		$startDate = new \DateTime($startDate->format('Y-m-d'));
@@ -81,6 +83,10 @@ class PurchaseRepository extends EntityRepository
 			$sql .= " AND account_id = ?";
 		}
 
+		if ($maxAmount > 0) {
+			$sql .= " AND amount <= ?";
+		}
+
 		$sql .= " GROUP BY date ORDER BY date ASC";
 
 		$statement = $this->getEntityManager()->getConnection()->prepare($sql);
@@ -88,6 +94,10 @@ class PurchaseRepository extends EntityRepository
 
 		if ($account) {
 			$arguments[] = $account->getId();
+		}
+
+		if ($maxAmount > 0) {
+			$arguments[] = $maxAmount;
 		}
 
 		$statement->execute($arguments);
