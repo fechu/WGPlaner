@@ -10,6 +10,7 @@ namespace Application\Controller\Account;
 use Application\Entity\Account;
 use Application\Form\PurchaseForm;
 use Application\Entity\Purchase;
+use Zend\Form\FormInterface;
 
 class PurchaseController extends AbstractAccountController
 {
@@ -103,14 +104,16 @@ class PurchaseController extends AbstractAccountController
         if ($request->isPost()) {
             $form->setData($request->getPost());
             if ($form->isValid()) {
+
                 // Set the logged in user user who did the purchase.
                 $purchase->setUser($this->identity());
                 $purchase->setAccount($account); 	// Add the purchase to this list.
                 $this->em->persist($purchase);
                 $this->em->flush();
 
-                // Show all purchases of the account
-                return $this->redirect()->toRoute(
+				if ($request->getPost('add_another', false) === false) {
+                	// Show all purchases of the account
+                	return $this->redirect()->toRoute(
                 		'accounts/purchases',
                 		array(
                     		'accountid' 	=> $account->getId(),
@@ -119,7 +122,15 @@ class PurchaseController extends AbstractAccountController
                 			'startdate'		=> $purchase->getDate()->format('01-m-Y'),
                 			'enddate'		=> $purchase->getDate()->format('t-m-Y')
                 		))
-                );
+                	);
+				}
+				else {
+					// The user wants to add another purchase
+					$form = new PurchaseForm($this->em);
+					$form->bind(new Purchase());
+					$form->setHasSlip($account->getSlipEnabledDefault());
+					// TODO: Show flash message to inform the user about successful saving
+				}
             }
         } else {
             // Set default slip number

@@ -27,6 +27,9 @@ class PurchaseForm extends AbstractForm
 		$this->fieldset = $fieldset;
 		$this->add($fieldset);
 		$this->setAttribute("autocomplete", "off");
+
+		// Show the "Add Another" button
+		$this->actionCollection->setShowAddAnotherButton(true);
 	}
 
 	/**

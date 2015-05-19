@@ -9,17 +9,17 @@ use \Zend\Form\Element\Collection;
  */
 class ActionsCollection extends Collection
 {
-	public function __construct($submitButtonTitle = 'Speichern', $buttonType = 'primary')
+	public function __construct($submitButtonTitle = 'Save', $buttonType = 'primary')
 	{
 		parent::__construct('actions');
-		
+
 		// This is not a dynamic element
 		$this->setAllowAdd(false);
 		$this->setAllowRemove(false);
-		
+
 		// Set the class
 		$this->setAttribute('class', 'form-actions');
-		
+
 		// Add the Save button
 		$this->add(array(
 			'name' => 'submit',
@@ -35,25 +35,50 @@ class ActionsCollection extends Collection
 			)
 		));
 	}
-	
+
+	public function setShowAddAnotherButton($show)
+	{
+		if ($show) {
+			// Add it!
+			$this->add(array(
+				'name' => 'add_another',
+				'attributes' => array(
+					'type' => 'submit',
+					'value' => 'Add Another',
+					'class' => 'btn btn-primary',
+				),
+				'options' => array(
+					'bootstrap' => array(
+						'style' => 'inline'
+					)
+				)
+			));
+			$this->setPriority('add_another', 100);
+		}
+		else {
+			// Remove it
+			$this->remove('add_another');
+		}
+	}
+
 	/**
 	 * Set the title of the submit button.
-	 * 
-	 * @param string $title The title you want to give to the button. 
+	 *
+	 * @param string $title The title you want to give to the button.
 	 */
 	public function setSubmitButtonTitle($title)
 	{
 		$button = $this->get('submit');
 		$button->setAttribute('value', $title);
 	}
-	
+
 	/**
-	 * Set the type of the submit button. 
-	 * 
+	 * Set the type of the submit button.
+	 *
 	 * @param string $type The type of the button. For example primary.'
 	 * @see Twitter Bootstrap 2.x documentation about available button types.
 	 */
-	public function setSubmitButtonType($type) 
+	public function setSubmitButtonType($type)
 	{
 		$button = $this->get('submit');
 		$button->setAttribute('class', 'btn btn-' . $type);
