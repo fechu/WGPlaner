@@ -44,7 +44,7 @@ class ActionsCollection extends Collection
 				'name' => 'add_another',
 				'attributes' => array(
 					'type' => 'submit',
-					'value' => 'Add Another',
+					'value' => 'Save & New',
 					'class' => 'btn btn-primary',
 				),
 				'options' => array(

@@ -98,6 +98,7 @@ class PurchaseController extends AbstractAccountController
         $purchase = new Purchase();
         $form->bind($purchase);
         $form->setHasSlip($account->getSlipEnabledDefault());
+        $form->getActionCollection()->setShowAddAnotherButton(true);
 
         /* @var $request \Zend\Http\Request */
         $request = $this->getRequest();
@@ -129,6 +130,7 @@ class PurchaseController extends AbstractAccountController
 					$form = new PurchaseForm($this->em);
 					$form->bind(new Purchase());
 					$form->setHasSlip($account->getSlipEnabledDefault());
+					$form->getActionCollection()->setShowAddAnotherButton(true);
 					// TODO: Show flash message to inform the user about successful saving
 				}
             }
