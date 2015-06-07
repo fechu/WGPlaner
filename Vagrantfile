@@ -8,7 +8,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision :shell, path: "vagrant_bootstrap.sh"
 
   # Private Network is needed for NFS file sharing
-  config.vm.network "private_network", ip: "192.168.1.92"
+  config.vm.network "private_network", ip: "10.1.1.33"
 
   # Bind ports 
   config.vm.network :forwarded_port, host:8080, guest: 80
