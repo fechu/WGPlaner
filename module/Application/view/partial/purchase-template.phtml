@@ -23,16 +23,32 @@ $templates = $this->purchaseTemplates;
 		<td>
 
             <?php if (count($template->getContents()) > 0) : ?>
-			<?php foreach($template->getContents() as $content) : ?>
-			<div class="btn btn-small"><?php echo $content->getDescription(); ?></div>
+			<?php
+				foreach($template->getContents() as $content) :
+					$store = $template->getDefaultStore();
+					$desc = $content->getDescription();
+					$price = $content->getPrice();
+					$formFiller = "fillFormWithTemplateData('" . $store . "', '" . $desc . "', '" . $price ."')";
+			?>
+			<div class="btn btn-small" onclick="<?php echo $formFiller; ?>"><?php echo $content->getDescription(); ?></div>
 			<?php endforeach; ?>
 			<?php else: ?>
 			<?php foreach($template->getStores() as $store) : ?>
 			<div class="btn-group">
 				<a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $store->getName(); ?> <span class="caret"></span></a>
 				<ul class="dropdown-menu">
-					<?php foreach($store->getContents() as $content) : ?>
-            		<li><a href="#"><?php echo $content->getDescription() . " - " . $content->getPrice() . " CHF"; ?></a></li>
+					<?php
+						foreach($store->getContents() as $content) :
+                        	$storeName = $store->getName();
+							$desc = $content->getDescription();
+							$price = $content->getPrice();
+							$formFiller = "fillFormWithTemplateData('" . $storeName . "', '" . $desc . "', '" . $price ."')";
+					?>
+            		<li>
+            			<a href="#" onclick="<?php echo $formFiller; ?>">
+            			<?php echo $content->getDescription() . " - " . $content->getPrice() . " CHF"; ?>
+            			</a>
+            		</li>
     				<?php endforeach; ?>
            		</ul>
 			</div>
@@ -43,6 +59,14 @@ $templates = $this->purchaseTemplates;
 <?php endforeach;?>
 </tbody>
 </table>
+
+<script type="text/javascript">
+function fillFormWithTemplateData(store, description, amount) {
+	$("input[name='PurchaseFieldset[store]']").attr("value", store);
+	$("input[name='PurchaseFieldset[description]']").attr("value", description);
+	$("input[name='PurchaseFieldset[amount]']").attr("value", amount);
+}
+</script>
 
 
 <?php endif; ?>
