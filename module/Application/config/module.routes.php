@@ -20,6 +20,29 @@ return array(
             ),
         ),
     ),
+    'administration' => array(
+        'type' => 'Segment',
+        'options' => array(
+            'route'    => '/administration',
+            'defaults' => array(
+                '__NAMESPACE__' => 'Application\Controller',
+                'controller' 	=> 'Administration',
+                'action'     	=> 'index',
+            ),
+        ),
+        'may_terminate' => true,
+        'child_routes' => array(
+            'action' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'		=> '[/:action]',
+                    'constraints' 	=> array(
+                        'action'    	=> '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                ),
+            ),
+        ),
+    ),
     'settings' => array(
         'type' => 'Segment',
         'options' => array(

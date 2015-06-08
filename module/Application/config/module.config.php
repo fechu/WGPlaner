@@ -38,6 +38,7 @@ return array(
             'Application\Controller\Account\Purchase'	=> 'Application\Controller\Account\PurchaseController',
             'Application\Controller\Account\Bill'	=> 'Application\Controller\Account\BillController',
             'Application\Controller\Settings'		=> 'Application\Controller\SettingsController',
+            'Application\Controller\Administration'		=> 'Application\Controller\AdministrationController',
         ),
     ),
     'view_manager' => array(
@@ -107,6 +108,12 @@ return array(
                     ),
                 ),
             ),
+            array(
+            	'id' 	=> 'administration',
+            	'label' => 'Administration',
+            	'route' => 'administration',
+            	'order' => 10
+            )
         ),
     ),
 );

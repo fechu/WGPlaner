@@ -1,0 +1,15 @@
+<?php
+$mergeStoresUrl = $this->url(
+	'administration/action',
+     array(
+		'action' 	=> 'merge-stores',
+	)
+);
+?>
+<?php echo $this->pageHeader('Administration')?>
+
+<div class="row">
+	<div class="span12">
+		<a href="<?php echo $mergeStoresUrl; ?>" class="btn btn-large">Merge Stores</a>
+	</div>
+</div>

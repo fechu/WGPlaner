@@ -1,0 +1,13 @@
+<?php
+$form = $this->form;
+?>
+<?php echo $this->pageHeader('Merge Stores')?>
+
+<form>
+	<div class="row">
+		<div class="span5"><?php echo $this->formElement($form->get('toMerge')); ?></div>
+		<div class="span2"> <center><b>into</b></center> </div>
+		<div class="span5"><?php echo $this->formElement($form->get('mergeTarget')); ?></div>
+	</div>
+	<?php echo $this->formElement($form->get('actions')); ?>
+</form>
