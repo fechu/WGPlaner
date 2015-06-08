@@ -12,6 +12,7 @@ Vagrant.configure(2) do |config|
 
   # Bind ports 
   config.vm.network :forwarded_port, host:8080, guest: 80
+  config.vm.network :forwarded_port, host:3306, guest: 3306
 
   # Use NFS file system. Default shared system of Virtualbox is very slow.
   config.vm.synced_folder ".", "/vagrant", type: "nfs"
