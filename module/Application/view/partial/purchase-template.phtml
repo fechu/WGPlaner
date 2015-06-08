@@ -1,0 +1,48 @@
+<?php
+/**
+ * A partial which displays the selection of a purchase template.
+ * This partial will automatically fill any purchase form which is present.
+ *
+ * Parameters:
+ *  - purchaseTemplates
+ */
+
+$templates = $this->purchaseTemplates;
+?>
+
+<?php if (count($templates) > 0): ?>
+
+<h4>Templates</h4>
+
+
+<table class="table">
+<tbody>
+<?php foreach( $templates as $template) : ?>
+	<tr>
+		<td><?php echo $template->getName(); ?>: </td>
+		<td>
+
+            <?php if (count($template->getContents()) > 0) : ?>
+			<?php foreach($template->getContents() as $content) : ?>
+			<div class="btn btn-small"><?php echo $content->getDescription(); ?></div>
+			<?php endforeach; ?>
+			<?php else: ?>
+			<?php foreach($template->getStores() as $store) : ?>
+			<div class="btn-group">
+				<a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $store->getName(); ?> <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<?php foreach($store->getContents() as $content) : ?>
+            		<li><a href="#"><?php echo $content->getDescription() . " - " . $content->getPrice() . " CHF"; ?></a></li>
+    				<?php endforeach; ?>
+           		</ul>
+			</div>
+			<?php endforeach; ?>
+			<?php endif;?>
+		</td>
+	</tr>
+<?php endforeach;?>
+</tbody>
+</table>
+
+
+<?php endif; ?>

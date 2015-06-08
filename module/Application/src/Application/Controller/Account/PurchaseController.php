@@ -144,6 +144,7 @@ class PurchaseController extends AbstractAccountController
         return array(
             'form' 		=> $form,
             'account' 	=> $account,
+        	'purchaseTemplates' => $this->identity()->getPurchaseTemplates(),
         );
     }
 

@@ -1,9 +1,23 @@
 <?php
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
 echo $this->pageHeader('Add Purchase', $this->account->getName());
+?>
 
-echo $this->bootstrapForm($this->form, 'horizontal');
 
+<div class="row">
+	<div class="span6">
+        <?php echo $this->bootstrapForm($this->form, 'horizontal'); ?>
+	</div>
+	<div class="span6">
+		<?php
+		echo $this->partial('partial/purchase-template', array(
+			'purchaseTemplates' => $this->purchaseTemplates
+		));
+		?>
+	</div>
+</div>
+
+<?php
 // Add the javascript specific for this page
 $this->inlineScript()->appendFile($this->basePath() . '/js/application/account/add-purchase.js');
 ?>

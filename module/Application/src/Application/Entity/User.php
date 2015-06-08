@@ -75,6 +75,13 @@ class User extends AbstractEntity implements UserInterface, RoleInterface
 	 */
 	protected $accounts;
 
+	/**
+	 * The templates which belong to this user
+	 *
+	 * @var ArrayCollection
+	 * @ORM\OneToMany(targetEntity="Application\Entity\PurchaseTemplate", mappedBy="user")
+	 */
+	protected $purchaseTemplates;
 
 	public function __construct()
 	{
@@ -190,6 +197,12 @@ class User extends AbstractEntity implements UserInterface, RoleInterface
 		$this->accounts[] = $account;
 	}
 
+	public function getPurchaseTemplates()
+	{
+		return $this->purchaseTemplates;
+	}
+
+
 	public function getRoleId()
 	{
 		return 'user';
@@ -199,5 +212,6 @@ class User extends AbstractEntity implements UserInterface, RoleInterface
 	{
 		return "{ User(". $this->getId() .") name: ". $this->getUsername() ."  }";
 	}
+
 
 }

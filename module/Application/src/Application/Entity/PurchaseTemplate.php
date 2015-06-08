@@ -17,6 +17,15 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class PurchaseTemplate extends AbstractEntity
 {
+
+	/**
+	 * The name of the template
+	 *
+	 * @var String
+     * @ORM\Column(type="string")
+	 */
+	protected $name;
+
 	/**
 	 * Name of the store where you bought the things.
 	 *
@@ -46,7 +55,7 @@ class PurchaseTemplate extends AbstractEntity
 	/**
 	 * The user who owns the template
 	 *
-	 * @ORM\ManyToOne(targetEntity="Application\Entity\User")
+	 * @ORM\ManyToOne(targetEntity="Application\Entity\User", inversedBy="templates")
 	 */
 	protected $user;
 
@@ -71,5 +80,9 @@ class PurchaseTemplate extends AbstractEntity
 
 	public function getUser() {
 		return $this->user;
+	}
+
+	public function getName() {
+		return $this->name;
 	}
 }
