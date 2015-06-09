@@ -8,8 +8,28 @@ $mergeStoresUrl = $this->url(
 ?>
 <?php echo $this->pageHeader('Administration')?>
 
+	<div class="alert alert-warning">
+		Use this page only if you know what you are doing!
+	</div>
 <div class="row">
-	<div class="span12">
+	<div class="span8">
+		<h3>Duplicate stores</h3>
+		<table class="table table-condensed table-bordered">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Store 1</th>
+					<th>Store 2</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+			<!-- TODO: Fill in duplicate stores -->
+			</tbody>
+		</table>
+	</div>
+	<div class="span4">
+		<h3>Stores</h3>
 		<a href="<?php echo $mergeStoresUrl; ?>" class="btn btn-large">Merge Stores</a>
 	</div>
 </div>
