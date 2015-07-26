@@ -36,7 +36,12 @@ $purchases = $this->purchases;
 		?>
 	    <?php endif; ?>
 	    <?php
-	    $verifyUrl = "TODO";
+	    $params = array(
+		'action' => 'verify',
+		'accountid' => $purchase->getAccount()->getId(),
+		'purchaseid' => $purchase->getId()
+	    );
+	    $verifyUrl = $this->url('accounts/purchases', $params);
 	    echo $this->prettyprint()->button($verifyUrl, 'Verifiy', 'success');
 	    ?>
 	</div>

@@ -209,4 +209,16 @@ class PurchaseController extends AbstractAccountController
         );
     }
 
+    /**
+     * Verify a purchase.
+     */
+    public function verifyAction()
+    {
+	$purchase = $this->getPurchase();
+	$purchase->verify();
+	$this->em->flush();
+
+	$this->redirect()->toRoute('home');
+    }
+
 }
