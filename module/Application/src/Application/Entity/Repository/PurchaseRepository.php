@@ -46,6 +46,23 @@ class PurchaseRepository extends EntityRepository
 	}
 
 	/**
+	 * Finds all purchases that are not verified. 
+	 * @param User $user
+	 */
+	public function findNotVerifiedPurchases($user = NULL)
+	{
+	    $query = $this->createQueryBuilder('p');
+	    $query->where('p.verified = 0');
+	    if ($user != NULL) {
+		$query->andWhere('p.user = :user');
+		$query->setParameter('user', $user);
+	    }
+
+	    $result = $query->getQuery()->getResult();
+	    return $result;
+	}
+
+	/**
 	 * Find purchases in a date range (including dates)
 	 * @param \DateTime $startDate
 	 * @param \DateTime $endDate

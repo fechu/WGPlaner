@@ -14,8 +14,8 @@ return array(
         'options' => array(
             'route'    => '/',
             'defaults' => array(
-                '__NAMESPACE__' => 'Application\Controller\Account',
-                'controller' 	=> 'Account',
+                '__NAMESPACE__' => 'Application\Controller',
+                'controller' 	=> 'Index',
                 'action'     	=> 'index',
             ),
         ),

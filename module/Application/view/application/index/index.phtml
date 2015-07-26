@@ -1,0 +1,46 @@
+<?php
+/* @var $this SMCommon\View\Renderer\PhpRenderer */
+echo $this->pageHeader('Not verified purchases');
+
+$purchases = $this->purchases;
+?>
+
+<?php foreach ($purchases as $purchase): ?>
+
+<div class="row">
+    <div class="span8">
+	<h3>Details</h3>
+		<?php
+		echo $this->partial('partial/purchase', array(
+		    'purchase' => $purchase,
+		    ));
+		?>
+    </div>
+
+    <div class="span4">
+	<h3>Receipt</h3>
+	TODO
+    </div>
+</div>
+<div class="row">
+    <div class="well">
+	    <?php if ($this->acl($this->identity(), $purchase, 'edit')) :?>
+		<?php
+		$params = array(
+		    'action' => 'edit',
+		    'accountid' => $purchase->getAccount()->getId(),
+		    'purchaseid' => $purchase->getId()
+		);
+		$editUrl = $this->url('accounts/purchases', $params);
+		echo $this->prettyprint()->button($editUrl, 'Bearbeiten');
+		?>
+	    <?php endif; ?>
+	    <?php
+	    $verifyUrl = "TODO";
+	    echo $this->prettyprint()->button($verifyUrl, 'Verifiy', 'success');
+	    ?>
+	</div>
+</div>
+
+
+<?php endforeach; ?>
