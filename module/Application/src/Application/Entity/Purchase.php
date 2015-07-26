@@ -85,6 +85,19 @@ class Purchase extends AbstractEntity implements ResourceInterface
 	 */
 	protected $createdWithAPI;
 
+	/**
+	 * Is this purchase verified. 
+	 * This is by default true. If the purchase is created automatically 
+	 * (e.g. by scanning a receipt) it is advised to set this to false. 
+	 * The coupon will then get special attention from the user which has to
+	 * verify it actively.
+	 * 
+	 * @var boolean
+	 * 
+	 * @ORM\Column(type="boolean")
+	 */
+	protected $verified = true;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -192,6 +205,31 @@ class Purchase extends AbstractEntity implements ResourceInterface
 	public function setCreatedWithAPI($createdWithAPI)
 	{
 		$this->createdWithAPI = $createdWithAPI;
+	}
+
+	/**
+	 * 
+	 * @return boolean
+	 */
+	function getVerified() 
+	{
+	    return $this->verified;
+	}
+
+	/*
+	 * @param boolean $verified
+	 */
+	function setVerified($verified) 
+	{
+	    $this->verified = $verified;
+	}
+
+	/**
+	 * Verifies the purchase. 
+	 */
+	function verify()
+	{
+	    $this->verified = true;
 	}
 
 	/**
