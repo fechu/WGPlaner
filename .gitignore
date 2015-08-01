@@ -11,6 +11,7 @@ composer.lock
 vendor/bin
 data/application.log
 data/DoctrineORMModule
+data/receipts
 
 # Swap files
 *.swp

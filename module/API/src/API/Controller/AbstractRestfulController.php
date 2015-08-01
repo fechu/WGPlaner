@@ -71,7 +71,7 @@ class AbstractRestfulController extends SMCommonRestfulController
 	}
 
 	/**
-	 * Takes the id from the route and fetches the purchase list.
+	 * Takes the id from the route and fetches the account.
 	 * @return Account
 	 */
 	protected function getAccount()
@@ -81,6 +81,19 @@ class AbstractRestfulController extends SMCommonRestfulController
 		/* @var $repo \Application\Entity\Repository\AccountRepository */
 		$repo = $this->em->getRepository('Application\Entity\Account');
 
+		return $repo->find($id);
+	}
+
+	/**
+	 * Takes the id from the route and fetches the purchase.
+	 * @return Application\Entity\Purchase The purchase or nil if it doesn't exist.
+	 */
+	protected function getPurchase()
+	{
+		$id = $this->getId('purchase');
+
+		$repo = $this->em->getRepository('Application\Entity\Purchase');
+		
 		return $repo->find($id);
 	}
 }

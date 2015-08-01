@@ -7,7 +7,6 @@
 
 namespace API\Controller;
 
-use Zend\View\Model\JsonModel;
 use Application\Form\PurchaseForm;
 use Application\Entity\Purchase;
 
@@ -56,5 +55,53 @@ class PurchaseController extends AbstractRestfulController
 			'form' => $form,
 			'account' => $account,
 		);
+	}
+
+	/**
+	 * Add a receipt to a purchase. 
+	 * 
+	 * This method will overwrite any previous purchases without warning. 
+	 */
+	public function receiptAction()
+	{
+
+	    // Check if the given purchase exists
+	    $purchase = $this->getPurchase();
+	    if ($purchase == NULL) {
+		return $this->badRequestResponse("Purchase does not exist.");
+	    }
+	    
+	    $form = new \SMCommon\Form\UploadForm('upload-form', 'receipt');
+
+	    $request = $this->getRequest();
+	    if ($request->isPost()) {
+		// Merge data and files
+		$post = array_merge_recursive(
+			$request->getPost()->toArray(),
+			$request->getFiles()->toArray()
+		);
+
+		$form->setData($post);
+		if ($form->isValid()) {
+		    $data = $form->getData();
+		    $file = $data['receipt'];
+
+		    if ($file == NULL) {
+			return $this->badRequestResponse('Received file is NULL.');
+		    }
+
+		    // Move the file to the right folder
+		    $dest = './data/receipts/' . $purchase->getId() . '.jpg';
+		    move_uploaded_file($file['tmp_name'], $dest);
+
+		    // Save that the purchase has a receipt now.
+
+
+		    return $this->createdResponse();
+		}
+
+		return $this->badRequestResponse($form->getMessages());
+	    }
+
 	}
 }
