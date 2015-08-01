@@ -74,3 +74,23 @@ Add a new purchase to an account.
 **Response:**
 
 	HTTP Status: 201
+	
+
+---
+
+###`POST accounts/[accountid]/purchases/[purchaseid]/receipt`
+
+Add a receipt (image) to a purchase.
+
+**Parameters:** 
+
+`accountid`: An id of an account. 
+`purchaseid`: An id of a purchase.
+
+**Request:** `POST /api/accounts/1/purchases/43/receipt`
+
+Send the image as `multipart/form-data` under the key `receipt`
+
+**Response:**
+
+	HTTP Status: 201
