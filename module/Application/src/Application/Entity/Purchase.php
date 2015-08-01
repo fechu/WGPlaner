@@ -33,6 +33,16 @@ class Purchase extends AbstractEntity implements ResourceInterface
 	protected $slipNumber;
 
 	/**
+	 * Is a receipt available for this purchase. 
+	 * Use the API to get the image. 
+	 * 
+	 * @var boolean
+	 * 
+	 * @ORM\Column(type="boolean")
+	 */
+	protected $hasReceipt = false;
+
+	/**
 	 * Name of the store where you bought the things.
 	 *
 	 * @ORM\Column(type="string", nullable=true)
@@ -98,6 +108,7 @@ class Purchase extends AbstractEntity implements ResourceInterface
 	 */
 	protected $verified = true;
 
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -130,6 +141,21 @@ class Purchase extends AbstractEntity implements ResourceInterface
 	public function getSlipNumber()
 	{
 		return $this->slipNumber;
+	}
+
+	public function setHasReceipt($hasReceipt)
+	{
+		$this->hasReceipt = $hasReceipt;
+	}
+
+	public function getHasReceipt()
+	{
+		return $this->hasReceipt;
+	}
+
+	public function hasReceipt()
+	{
+	    return $this->getHasReceipt();
 	}
 
 	public function setStore($store)

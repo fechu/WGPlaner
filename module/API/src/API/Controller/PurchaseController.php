@@ -95,7 +95,8 @@ class PurchaseController extends AbstractRestfulController
 		    move_uploaded_file($file['tmp_name'], $dest);
 
 		    // Save that the purchase has a receipt now.
-
+		    $purchase->setHasReceipt(true);
+		    $this->em->flush();
 
 		    return $this->createdResponse();
 		}
