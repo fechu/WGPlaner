@@ -102,6 +102,7 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 				'required' => 'required'
 			)
 		));
+
 	}
 
 	public function getInputFilterSpecification()
@@ -110,6 +111,10 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 			'hasSlip' => array(
 				'required' 		=> false,
 				'allow_empty' 	=> true
+			),
+		    	'verified' => array(
+			    'requierd' => false, 
+			    'allow_empty' => true
 			),
 			'slipNumber' => array(
 				'required' 	=> false,
@@ -162,4 +167,21 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
             $element = $this->get('hasSlip');
             $element->setAttribute('value', (bool)$hasSlip);
         }
+
+	public function includeVerifiedField($include) 
+	{
+	    if ($include) {
+		// Verified
+		$this->add(array(
+		    'name' => 'verified',
+		    'type' => 'Checkbox', 
+		    'options' => array(
+			'label' => 'Verified'
+		    )
+		));
+	    }
+	    else {
+		$this->remove('verified');
+	    }
+	}
 }

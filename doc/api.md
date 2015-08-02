@@ -1,6 +1,6 @@
 #API
 
-The webapplicatoi contains also a small REST API which let's you do basic operation with resources. 
+The webapplication contains also a small REST API which let's you do basic operation with resources. 
 
 ##General
 
@@ -58,6 +58,9 @@ Returns all accounts a user has access to.
 
 Add a new purchase to an account. 
 
+You have the possibility to specify the `verified` key. It's optional and defaults to true. 
+If the purchase is added by a program it may be a good idea to let the user verify a purchase. This means if `verified` is set to false, it will appear on the users main page where he has the possibilty to verify or edit the purchase.
+
 **Parameters:** 
 
 `id`: An id of an account. 
@@ -68,7 +71,8 @@ Add a new purchase to an account.
   		"store" 		: "Denner",
   		"description" 	: "A short description",
   		"amount"		: "12.50",
-  		"date"			: "12.12.2012"
+  		"date"			: "2015.08.28"
+  		"verified"		: false
 	}
 
 **Response:**

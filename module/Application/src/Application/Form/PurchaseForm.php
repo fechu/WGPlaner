@@ -27,6 +27,7 @@ class PurchaseForm extends AbstractForm
 		$this->fieldset = $fieldset;
 		$this->add($fieldset);
 		$this->setAttribute("autocomplete", "off");
+		$this->setAttribute("class", "form-horizontal");
 	}
 
 	/**
@@ -54,4 +55,13 @@ class PurchaseForm extends AbstractForm
         {
             $this->fieldset->setHasSlip($hasSlip);
         }
+
+	/**
+	 * Set if the verified field should be included in the form.
+	 * @param boolean $include
+	 */
+	public function includeVerifiedField($include)  
+	{
+	    $this->fieldset->includeVerifiedField($include);
+	}
 }
