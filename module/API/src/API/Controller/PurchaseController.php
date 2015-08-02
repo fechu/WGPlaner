@@ -64,16 +64,26 @@ class PurchaseController extends AbstractRestfulController
 	 */
 	public function receiptAction()
 	{
-
 	    // Check if the given purchase exists
 	    $purchase = $this->getPurchase();
 	    if ($purchase == NULL) {
 		return $this->badRequestResponse("Purchase does not exist.");
 	    }
+
+	    // If it is a GET request, we just return the image.
+	    $request = $this->getRequest();
+	    if ($request->isGet()) {
+		$imagePath = './data/receipts/' . $purchase->getId() . '.jpg';
+		$response = $this->getResponse();
+		$response->getHeaders()->addHeaders(array(
+		    'Content-Type' => 'image/jpg'
+		));
+		$response->setContent(file_get_contents($imagePath));
+		return $response;
+	    }
 	    
 	    $form = new \SMCommon\Form\UploadForm('upload-form', 'receipt');
 
-	    $request = $this->getRequest();
 	    if ($request->isPost()) {
 		// Merge data and files
 		$post = array_merge_recursive(
