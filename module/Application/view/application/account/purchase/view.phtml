@@ -47,16 +47,8 @@ $purchase = $this->purchase;
     <?php if ($this->purchase->hasReceipt()): ?>
     <div class="span4">
 	<h3>Receipt</h3>
-	<?php 
-	$params = array(
-	    'accountid' => $this->purchase->getAccount()->getId(), 
-	    'purchaseid' => $this->purchase->getId(),
-	    'action' => 'receipt'
-	    );
-	$receiptURL = $this->url('api/accounts/purchase/actions',$params) ;
-	?>
 	<center>
-	    <img src="<?php echo $receiptURL ?>">
+	    <img src="<?php echo $this->receiptImage($this->purchase); ?>">
 	</center>
     </div>
     <?php endif; ?>

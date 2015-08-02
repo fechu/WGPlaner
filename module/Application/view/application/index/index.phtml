@@ -5,10 +5,14 @@ echo $this->pageHeader('Not verified purchases');
 $purchases = $this->purchases;
 ?>
 
-<?php foreach ($purchases as $purchase): ?>
+<?php 
+/* @var $purchase Application\Entity\Purchase */
+foreach ($purchases as $purchase): 
+?>
+
 
 <div class="row">
-    <div class="span8">
+    <div class="<?php echo $purchase->hasReceipt() ? 'span8' : 'span12'?>">
 	<h3>Details</h3>
 		<?php
 		echo $this->partial('partial/purchase', array(
@@ -17,10 +21,12 @@ $purchases = $this->purchases;
 		?>
     </div>
 
+    <?php if ($purchase->hasReceipt()): ?>
     <div class="span4">
 	<h3>Receipt</h3>
-	TODO
+	<img src="<?php echo $this->receiptImage($purchase); ?>">
     </div>
+    <?php endif; ?>
 </div>
 <div class="row">
     <div class="well">
