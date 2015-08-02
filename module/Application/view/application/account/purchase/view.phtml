@@ -7,51 +7,70 @@ echo $this->pageHeader('Purchase');
 $purchase = $this->purchase;
 ?>
 
-<div class="row">
-	<div class="span6">
-		<h3>Overview</h3>
-		<table class="table table-condensed">
-			<tr>
-				<td>Amount</td>
-				<td><?php echo number_format($purchase->getAmount(), 2)?> CHF</td>
-			</tr>
-			<tr>
-				<td>Store</td>
-				<td><?php echo $purchase->getStore()?></td>
-			</tr>
-			<tr>
-				<td>Date</td>
-				<td><?php echo $this->formatDate($purchase->getDate(), FormatDate::FORMAT_DATE);?></td>
-			</tr>
-		</table>
-	</div>
 
-	<div class="span6">
-		<h3>User</h3>
+<div class="row">
+    <div class="<?php echo $this->purchase->hasReceipt() ? "span8" : "span12" ?>">
+	<div class="row">
+	    <h3>Overview</h3>
+	    <table class="table table-condensed">
+		<tr>
+		    <td>Amount</td>
+		    <td><?php echo number_format($purchase->getAmount(), 2)?> CHF</td>
+		</tr>
+		<tr>
+		    <td>Store</td>
+		    <td><?php echo $purchase->getStore()?></td>
+		</tr>
+		<tr>
+		    <td>Date</td>
+		    <td><?php echo $this->formatDate($purchase->getDate(), FormatDate::FORMAT_DATE);?></td>
+		</tr>
+	    </table>
+	</div>
+	<div class="row">
+	    <h3>User</h3>
 		<?php
 		echo $this->partial('partial/user/span6-gravatar', array(
-			'user' => $this->purchase->getUser(),
-		));
+		    'user' => $this->purchase->getUser(),
+		    ));
 		?>
 	</div>
-</div>
-
-<div class="row">
-	<div class="span12">
-		<h3>Details</h3>
+	<div class="row">
+	    <h3>Details</h3>
 		<?php
 		echo $this->partial('partial/purchase', array(
-			'purchase' => $this->purchase,
-		));
+		    'purchase' => $this->purchase,
+		    ));
 		?>
 	</div>
+    </div>
+    <?php if ($this->purchase->hasReceipt()): ?>
+    <div class="span4">
+	<h3>Receipt</h3>
+	<?php 
+	$params = array(
+	    'accountid' => $this->purchase->getAccount()->getId(), 
+	    'purchaseid' => $this->purchase->getId(),
+	    'action' => 'receipt'
+	    );
+	$receiptURL = $this->url('api/accounts/purchase/actions',$params) ;
+	?>
+	<center>
+	    <img src="<?php echo $receiptURL ?>">
+	</center>
+    </div>
+    <?php endif; ?>
 </div>
 
 <?php if ($this->acl($this->identity(), $this->purchase, 'edit')) :?>
-<div class="pull-right">
-	<?php
-	$editUrl = $this->url('accounts/purchases', array('action' => 'edit'), array(), true);
-	echo $this->prettyprint()->button($editUrl, 'Bearbeiten');
-	?>
+<div class="row">
+    <div class="form-actions">
+	<span class="pull-right">
+	    <?php
+	    $editUrl = $this->url('accounts/purchases', array('action' => 'edit'), array(), true);
+	    echo $this->prettyprint()->button($editUrl, 'Bearbeiten');
+	    ?>
+	</span>
+    </div>
 </div>
 <?php endif; ?>
