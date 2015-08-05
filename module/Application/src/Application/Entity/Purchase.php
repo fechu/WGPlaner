@@ -125,6 +125,9 @@ class Purchase extends AbstractEntity implements ResourceInterface
 			$date = \DateTime::createFromFormat('Y-m-d', $date);
 			$date->setTime(0,0,0);
 		}
+		else if (is_a($date, '\DateTime')) {
+		    $date->setTime(0,0,0);
+		}
 		$this->date = $date;
 	}
 
