@@ -108,6 +108,10 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 	public function getInputFilterSpecification()
 	{
 		return array(
+		    	'date' => array(
+			    'required' => false, 
+			    'allow_empty' => true
+			),
 			'hasSlip' => array(
 				'required' 		=> false,
 				'allow_empty' 	=> true
