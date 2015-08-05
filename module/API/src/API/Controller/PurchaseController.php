@@ -44,7 +44,7 @@ class PurchaseController extends AbstractRestfulController {
 	    $this->em->flush();
 
 	    // Success!
-	    return $this->createdResponse();
+	    return $this->createdResponse($purchase->getId());
 	} else {
 	    return $this->badRequestResponse($form->getMessages());
 	}

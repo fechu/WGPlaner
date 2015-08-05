@@ -61,6 +61,10 @@ Add a new purchase to an account.
 You have the possibility to specify the `verified` key. It's optional and defaults to true. 
 If the purchase is added by a program it may be a good idea to let the user verify a purchase. This means if `verified` is set to false, it will appear on the users main page where he has the possibilty to verify or edit the purchase.
 
+The date field is optional. If it is omitted, today's date is used instead.
+
+If the purchase is created successfully, the body will contain a JSON object with a key `id`. This key contains the id of the newly created object. 
+
 **Parameters:** 
 
 `id`: An id of an account. 
@@ -78,6 +82,10 @@ If the purchase is added by a program it may be a good idea to let the user veri
 **Response:**
 
 	HTTP Status: 201
+	
+	{
+		"id" : 54
+	}
 	
 
 ---

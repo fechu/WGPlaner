@@ -123,13 +123,25 @@ abstract class AbstractRestfulController extends ZendRestfulController implement
 		return $this->getServiceLocator()->get('config');
 	}
 
-	protected function createdResponse()
+	/**
+	 * Creates a response that indicates that an object was created. 
+	 * @param integer $id An optional ID. If this is non null, it will be sent in the body as json: {"id" : $id}
+	 * @return \Zend\Http\Response | JsonModel
+	 */
+	protected function createdResponse($id = NULL)
 	{
 		/* @var $response \Zend\Http\Response */
 		$response = $this->getResponse();
-
 		$response->setStatusCode(201);
-		return $response;
+
+		if ($id !== NULL) {
+		    return new JsonModel(array(
+			'id' => $id
+		    ));
+		}
+		else {
+		    return $response;
+		}
 	}
 
 	/**
