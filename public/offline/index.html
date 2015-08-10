@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+        <title>WGPlaner Add Purchase</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        <link href="css/signin.css" rel="stylesheet">
+
+        <script src="js/jquery.js"></script>
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+            <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+            <![endif]-->
+    </head>
+
+    <body>
+        <script> 
+            $(document).ready(function() {
+                apiKey = localStorage["apikey"];
+                if (apiKey == undefined) {
+                    window.location = "apikey.html";
+                    return;
+                }
+
+                account = localStorage["account"];
+                if (account == undefined) {
+                    window.location = "account.html";
+                    return;
+                }
+
+                $("#purchaseForm").submit(function() {
+                    store = $("#inputStore").val();
+                    desc = $("#inputDescription").val();
+                    amount = $("#inputAmount").val();
+                    addPurchase(store, desc, amount);
+
+                    // empty the form
+                    store = $("#inputStore").val("");
+                    desc = $("#inputDescription").val("");
+                    amount = $("#inputAmount").val("");
+
+                    updatePurchaseList();
+
+                    return false;
+                });
+
+                $("#uploadButton").click(function() {
+                    uploadPurchases();
+                });
+
+
+                updatePurchaseList();
+            });
+
+            function addPurchase(store, desc, amount) {
+                purchase = {};
+                purchase["store"] = store;
+                purchase["desc"] = desc;
+                purchase["amount"] = amount;
+
+                purchases = getPurchases();
+
+                purchases.push(purchase);
+                localStorage["purchases"] = JSON.stringify(purchases);
+            }
+
+            function removePurchase(index) {
+                purchases = getPurchases();
+                purchases.splice(index, 1);
+                localStorage["purchases"] = JSON.stringify(purchases);
+            }
+
+            function getPurchases() {
+                purchases = localStorage["purchases"];
+                if (purchases == undefined) {
+                    purchases = [];
+                }
+                else {
+                    purchases = JSON.parse(purchases);
+                }
+                return purchases;
+            }
+
+            function uploadPurchases() {
+                purchases = getPurchases();
+
+                // Start uploading them!
+                for (i=0; i < purchases.length; i++) {
+                    // Function to capture the index.
+                    (function (i) {
+                        purchase = purchases[i];
+                        d = {};
+                        d["store"] = purchase["store"];
+                        d["description"] = purchase["desc"];
+                        d["amount"] = purchase["amount"];
+
+                        headers = {
+                            "X-API-KEY" : localStorage["apikey"],
+                            "Content-type" : "application/json"
+                        };
+
+                        console.log("i: " + i);
+                        accountId = localStorage["account"];
+                        $.ajax({
+                            method: "POST", 
+                            url: "/api/accounts/" + accountId + "/purchases",
+                            data: JSON.stringify(d),
+                            headers: headers
+                        }).done(function(result) {
+                            removePurchase(i);
+                            updatePurchaseList();
+                        });
+                    }) (i);
+                }
+
+            }
+
+            function updatePurchaseList() {
+                $("tr").remove();
+
+                purchases = getPurchases();
+                console.log(purchases);
+                for (i = 0; i < purchases.length; i++) {
+                    purchase = purchases[i];
+                    data = '<tr>';
+                    data += '<td>' + (i+1) + "</td>";
+                    data += '<td>' + purchase["store"] + "</td>";
+                    data += '<td>' + purchase["desc"] + "</td>";
+                    data += '<td>' + purchase["amount"] + "</td>";
+                    closeAction = 'removePurchase(' + i + '); updatePurchaseList(); return false;';
+                    data += '<td>'
+                    data += '<button class="close" onclick="' + closeAction + '">&times;</button>'
+                    data += '</td>';
+                    data += '</tr>';
+                    $('#purchaseTable > tbody:last-child').append(data);
+                }
+            }
+        </script>
+
+        <div class="container">
+
+            <form id="purchaseForm" class="form-signin">
+                <h2 class="form-signin-heading">Add Purchase</h2>
+                <label for="inputStore" class="sr-only">Store</label>
+                <input type="text" id="inputStore" class="form-control" placeholder="Store" required autofocus>
+                <label for="inputDescription" class="sr-only">Description</label>
+                <input type="text" id="inputDescription" class="form-control" placeholder="Description" required>
+                <label for="inputAmount" class="sr-only">Amount</label>
+                <input type="text" id="inputAmount" class="form-control" placeholder="Amount" required>
+                <br>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Add</button>
+
+                <br>
+                <h3>Purchases</h3>
+                <table id="purchaseTable" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <td>#</td>
+                            <td>Store</td>
+                            <td>Description</td>
+                            <td>Amount</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+                <a id="uploadButton" class="btn btn-lg btn-primary btn-block">Upload</a>
+                <br>
+                <a href="apikey.html">Edit API Key</a> |  
+                <a href="account.html">Edit Account</a>
+            </form>
+
+
+        </div> <!-- /container -->
+    </body>
+</html>
+
