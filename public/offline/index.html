@@ -113,13 +113,15 @@
                         accountId = localStorage["account"];
                         $.ajax({
                             method: "POST", 
-                            url: "/api/accounts/" + accountId + "/purchases",
+                            url: "/WGPlaner/public/api/accounts/" + accountId + "/purchases",
                             data: JSON.stringify(d),
                             headers: headers
                         }).done(function(result) {
                             removePurchase(i);
                             updatePurchaseList();
-                        });
+                        }).error(function(xhr, status, error) {
+			    alert(status + " " + error);
+			});
                     }) (i);
                 }
 
