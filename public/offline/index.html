@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" manifest="cache.manifest">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -154,11 +154,11 @@
             <form id="purchaseForm" class="form-signin">
                 <h2 class="form-signin-heading">Add Purchase</h2>
                 <label for="inputStore" class="sr-only">Store</label>
-                <input type="text" id="inputStore" class="form-control" placeholder="Store" required autofocus>
+                <input type="text" id="inputStore" class="form-control" placeholder="Store" required autofocus autocomplete="off">
                 <label for="inputDescription" class="sr-only">Description</label>
-                <input type="text" id="inputDescription" class="form-control" placeholder="Description" required>
+                <input type="text" id="inputDescription" class="form-control" placeholder="Description" required autocomplete="off">
                 <label for="inputAmount" class="sr-only">Amount</label>
-                <input type="text" id="inputAmount" class="form-control" placeholder="Amount" required>
+                <input type="text" id="inputAmount" class="form-control" placeholder="Amount" required autocomplete="off">
                 <br>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Add</button>
 
