@@ -119,8 +119,8 @@
                         accountId = localStorage["account"];
                         $.ajax({
                             method: "POST", 
-                            // url: "/WGPlaner/public/api/accounts/" + accountId + "/purchases",
-                            url: "/api/accounts/" + accountId + "/purchases",
+                            url: "/WGPlaner/public/api/accounts/" + accountId + "/purchases",
+                            //url: "/api/accounts/" + accountId + "/purchases",
                             data: JSON.stringify(d),
                             headers: headers
                         }).done(function(result) {
