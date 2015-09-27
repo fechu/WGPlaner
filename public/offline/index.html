@@ -42,6 +42,8 @@
                     store = $("#inputStore").val();
                     desc = $("#inputDescription").val();
                     amount = $("#inputAmount").val();
+		    // Saniztize the amount.
+		    amount = amount.replace("-", "00");
                     addPurchase(store, desc, amount);
 
                     // empty the form
