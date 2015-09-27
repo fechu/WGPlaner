@@ -27,13 +27,13 @@
         <script> 
             $(document).ready(function() {
                 apiKey = localStorage["apikey"];
-                if (apiKey == undefined) {
+                if (apiKey === undefined) {
                     window.location = "apikey.html";
                     return;
                 }
 
                 account = localStorage["account"];
-                if (account == undefined) {
+                if (account === undefined) {
                     window.location = "account.html";
                     return;
                 }
@@ -63,10 +63,13 @@
             });
 
             function addPurchase(store, desc, amount) {
+		date = new Date();
+
                 purchase = {};
                 purchase["store"] = store;
                 purchase["desc"] = desc;
                 purchase["amount"] = amount;
+		purchase["date"] = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
 
                 purchases = getPurchases();
 
@@ -103,6 +106,7 @@
                         d["store"] = purchase["store"];
                         d["description"] = purchase["desc"];
                         d["amount"] = purchase["amount"];
+			d["date"] = purchase["date"];
 
                         headers = {
                             "X-API-KEY" : localStorage["apikey"],
@@ -113,7 +117,8 @@
                         accountId = localStorage["account"];
                         $.ajax({
                             method: "POST", 
-                            url: "/WGPlaner/public/api/accounts/" + accountId + "/purchases",
+                            // url: "/WGPlaner/public/api/accounts/" + accountId + "/purchases",
+                            url: "/api/accounts/" + accountId + "/purchases",
                             data: JSON.stringify(d),
                             headers: headers
                         }).done(function(result) {
