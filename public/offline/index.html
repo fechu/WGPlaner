@@ -42,8 +42,8 @@
                     store = $("#inputStore").val();
                     desc = $("#inputDescription").val();
                     amount = $("#inputAmount").val();
-		    // Saniztize the amount.
-		    amount = amount.replace("-", "00");
+					// Saniztize the amount.
+					amount = amount.replace("-", "00");
                     addPurchase(store, desc, amount);
 
                     // empty the form
@@ -119,7 +119,7 @@
                         accountId = localStorage["account"];
                         $.ajax({
                             method: "POST", 
-                            url: "/WGPlaner/public/api/accounts/" + accountId + "/purchases",
+                            url: "/api/accounts/" + accountId + "/purchases",
                             //url: "/api/accounts/" + accountId + "/purchases",
                             data: JSON.stringify(d),
                             headers: headers
