@@ -1,0 +1,11 @@
+<?php
+/* @var $this \SMCommon\View\Renderer\PhpRenderer */
+echo $this->pageHeader('Delete Purchase');
+?>
+
+<div class="alert alert-block alert-error">
+<h4>Warning!</h4>
+Do you really want to delete the purchase from  "<?php echo $this->purchase->getStore();?>" with description "<?php echo $this->purchase->getDescription();?>"? You cannot undo this operation.
+</div>
+
+<?php echo $this->bootstrapForm($this->form, 'horizontal');

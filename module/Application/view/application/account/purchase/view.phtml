@@ -59,6 +59,9 @@ $purchase = $this->purchase;
     <div class="form-actions">
 	<span class="pull-right">
 	    <?php
+		$deleteUrl = $this->url('accounts/purchases', ['action' => 'delete'], [], true);
+		echo $this->prettyprint()->button($deleteUrl, 'Remove', 'danger');
+
 	    $editUrl = $this->url('accounts/purchases', array('action' => 'edit'), array(), true);
 	    echo $this->prettyprint()->button($editUrl, 'Bearbeiten');
 	    ?>

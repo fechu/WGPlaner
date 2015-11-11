@@ -39,6 +39,16 @@ foreach ($purchases as $purchase):
 		);
 		$editUrl = $this->url('accounts/purchases', $params);
 		echo $this->prettyprint()->button($editUrl, 'Bearbeiten');
+
+		// Delete button
+		$params = array(
+		    'action' => 'delete',
+		    'accountid' => $purchase->getAccount()->getId(),
+		    'purchaseid' => $purchase->getId()
+		);
+		$deleteUrl = $this->url('accounts/purchases', $params);
+		echo $this->prettyprint()->button($deleteUrl, 'Delete', 'danger');
+
 		?>
 	    <?php endif; ?>
 	    <?php
