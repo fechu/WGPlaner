@@ -39,6 +39,7 @@ return array(
             'Application\Controller\Account\Bill'	=> 'Application\Controller\Account\BillController',
             'Application\Controller\Settings'		=> 'Application\Controller\SettingsController',
             'Application\Controller\Administration'		=> 'Application\Controller\AdministrationController',
+			'Application\Controller\CombinedBill' => 'Application\Controller\CombinedBillController',
         ),
     ),
     'view_manager' => array(

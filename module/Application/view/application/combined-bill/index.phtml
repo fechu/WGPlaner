@@ -1,0 +1,82 @@
+<?php
+use Application\Entity\CombinedBill;
+/* @var $this SMCommon\View\Renderer\PhpRenderer */
+echo $this->pageHeader('Combined Invoices');
+
+$table = $this->table();
+$table->setData($this->bills);
+
+$table->addColumn(array(
+	'headTitle' 	=> 'Name',
+	'dataMethod'	=> function(CombinedBill $bill) {
+	/*
+		$viewUrl = $this->url(
+				'accounts/bills',
+				array(
+					'accountid' => $this->account->getId(),
+					'billid'	=> $bill->getId(),
+				)
+		);
+	 */
+		$viewUrl = '';
+		return $this->prettyprint()->link($viewUrl, $bill->getName());
+	}
+));
+
+/*
+$table->addColumn(array(
+	'headTitle' 	=> 'Actions',
+	'dataMethod'	=> function(Bill $bill) {
+
+		// Edit button
+		$viewUrl = $this->url(
+				'accounts/bills',
+				array(
+					'accountid' => $this->account->getId(),
+					'billid'	=> $bill->getId(),
+				)
+		);
+
+		$html = $this->prettyprint()->button($viewUrl, "Show");
+
+		// User Button
+		$userUrl = $this->url(
+				'accounts/bills',
+				array(
+						'action' 	=> 'users',
+						'accountid'	=> $this->account->getId(),
+						'billid'	=> $bill->getId(),
+				)
+		);
+
+		$html .= " " . $this->prettyprint()->button($userUrl, "Users");
+
+		// Add the remove button
+		$deleteUrl = $this->url(
+				'accounts/bills',
+				array(
+					'action' 	=> 'delete',
+					'accountid'	=> $this->account->getId(),
+					'billid'	=> $bill->getId()
+		));
+
+        $html .= " " . $this->prettyprint()->button($deleteUrl, "Delete", "danger");
+		return $html;
+	}
+));
+
+$parameters = array(
+	'action' 	=> 'create',
+	'accountid' => $this->account->getId(),
+);
+$createBillUrl = $this->url('accounts/bills', $parameters);
+ */
+$createBillUrl = '';
+
+?>
+
+
+<?php echo $table; ?>
+<span class="pull-right">
+	<a class="btn" href="<?php echo $createBillUrl; ?>">Create Combined Invoice</a>
+</span>

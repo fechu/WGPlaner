@@ -43,6 +43,29 @@ return array(
             ),
         ),
     ),
+    'combined-bills' => array(
+        'type' => 'Segment',
+        'options' => array(
+            'route'    => '/bills',
+            'defaults' => array(
+                '__NAMESPACE__' => 'Application\Controller',
+                'controller' 	=> 'CombinedBill',
+                'action'     	=> 'index',
+            ),
+        ),
+        'may_terminate' => true,
+        'child_routes' => array(
+            'list-action' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'		=> '[/:billid[/:action]]',
+                    'constraints' 	=> array(
+                        'action'    	=> '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                ),
+            ),
+        ),
+    ),
     'settings' => array(
         'type' => 'Segment',
         'options' => array(
