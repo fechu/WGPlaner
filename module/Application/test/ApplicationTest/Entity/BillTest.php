@@ -8,10 +8,12 @@
 namespace ApplicationTest\Entity;
 
 use Application\Entity\Bill;
-use Application\Entity\User;
+use Application\Entity\CombinedBill;
 use Application\Entity\Purchase;
+use Application\Entity\User;
+use PHPUnit_Framework_TestCase;
 
-class BillTest extends \PHPUnit_Framework_TestCase {
+class BillTest extends PHPUnit_Framework_TestCase {
 
     /* @var $bill Bill */
     protected $bill;
@@ -138,6 +140,19 @@ class BillTest extends \PHPUnit_Framework_TestCase {
         $share = $this->bill->getUserShare($user);
         $this->assertNotNull($share, "Share should have been created for the new user");
     }
+
+    ///////////////////////////////////////////////////////////////////////
+    // Combined Bills
+    ///////////////////////////////////////////////////////////////////////
+
+	public function testAddToCombinedBill()
+	{
+		$combinedBill = new CombinedBill();
+	
+		$this->bill->addToCombinedBill($combinedBill);
+
+		$this->assertContains($combinedBill, $this->bill->getCombinedBills());
+	}
 
     ///////////////////////////////////////////////////////////////////////
     // User Shares

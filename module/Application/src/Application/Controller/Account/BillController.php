@@ -7,8 +7,6 @@
 
 namespace Application\Controller\Account;
 
-use Application\Entity\Account;
-use Application\Entity\Purchase;
 use Application\Form\BillForm;
 use Application\Entity\Bill;
 use Application\Form\DaterangeForm;
@@ -25,7 +23,8 @@ class BillController extends AbstractAccountController
     public function indexAction()
     {
         // If we have an account ID we redirect to the view action.
-        if ($id = $this->getId()) {
+		$id = $this->getId();
+        if ($id !== 0) {
             return $this->forward()->dispatch('Application\Controller\Account\Bill', array(
                     '__NAMESPACE__' => 'Application\Controller\Account',
                     'action' 	    => 'view',

@@ -48,12 +48,22 @@ class Bill extends AbstractEntity
      */
     protected $purchases;
 
+	/**
+	 * The CombinedBills to which the bill belongs to.
+	 * A bill can be added to multiple combined bills if needed.
+	 *
+	 * @var ArrayCollection
+	 * @ORM\ManyToMany(targetEntity="Application\Entity\CombinedBill", mappedBy="bills", cascade={"persist"})
+	 */
+	protected $combinedBills;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->purchases = new ArrayCollection();
         $this->userShares = new ArrayCollection();
+		$this->combinedBills = new ArrayCollection();
     }
 
     /**
@@ -80,6 +90,24 @@ class Bill extends AbstractEntity
             $this->addUser($purchase->getUser());
         }
     }
+
+	/**
+	 * Add the bill to a combined bill.
+	 * 
+	 * @warning This does not update the inverse side. Use the addBill() 
+	 * method of CombinedBill instead. 
+	 * 
+	 * @param CombinedBill $combinedBill
+	 */
+	public function addToCombinedBill($combinedBill)
+	{
+		$this->combinedBills[] = $combinedBill;
+	}
+
+	public function getCombinedBills()
+	{
+		return $this->combinedBills->toArray();
+	}
 
     /**
      * Get the purchases that are covered by this bill.
