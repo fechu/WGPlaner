@@ -71,6 +71,12 @@ class Module implements AutoloaderProviderInterface,
 					
 					return $log;
 				},
+				'smcommon.mailer' => function ($sm) {
+					$appConfig = $sm->get('config');
+					$mailer = new Mail\Mailer(isset($appConfig['mailer']) ? $appConfig['mailer'] : []);
+					$mailer->setLogger($sm->get('Zend\Log'));
+					return $mailer;
+				}
 			),
 		);
 	}

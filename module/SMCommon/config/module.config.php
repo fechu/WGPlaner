@@ -14,6 +14,10 @@ return array(
 		 */
 		'time-format' => 'G:i'
 	),
+
+	'mailer' => [
+		'api-host' => 'https://mailer.fidelisfactory.ch/api/v1/',
+	],
 	
 	// Doctrine configuration for added types and filters
 	'doctrine' => array(
