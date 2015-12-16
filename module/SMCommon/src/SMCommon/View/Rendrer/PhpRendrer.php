@@ -16,5 +16,6 @@ namespace SMCommon\View\Renderer;
  * @method SMCommon\View\Helper\Table			table()								
  * @method SMCommon\View\Helper\PrettyPrint		prettyprint()
  * @method SMUser\Entity\UserInterface			identity()
+ * @method SMCommon\View\Helper\Currency        currency($amount, $color=false)
  */
 class PhpRenderer extends \Zend\View\Renderer\PhpRenderer {}

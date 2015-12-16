@@ -43,7 +43,7 @@ return array(
             ),
         ),
     ),
-    'combined-bills' => array(
+    'bills' => array(
         'type' => 'Segment',
         'options' => array(
             'route'    => '/bills',
@@ -59,6 +59,15 @@ return array(
                 'type'    => 'Segment',
                 'options' => array(
                     'route'		=> '[/:billid[/:action]]',
+                    'constraints' 	=> array(
+                        'action'    	=> '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                ),
+            ),
+            'action' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'		=> '[/:action]',
                     'constraints' 	=> array(
                         'action'    	=> '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),

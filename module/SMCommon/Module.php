@@ -89,6 +89,7 @@ class Module implements AutoloaderProviderInterface,
 				'table'			=> 'SMCommon\View\Helper\Table',
 				'objectUrl'		=> 'SMCommon\View\Helper\ObjectUrl',
 				'prettyprint'	=> 'SMCommon\View\Helper\PrettyPrint',
+				'currency'		=> 'SMCommon\View\Helper\Currency',
 			),
 			'factories' => array(
 				'formatDate' => function ($sm) {

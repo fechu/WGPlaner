@@ -1,0 +1,46 @@
+<?php
+use SMCommon\View\Helper\Currency;
+
+/* @var \SMCommon\View\Renderer\PhpRenderer $this */
+/** @var \Application\Entity\CombinedBill $bill */
+$bill = $this->combinedBill;
+$users = $bill->getUsers();
+?>
+<table style="width: 100%">
+    <thead>
+    <tr>
+        <td></td>
+        <?php foreach ($users as $user): ?>
+            <td><?php echo $user->getFullname()?></td>
+        <?php endforeach ?>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Paid Amount</td>
+        <?php foreach ($users as $user): ?>
+            <td><?php echo $this->currency($bill->getAmount($user), Currency::COLOR_POSITIVE); ?></td>
+        <?php endforeach; ?>
+    </tr>
+    <tr>
+        <td>Used Amount</td>
+        <?php foreach ($users as $user): ?>
+            <td><?php echo $this->currency($bill->getBillableAmount($user), Currency::COLOR_NEGATIVE); ?></td>
+        <?php endforeach; ?>
+    </tr>
+    <tr>
+        <td><b>Total</b></td>
+        <?php foreach ($users as $user): ?>
+            <td>
+                <b>
+                <?php
+                $total = $bill->getTotal($user);
+                $color = $total >= 0 ? Currency::COLOR_POSITIVE : Currency::COLOR_NEGATIVE;
+                echo $this->currency($total, $color);
+                ?>
+                </b>
+            </td>
+        <?php endforeach; ?>
+    </tr>
+    </tbody>
+</table>

@@ -86,6 +86,29 @@ class CombinedBillTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->combinedBill->getUsers(), [$user1, $user2]);
 	}
 
+	/**
+	 * Tests that if a user is in multiple bills he will only be once in the list
+	 * of the users of the combined bill.
+	 */
+	public function testGetUsersDoesNotDuplicateUsers()
+	{
+		$user1 = new User();
+		$user1->setUsername('foo1');
+		$user2 = new User();
+		$user2->setUsername('foo2');
+
+		$bill1 = new Bill();
+		$bill1->addUser($user1);
+		$bill1->addUser($user2);
+		$bill2 = new Bill();
+		$bill2->addUser($user2);
+
+		$this->combinedBill->addBill($bill1);
+		$this->combinedBill->addBill($bill2);
+
+		$this->assertEquals($this->combinedBill->getUsers(), [$user1, $user2]);
+	}
+
 	public function testGetAmountSumOfAmountOfBills()
 	{
 		$bill1 = $this->getMockBuilder('Application\Entity\Bill')->getMock();

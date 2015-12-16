@@ -1,77 +1,93 @@
 <?php
 use Application\Entity\CombinedBill;
-/* @var $this SMCommon\View\Renderer\PhpRenderer */
+use SMCommon\View\Helper\Currency;
+
+/* @var \SMCommon\View\Renderer\PhpRenderer $this */
 echo $this->pageHeader('Combined Invoices');
 
+/* @var \SMCommon\View\Helper\Table $table */
 $table = $this->table();
 $table->setData($this->bills);
 
 $table->addColumn(array(
 	'headTitle' 	=> 'Name',
 	'dataMethod'	=> function(CombinedBill $bill) {
-	/*
-		$viewUrl = $this->url(
-				'accounts/bills',
-				array(
-					'accountid' => $this->account->getId(),
-					'billid'	=> $bill->getId(),
-				)
-		);
-	 */
-		$viewUrl = '';
-		return $this->prettyprint()->link($viewUrl, $bill->getName());
+		return $bill->getName();
 	}
 ));
 
-/*
+
+$table->addColumn([
+	'headTitle' => 'Invoices',
+	'dataMethod' => function (CombinedBill $bill) {
+		$output = '<ul>';
+		foreach ($bill->getBills() as $subBill) {
+			$billUrl = $this->url(
+				'accounts/bills',
+				array(
+					'accountid' => $subBill->getAccount()->getId(),
+					'billid' => $subBill->getId(),
+				)
+			);
+			$output .= '<li>' . $this->prettyprint()->link($billUrl, $subBill->getName()) . '(' . $subBill->getAccount()->getName() . ')</li>';
+		}
+		$output .= '</ul>';
+		return $output;
+	}
+]);
+
+$table->addColumn([
+	'headTitle' => 'Overview',
+	'dataMethod' => function (CombinedBill $bill) {
+		return $this->partial('partial/combined-bill-overview.phtml', [
+			'combinedBill' => $bill
+		]);
+	}
+]);
+
+$table->addColumn([
+	'headTitle' => 'Your Action',
+	'dataMethod' => function (CombinedBill $bill) {
+		$total = $bill->getTotal($this->identity());
+		if ($total >= 0) {
+			return 'You receive ' . $this->currency($total, Currency::COLOR_POSITIVE);
+		}
+		else {
+			return 'You have to pay ' . $this->currency(abs($total), Currency::COLOR_NEGATIVE);
+		}
+	}
+]);
+
+
 $table->addColumn(array(
 	'headTitle' 	=> 'Actions',
-	'dataMethod'	=> function(Bill $bill) {
+	'dataMethod'	=> function(CombinedBill $bill) {
 
-		// Edit button
-		$viewUrl = $this->url(
-				'accounts/bills',
-				array(
-					'accountid' => $this->account->getId(),
+		// Add Purchase button
+		$addUrl = $this->url(
+				'bills/list-action',
+				[
 					'billid'	=> $bill->getId(),
-				)
+					'action' 	=> 'add-bill',
+				]
 		);
+		$html = $this->prettyprint()->button($addUrl, "Add Invoice");
 
-		$html = $this->prettyprint()->button($viewUrl, "Show");
-
-		// User Button
-		$userUrl = $this->url(
-				'accounts/bills',
-				array(
-						'action' 	=> 'users',
-						'accountid'	=> $this->account->getId(),
-						'billid'	=> $bill->getId(),
-				)
+		// Send email button
+		$emailUrl = $this->url(
+			'bills/list-action',
+			[
+				'billid' => $bill->getId(),
+				'action' => 'send-invoice-email'
+			]
 		);
+		$html .= $this->prettyprint()->button($emailUrl, "Send Email Invoice");
 
-		$html .= " " . $this->prettyprint()->button($userUrl, "Users");
-
-		// Add the remove button
-		$deleteUrl = $this->url(
-				'accounts/bills',
-				array(
-					'action' 	=> 'delete',
-					'accountid'	=> $this->account->getId(),
-					'billid'	=> $bill->getId()
-		));
-
-        $html .= " " . $this->prettyprint()->button($deleteUrl, "Delete", "danger");
 		return $html;
 	}
 ));
 
-$parameters = array(
-	'action' 	=> 'create',
-	'accountid' => $this->account->getId(),
-);
-$createBillUrl = $this->url('accounts/bills', $parameters);
- */
-$createBillUrl = '';
+$createBillUrl = $this->url('bills/action', ['action' => 'create']);
 
 ?>
 

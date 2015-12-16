@@ -72,7 +72,8 @@ class CombinedBill extends AbstractEntity
 	}
 
 	/**
-	 * Get all users involved with this combined bill. 
+	 * Get all users involved with this combined bill.
+	 * @return User[]
 	 */
 	public function getUsers()
 	{
@@ -81,12 +82,13 @@ class CombinedBill extends AbstractEntity
 		foreach ($this->getBills() as $bill) {
 			$users = array_merge($users, $bill->getUsers());
 		}
-		return $users;
+		return array_unique($users);
 	}
 
 	/**
-	 * Get the total amount a user has spent in all this bills. 
-	 * @param User $user Specify a user. If NULL, the total amount is returned. 
+	 * Get the total amount a user has spent in all this bills.
+	 * @param User $user Specify a user. If NULL, the total amount is returned.
+	 * @return float
 	 */
 	public function getAmount($user = NULL) 
 	{
@@ -99,8 +101,9 @@ class CombinedBill extends AbstractEntity
 	}
 
 	/**
-	 * Get the total amount a user has to pay in these bills. 
-	 * @param User $user Specify a user. If NULL, the total amount is returned. 
+	 * Get the total amount a user has to pay in these bills.
+	 * @param User $user Specify a user. If NULL, the total amount is returned.
+	 * @return float
 	 */
 	public function getBillableAmount($user = NULL)
 	{
@@ -110,5 +113,16 @@ class CombinedBill extends AbstractEntity
 			$amount += $bill->getBillableAmount($user);
 		}
 		return $amount;
+	}
+
+	/**
+	 * Calculates the balance of the given user for this combined bill. Positives means
+	 * he will receive money, negative means he has to pay.
+	 * @param $user The user for which you want the total.
+	 * @return float
+	 */
+	public function getTotal($user)
+	{
+		return $this->getAmount($user) - $this->getBillableAmount($user);
 	}
 }

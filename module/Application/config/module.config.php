@@ -89,7 +89,7 @@ return array(
                 'id'    => 'accounts',
                 'label' => 'Accounts',
                 'route' => 'accounts',
-                'order' => -1,
+                'order' => -2,
                 'pages' => array(
                     // The NavigationFactory will insert all not archived accounts here.
                     array(
@@ -108,6 +108,12 @@ return array(
                         'icon'          => 'icon-folder-close'
                     ),
                 ),
+            ),
+            array(
+                'id'    => 'bills',
+                'label' => 'Invoices',
+                'route' => 'bills',
+                'order' => -1,
             ),
             array(
             	'id' 	=> 'administration',

@@ -114,6 +114,7 @@ class Bill extends AbstractEntity
      *
      * @param User $user A user of which you want to get purchases. If NULL, the all purchases
      *                   of the bill will be returned.
+     * @return Purchase[]
      */
     public function getPurchases($user = NULL)
     {
@@ -290,8 +291,21 @@ class Bill extends AbstractEntity
             // Get the share object for the requested user.
             $share = $this->getUserShare($user);
 
-            return $shareValue * $share->getShare();
+            return $shareValue * ($share !== NULL ? $share->getShare() : 0);
         }
     }
 
+
+    /**
+     * Finds the ID of the account for this bill.
+     * This function is the way it is because there is no strict relationship between
+     * Bill and Account.
+     */
+    public function getAccount()
+    {
+        $purchases = $this->getPurchases();
+        $purchase = isset($purchases[0]) ? $purchases[0] : NULL;
+
+        return $purchase !== NULL ? $purchase->getAccount() : NULL;
+    }
 }

@@ -20,6 +20,9 @@ class Mail {
 	 */
 	protected $recipients;
 
+	/**
+	 * @param $recipients string|string[] The recipients of the email.
+	 */
 	public function setRecipients($recipients)
 	{
 		if (!is_array($recipients)) {
