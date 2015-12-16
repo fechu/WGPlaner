@@ -1,0 +1,7 @@
+<?php
+
+return [
+	'mailer' => [
+		'api-key' => 'mailer-api-key-goes-here',
+	]
+];
