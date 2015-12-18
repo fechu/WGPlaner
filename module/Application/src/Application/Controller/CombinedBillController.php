@@ -159,4 +159,18 @@ class CombinedBillController extends AbstractActionController
         return $this->redirect()->toRoute('bills');
     }
 
+    /**
+     * Marks the combined bill as paid.
+     */
+    public function payAction()
+    {
+        $bill = $this->getCombinedBill();
+        $bill->setPaid(true);
+        $this->em->flush($bill);
+        $this->logger->info('Marked bill as paid', [$bill->getId()]);
+
+        // Redirect
+        return $this->redirect()->toRoute('bills');
+    }
+
 }

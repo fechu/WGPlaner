@@ -22,6 +22,13 @@ class CombinedBill extends AbstractEntity
      */
     protected $name;
 
+	/**
+	 * Is this combined bill paid?
+	 * @var boolean
+	 * @ORM\Column(type="boolean")
+	 */
+	protected $paid = false;
+
     /**
      * The bills which belong to this combined bill.
      *
@@ -124,5 +131,21 @@ class CombinedBill extends AbstractEntity
 	public function getTotal($user)
 	{
 		return $this->getAmount($user) - $this->getBillableAmount($user);
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isPaid()
+	{
+		return $this->paid;
+	}
+
+	/**
+	 * @param boolean $paid
+	 */
+	public function setPaid($paid)
+	{
+		$this->paid = $paid;
 	}
 }

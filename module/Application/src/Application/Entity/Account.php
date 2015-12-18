@@ -51,6 +51,15 @@ class Account extends AbstractEntity implements ResourceInterface
     protected $users;
 
     /**
+     * The bills that belong to this account.
+     *
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Application\Entity\Bill", mappedBy="account")
+     * @ORM\OrderBy({"date" = "DESC"})
+     */
+    protected $bills;
+
+    /**
      * The purchases.
      *
      * This is actually a one to many unidirectional relationship. But doctrine handles this as
@@ -67,6 +76,7 @@ class Account extends AbstractEntity implements ResourceInterface
 
         $this->purchases = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->bills = new ArrayCollection();
         $this->archived = false;
         $this->slipEnabledDefault = true;
     }
@@ -200,5 +210,23 @@ class Account extends AbstractEntity implements ResourceInterface
     public function __toString()
     {
     	return "{ Account(". $this->getId() .") name: ". $this->getName() ." }";
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBills()
+    {
+        return $this->bills->toArray();
+    }
+
+    /**
+     * Add a bill to this account. Does not set the inverse side.
+     * So use $bill->setAccount() instead.
+     * @param mixed $bills
+     */
+    public function addBill(Bill $bill)
+    {
+        $this->bills->add($bill);
     }
 }

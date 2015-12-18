@@ -21,7 +21,7 @@ class CombinedBillRepository extends EntityRepository {
 	 */
 	public function findForUser($user)
 	{
-		$dql = "SELECT cb FROM \Application\Entity\CombinedBill cb INNER JOIN cb.bills b INNER JOIN b.userShares s WHERE ?1 MEMBER OF s.user";
+		$dql = "SELECT cb FROM \Application\Entity\CombinedBill cb INNER JOIN cb.bills b INNER JOIN b.userShares s WHERE ?1 MEMBER OF s.user ORDER BY cb.created DESC";
 		$qb = $this->getEntityManager()->createQuery($dql);
 		$qb->setParameter(1, $user->getId());
 

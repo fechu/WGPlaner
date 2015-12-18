@@ -27,10 +27,7 @@ class BillRepository extends EntityRepository
 	{
 		$queryBuilder = $this->createQueryBuilder('bill');
 
-		$queryBuilder->leftJoin('bill.purchases', 'p');
-		$queryBuilder->leftjoin('p.account', 'a');
-
-		$queryBuilder->where('a = :account');
+		$queryBuilder->where('bill.account = :account');
 		$queryBuilder->setParameter('account', $account);
 
 		if ($returnQueryBuilder) {

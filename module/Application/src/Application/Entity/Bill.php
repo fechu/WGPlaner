@@ -7,6 +7,7 @@
 
 namespace Application\Entity;
 
+use Application\Entity\Account;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use SMCommon\Entity\AbstractEntity;
@@ -47,6 +48,15 @@ class Bill extends AbstractEntity
      * @ORM\OrderBy({"date" = "ASC"})
      */
     protected $purchases;
+
+    /**
+     * The account to which this bill belongs to.
+     *
+     * @var Account;
+     *
+     * @ORM\ManyToOne(targetEntity="\Application\Entity\Account", inversedBy="bills")
+     */
+    protected $account;
 
 	/**
 	 * The CombinedBills to which the bill belongs to.
@@ -295,17 +305,20 @@ class Bill extends AbstractEntity
         }
     }
 
-
     /**
-     * Finds the ID of the account for this bill.
-     * This function is the way it is because there is no strict relationship between
-     * Bill and Account.
+     * @return Account
      */
     public function getAccount()
     {
-        $purchases = $this->getPurchases();
-        $purchase = isset($purchases[0]) ? $purchases[0] : NULL;
+        return $this->account;
+    }
 
-        return $purchase !== NULL ? $purchase->getAccount() : NULL;
+    /**
+     * @param Account $account
+     */
+    public function setAccount($account)
+    {
+        $this->account = $account;
+        $account->addUser($this);
     }
 }
