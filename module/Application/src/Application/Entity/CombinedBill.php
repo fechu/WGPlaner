@@ -63,14 +63,17 @@ class CombinedBill extends AbstractEntity
     }
 
 	/**
-	 * Add a bill to this combined bill. Also updates the inverse side. 
+	 * Add a bill to this combined bill. Also updates the inverse side.
+	 * Does nothing if the bill is already in this combined bill.
 	 * 
 	 * @param Bill $bill
 	 */
 	public function addBill($bill)
 	{
-		$this->bills[] = $bill;
-		$bill->addToCombinedBill($this);
+		if (!$this->bills->contains($bill)) {
+            $this->bills->add($bill);
+            $bill->addToCombinedBill($this);
+		}
 	}
 
 	public function getBills()
