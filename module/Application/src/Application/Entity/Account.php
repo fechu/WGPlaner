@@ -115,7 +115,7 @@ class Account extends AbstractEntity implements ResourceInterface
      *
      * @param Application\Entity\User $user
      */
-    public function addUser($user)
+    public function addUser(User $user)
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;

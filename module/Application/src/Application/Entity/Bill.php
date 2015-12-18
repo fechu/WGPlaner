@@ -319,6 +319,6 @@ class Bill extends AbstractEntity
     public function setAccount($account)
     {
         $this->account = $account;
-        $account->addUser($this);
+        $account->addBill($this);
     }
 }

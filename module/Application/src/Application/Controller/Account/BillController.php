@@ -63,6 +63,7 @@ class BillController extends AbstractAccountController
         // Create form and bind new bill to the form.
         $form = new BillForm();
         $bill = new Bill();
+        $bill->setAccount($this->getAccount());
         $form->bind($bill);
 
         /* @var $request \Zend\Http\Request */
