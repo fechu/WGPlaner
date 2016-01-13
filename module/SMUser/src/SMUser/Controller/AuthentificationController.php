@@ -13,6 +13,11 @@ class AuthentificationController extends AbstractActionController
 {
 	public function loginAction()
 	{
+		// Is a user logged in? If yes, redirect him immediately.
+		if ($this->identity()) {
+            return $this->getRedirectAfterLoginTarget();
+        }
+
 		$form = new LoginForm();
 		
 		/* @var $request \Zend\Http\Request */
@@ -38,9 +43,7 @@ class AuthentificationController extends AbstractActionController
 
 				if ($result->isValid()) {
 					// Successful logged in!
-					$config = $this->getSMUserConfig();
-					$route = isset($config['redirect_after_login']) ? $config['redirect_after_login'] : NULL;
-					return $this->redirect()->toRoute($route);
+					return $this->getRedirectAfterLoginTarget();
 				}
 				else {
 					$messages = $result->getMessages();
@@ -60,5 +63,14 @@ class AuthentificationController extends AbstractActionController
 		$authService->clearIdentity();
 		
 		return $this->redirect()->toRoute('auth');
+	}
+
+	/**
+	 * @return \Zend\Http\Response A redirect response.
+	 */
+	private function getRedirectAfterLoginTarget() {
+		$config = $this->getSMUserConfig();
+		$route = isset($config['redirect_after_login']) ? $config['redirect_after_login'] : NULL;
+		return $this->redirect()->toRoute($route);
 	}
 }
