@@ -24,6 +24,12 @@ class Account extends AbstractEntity implements ResourceInterface
     protected $name;
 
     /**
+     * The currency in which all purchases are in this account.
+     * @ORM\Column(type="string")
+     */
+    protected $currency = "CHF";
+
+    /**
      * Flag if the account is archived.
      * This is especially handy for accounts that are only temporary or for
      * special events.
@@ -55,7 +61,6 @@ class Account extends AbstractEntity implements ResourceInterface
      *
      * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="Application\Entity\Bill", mappedBy="account")
-     * @ORM\OrderBy({"date" = "DESC"})
      */
     protected $bills;
 
@@ -228,5 +233,21 @@ class Account extends AbstractEntity implements ResourceInterface
     public function addBill(Bill $bill)
     {
         $this->bills->add($bill);
+    }
+
+    /**
+     * @return String
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param String $currency
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
     }
 }
