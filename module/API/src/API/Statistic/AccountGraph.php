@@ -66,7 +66,7 @@ class AccountGraph extends Graph {
 		$graph = new \Graph($this->getWidth(), $this->getHeight());
 		$graphTitle = $this->account->getName();
 		if ($this->maxAmount > 0) {
-			$graphTitle = $graphTitle . " (Expenses up to " . $this->maxAmount . " CHF)";
+			$graphTitle = $graphTitle . " (Expenses up to " . $this->maxAmount . " ". $this->account->getCurrency() .")";
 		}
 		$graph->title->Set($graphTitle);
 		$graph->SetScale('textlin');
@@ -80,7 +80,7 @@ class AccountGraph extends Graph {
 		}
 
 		// Axis
-		$graph->yaxis->title->Set('Expenses (CHF)');
+		$graph->yaxis->title->Set('Expenses ('. $this->account->getCurrency() .')');
 		$graph->yaxis->SetTitleMargin(30);
 		$graph->xaxis->SetLabelAngle(90);
 

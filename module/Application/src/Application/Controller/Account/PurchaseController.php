@@ -13,10 +13,12 @@ use Application\Form\PurchaseForm;
 use Application\Entity\Purchase;
 use Zend\Form\FormInterface;
 
-class PurchaseController extends AbstractAccountController {
+class PurchaseController extends AbstractAccountController
+{
 
-    public function __construct() {
-	$this->defaultId = 'purchase';
+    public function __construct()
+    {
+        $this->defaultId = 'purchase';
     }
 
     /**
@@ -29,221 +31,227 @@ class PurchaseController extends AbstractAccountController {
      *  month will be taken as default. If both are set, the timespan is shown. And if
      *  only 1 is set, the other one will be ignored (it won't be pulled to the current month default).
      *
-     * 	start-date: Will show only purchases after (and including) this day.
-     * 	end-date:	Will show only purchases before (and including) this day.
+     *    start-date: Will show only purchases after (and including) this day.
+     *    end-date:    Will show only purchases before (and including) this day.
      *
      */
-    public function indexAction() {
-	$purchaseId = $this->getId();
-	$accountId = $this->getId('account');
+    public function indexAction()
+    {
+        $purchaseId = $this->getId();
+        $accountId = $this->getId('account');
 
-	// If we have an ID we redirect to the showPurchase action.
-	if ($purchaseId && $accountId) {
-	    return $this->forward()->dispatch('Application\Controller\Account\Purchase', array(
-			'__NAMESPACE__' => 'Application\Controller\Account',
-			'action' => 'view',
-			'accountid' => $accountId,
-			'purchaseid' => $purchaseId,
-	    ));
-	}
+        // If we have an ID we redirect to the showPurchase action.
+        if ($purchaseId && $accountId) {
+            return $this->forward()->dispatch('Application\Controller\Account\Purchase', array(
+                '__NAMESPACE__' => 'Application\Controller\Account',
+                'action' => 'view',
+                'accountid' => $accountId,
+                'purchaseid' => $purchaseId,
+            ));
+        }
 
-	$account = $this->getAccount();
-	if (!$account) {
-	    $this->getResponse()->setStatusCode(404);
+        $account = $this->getAccount();
+        if (!$account) {
+            $this->getResponse()->setStatusCode(404);
 
-	    return;
-	}
+            return;
+        }
 
-	// Get start and end-date
-	$startDate = $this->getDateFromRoute("startdate");
-	$endDate = $this->getDateFromRoute("enddate");
+        // Get start and end-date
+        $startDate = $this->getDateFromRoute("startdate");
+        $endDate = $this->getDateFromRoute("enddate");
 
-	// If neither startDate nor endDate is set, we chose the
-	// current month as a default.
-	if (!$startDate && !$endDate) {
-	    $startDate = new \DateTime(date("Y-m-01"));
-	    $endDate = new \DateTime(date("Y-m-t"));
-	}
+        // If neither startDate nor endDate is set, we chose the
+        // current month as a default.
+        if (!$startDate && !$endDate) {
+            $startDate = new \DateTime(date("Y-m-01"));
+            $endDate = new \DateTime(date("Y-m-t"));
+        }
 
-	// Check if the dates are switched.
-	if ($startDate > $endDate) {
-	    $temp = $startDate;
-	    $startDate = $endDate;
-	    $endDate = $temp;
-	}
+        // Check if the dates are switched.
+        if ($startDate > $endDate) {
+            $temp = $startDate;
+            $startDate = $endDate;
+            $endDate = $temp;
+        }
 
-	// Get the purchases in the date range.
-	/* @var $repository \Application\Entity\Repository\PurchaseRepository */
-	$repository = $this->em->getRepository('Application\Entity\Purchase');
-	$purchases = $repository->findInRange($startDate, $endDate, $account);
+        // Get the purchases in the date range.
+        /* @var $repository \Application\Entity\Repository\PurchaseRepository */
+        $repository = $this->em->getRepository('Application\Entity\Purchase');
+        $purchases = $repository->findInRange($startDate, $endDate, $account);
 
-	return [
-	    'account' => $account,
-	    'purchases' => $purchases,
-	    'startDate' => $startDate,
-	    'endDate' => $endDate,
-	];
+        return [
+            'account' => $account,
+            'purchases' => $purchases,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+        ];
     }
 
     /**
      * Add a purchase to an account.
      */
-    public function addAction() {
-	$account = $this->getAccount();
+    public function addAction()
+    {
+        $account = $this->getAccount();
 
-	$form = new PurchaseForm($this->em);
+        $form = new PurchaseForm($this->em);
+        $form->setCurrency($account->getCurrency());
 
-	$purchase = new Purchase();
-	$form->bind($purchase);
-	$form->setHasSlip($account->getSlipEnabledDefault());
-	$form->getActionCollection()->setShowAddAnotherButton(true);
+        $purchase = new Purchase();
+        $form->bind($purchase);
+        $form->setHasSlip($account->getSlipEnabledDefault());
+        $form->getActionCollection()->setShowAddAnotherButton(true);
 
-	/* @var $request \Zend\Http\Request */
-	$request = $this->getRequest();
-	if ($request->isPost()) {
-	    $form->setData($request->getPost());
-	    if ($form->isValid()) {
+        /* @var $request \Zend\Http\Request */
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
 
-		// Set the logged in user user who did the purchase.
-		$purchase->setUser($this->identity());
-		$purchase->setAccount($account);  // Add the purchase to this list.
-		$this->em->persist($purchase);
-		$this->em->flush();
+                // Set the logged in user user who did the purchase.
+                $purchase->setUser($this->identity());
+                $purchase->setAccount($account);  // Add the purchase to this list.
+                $this->em->persist($purchase);
+                $this->em->flush();
 
-		if ($request->getPost('add_another', false) === false) {
-		    // Show all purchases of the account
-		    return $this->redirect()->toRoute(
-				    'accounts/purchases', array(
-				'accountid' => $account->getId(),
-				    ), array('query' => array(
-				    'startdate' => $purchase->getDate()->format('01-m-Y'),
-				    'enddate' => $purchase->getDate()->format('t-m-Y')
-				))
-		    );
-		} else {
-		    // The user wants to add another purchase
-		    $form = new PurchaseForm($this->em);
-		    $form->bind(new Purchase());
-		    $form->setHasSlip($account->getSlipEnabledDefault());
-		    $form->getActionCollection()->setShowAddAnotherButton(true);
-		    // TODO: Show flash message to inform the user about successful saving
-		}
-	    }
-	} else {
-	    // Set default slip number
-	    /* @var $repo \Application\Entity\Repository\PurchaseRepository */
-	    $repo = $this->em->getRepository('Application\Entity\Purchase');
-	    $form->setSlipNumber($repo->findNextSlipNumber($account));
-	}
+                if ($request->getPost('add_another', false) === false) {
+                    // Show all purchases of the account
+                    return $this->redirect()->toRoute(
+                        'accounts/purchases', array(
+                        'accountid' => $account->getId(),
+                    ), array('query' => array(
+                            'startdate' => $purchase->getDate()->format('01-m-Y'),
+                            'enddate' => $purchase->getDate()->format('t-m-Y')
+                        ))
+                    );
+                } else {
+                    // The user wants to add another purchase
+                    $form = new PurchaseForm($this->em);
+                    $form->bind(new Purchase());
+                    $form->setHasSlip($account->getSlipEnabledDefault());
+                    $form->getActionCollection()->setShowAddAnotherButton(true);
+                    // TODO: Show flash message to inform the user about successful saving
+                }
+            }
+        } else {
+            // Set default slip number
+            /* @var $repo \Application\Entity\Repository\PurchaseRepository */
+            $repo = $this->em->getRepository('Application\Entity\Purchase');
+            $form->setSlipNumber($repo->findNextSlipNumber($account));
+        }
 
-	return array(
-	    'form' => $form,
-	    'account' => $account,
-	    'purchaseTemplates' => $this->identity()->getPurchaseTemplates(),
-	);
+        return array(
+            'form' => $form,
+            'account' => $account,
+            'purchaseTemplates' => $this->identity()->getPurchaseTemplates(),
+        );
     }
 
-    public function editAction() {
-	$purchase = $this->getPurchase();
-	$account = $this->getAccount();
+    public function editAction()
+    {
+        $purchase = $this->getPurchase();
+        $account = $this->getAccount();
 
-	if ($purchase->getAccount() != $account) {
-	    // Purchase is not in this list.
-	    $this->getResponse()->setStatusCode(404);
+        if ($purchase->getAccount() != $account) {
+            // Purchase is not in this list.
+            $this->getResponse()->setStatusCode(404);
 
-	    return;
-	}
+            return;
+        }
 
-	$form = new PurchaseForm($this->em);
-	$form->bind($purchase);
+        $form = new PurchaseForm($this->em);
+        $form->setCurrency($purchase->getCurrency());
+        $form->bind($purchase);
 
-	/* @var $request \Zend\Http\Request */
-	$request = $this->getRequest();
-	$postData = $request->getPost();
-	if ($request->isPost()) {
-	    $form->setData($postData);
-	    if ($form->isValid()) {
+        /* @var $request \Zend\Http\Request */
+        $request = $this->getRequest();
+        $postData = $request->getPost();
+        if ($request->isPost()) {
+            $form->setData($postData);
+            if ($form->isValid()) {
 
-		// Check if the hasSlip checkbox is unchecked. If so, we have to remove the
-		// slip number.
-		if (!$form->hasSlip()) {
-		    $purchase->setSlipNumber(NULL);
-		}
+                // Check if the hasSlip checkbox is unchecked. If so, we have to remove the
+                // slip number.
+                if (!$form->hasSlip()) {
+                    $purchase->setSlipNumber(NULL);
+                }
 
-		// Got valid data.
-		$this->em->flush();
+                // Got valid data.
+                $this->em->flush();
 
-		return $this->redirect()->toRoute('accounts/purchases', array('action' => NULL), array(), true);
-	    }
-	}
+                return $this->redirect()->toRoute('accounts/purchases', array('action' => NULL), array(), true);
+            }
+        }
 
-	return array(
-	    'purchase' => $purchase,
-	    'form' => $form,
-	);
+        return array(
+            'purchase' => $purchase,
+            'form' => $form,
+        );
     }
 
     /**
      * View a purchase
      */
-    public function viewAction() {
-	$account = $this->getAccount();
-	$purchase = $this->getPurchase();
+    public function viewAction()
+    {
+        $account = $this->getAccount();
+        $purchase = $this->getPurchase();
 
-	if ($purchase->getAccount() != $account) {
-	    // Purchase is not in this purchase list!
-	    $this->getResponse()->setStatusCode(404);
+        if ($purchase->getAccount() != $account) {
+            // Purchase is not in this purchase list!
+            $this->getResponse()->setStatusCode(404);
 
-	    return;
-	}
+            return;
+        }
 
-	return array(
-	    'purchase' => $purchase
-	);
+        return array(
+            'purchase' => $purchase
+        );
     }
 
-    public function deleteAction() 
-	{
-		$purchase = $this->getPurchase();
-		if (!$purchase) {
-			/* @var $response \Zend\Http\Response */
-			$response = $this->getResponse();
-			$response->setStatusCode(404);
-			return;
-		}
+    public function deleteAction()
+    {
+        $purchase = $this->getPurchase();
+        if (!$purchase) {
+            /* @var $response \Zend\Http\Response */
+            $response = $this->getResponse();
+            $response->setStatusCode(404);
+            return;
+        }
 
-		/* @var $request \Zend\Http\Request */
-		$request = $this->getRequest();
-		if ($request->isPost()) {
-			$accountId = $purchase->getAccount()->getId();
+        /* @var $request \Zend\Http\Request */
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $accountId = $purchase->getAccount()->getId();
 
-			// Delete the purchase
-			$this->em->remove($purchase);
-			$this->em->flush();
+            // Delete the purchase
+            $this->em->remove($purchase);
+            $this->em->flush();
 
-			// Redirect 
-			$params = ['accountid' => $accountId];
-			return $this->redirect()->toRoute('accounts/list-action', $params);
-		}
+            // Redirect
+            $params = ['accountid' => $accountId];
+            return $this->redirect()->toRoute('accounts/list-action', $params);
+        }
 
-		$form = new \SMCommon\Form\DeleteForm();
-		return [
-			'form' => $form, 
-			'purchase' => $purchase
-		];
-		
+        $form = new \SMCommon\Form\DeleteForm();
+        return [
+            'form' => $form,
+            'purchase' => $purchase
+        ];
+
     }
 
     /**
      * Verify a purchase.
      */
-    public function verifyAction() 
-	{
-		$purchase = $this->getPurchase();
-		$purchase->verify();
-		$this->em->flush();
-			
-		$this->redirect()->toRoute('home');
+    public function verifyAction()
+    {
+        $purchase = $this->getPurchase();
+        $purchase->verify();
+        $this->em->flush();
+
+        $this->redirect()->toRoute('home');
     }
 
 }

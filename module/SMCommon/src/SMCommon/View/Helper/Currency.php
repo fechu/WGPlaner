@@ -14,9 +14,9 @@ class Currency extends AbstractHelper
 	 * @param bool $color A color if the amount should be colored. Otherwise false.
 	 * @return string The formatted amount.
 	 */
-	public function __invoke($amount, $color=false)
+	public function __invoke($amount, $color=false, $currency='CHF')
 	{
-		$amountString = number_format($amount, 2) . ' CHF';
+		$amountString = number_format($amount, 2) . ' ' . $currency;
 		if ($color !== false) {
 			return '<span style="color: '. $color .'">' . $amountString . '</span>';
 		}
