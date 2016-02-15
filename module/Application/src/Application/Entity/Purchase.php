@@ -214,6 +214,9 @@ class Purchase extends AbstractEntity implements ResourceInterface
 		$account->addPurchase($this);
 	}
 
+	/**
+	 * @return Account The account to which the purchase belongs to.
+	 */
 	public function getAccount()
 	{
 		return $this->account;
@@ -281,6 +284,21 @@ class Purchase extends AbstractEntity implements ResourceInterface
 	public function getBills()
 	{
 		return $this->bills->toArray();
+	}
+
+	/**
+	 * Get the currency of this purchase.
+	 * @return String
+	 */
+	public function getCurrency()
+	{
+		$account = $this->getAccount();
+		if ($account) {
+			return $account->getCurrency();
+		}
+		else {
+			return '';
+		}
 	}
 
 	public function getResourceId()

@@ -15,7 +15,7 @@ $purchase = $this->purchase;
 	    <table class="table table-condensed">
 		<tr>
 		    <td>Amount</td>
-		    <td><?php echo number_format($purchase->getAmount(), 2)?> CHF</td>
+			<td><?php echo $this->currency($purchase->getAmount(), false, $purchase->getCurrency()); ?> </td>
 		</tr>
 		<tr>
 		    <td>Store</td>

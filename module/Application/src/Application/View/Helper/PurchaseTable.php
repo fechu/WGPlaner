@@ -67,7 +67,9 @@ class PurchaseTable extends Table
                 'headTitle' 	=> $user->getFullname(),
                 'dataMethod'	=> function(Purchase $purchase) use ($user) {
                     if ($purchase->getUser() == $user) {
-                        return number_format($purchase->getAmount(), 2) . " CHF";
+                        $currency = $purchase->getAccount()->getCurrency();
+                        $amount = $this->view->currency($purchase->getAmount(), false, $currency);
+                        return $amount;
                     }
                 },
                 'footerData'	=> function($purchases) use ($user) {
@@ -80,7 +82,15 @@ class PurchaseTable extends Table
                     }
 
                     // Show the total amount bold.
-                    return "<b>" . number_format($totalAmount, 2). " CHF</b>";
+                    if (count($purchases) > 0) {
+                        /** @var Purchase $purchase */
+                        $purchase = $purchases[0];
+                        $currency = $purchase->getAccount()->getCurrency();
+                        return "<b>" . $this->view->currency($totalAmount, false, $currency);
+                    }
+                    else {
+                        return "<b>-</b>";
+                    }
                 }
             ));
         }

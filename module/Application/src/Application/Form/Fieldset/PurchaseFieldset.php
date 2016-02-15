@@ -7,6 +7,7 @@
 
 namespace Application\Form\Fieldset;
 
+use Zend\Form\Element\Text;
 use Zend\Form\Fieldset;
 use Zend\Form\Element\DateSelect;
 use Zend\InputFilter\InputFilterProviderInterface;
@@ -187,5 +188,14 @@ class PurchaseFieldset extends Fieldset implements InputFilterProviderInterface
 	    else {
 		$this->remove('verified');
 	    }
+	}
+
+	public function setCurrency($currency)
+	{
+		/** @var Text $field */
+		$field = $this->get('amount');
+		$options = $field->getOptions();
+		$options['bootstrap']['append'] = $currency;
+		$field->setOptions($options);
 	}
 }

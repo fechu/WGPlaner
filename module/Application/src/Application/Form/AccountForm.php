@@ -30,6 +30,18 @@ class AccountForm extends AbstractForm
             )
         ));
 
+        // Currency selection
+        $this->add([
+            'name' => 'currency',
+            'type' => 'text',
+            'options' => [
+                'label' => 'Currency'
+            ],
+            'attributes' => [
+                'required' => 'required'
+            ]
+        ]);
+
         // Slips enabled by default when adding new purchases.
         $this->add(array(
             'name' => 'slipEnabledDefault',
@@ -53,6 +65,9 @@ class AccountForm extends AbstractForm
     {
         return array(
             'name' => array(
+                'required' => true,
+            ),
+            'currency' => array(
                 'required' => true,
             ),
         );
