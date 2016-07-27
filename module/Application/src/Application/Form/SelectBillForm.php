@@ -29,7 +29,7 @@ class SelectBillForm extends AbstractForm
             'options' => array(
                 'object_manager'=> $em,
                 'target_class'	=> 'Application\Entity\Bill',
-                'property'	=> 'longName',
+                'property'	=> 'name',
                 'is_method' => true,
                 'label'		=> 'Invoice',
             ),
