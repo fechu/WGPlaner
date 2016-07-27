@@ -156,7 +156,7 @@ class Bill extends AbstractEntity
         return $this->name;
     }
 
-    public function longName()
+    public function getLongName()
     {
         return $this->name . '(' . $this->getAccount()->getName() . ')';
     }
