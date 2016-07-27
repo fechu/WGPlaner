@@ -30,7 +30,10 @@ class SelectBillForm extends AbstractForm
                 'object_manager'=> $em,
                 'target_class'	=> 'Application\Entity\Bill',
                 'property'	=> 'name',
-                'is_method'	=> true,
+                'label_generator' => function($bill) {
+                    /** @var Bill $bill */
+                    return $bill->getName() . '(' . $bill->getAccount()->getName() .')';
+                },
                 'label'		=> 'Invoice',
             ),
             'attributes' => array(
