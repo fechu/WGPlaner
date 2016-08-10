@@ -254,4 +254,25 @@ class PurchaseController extends AbstractAccountController
         $this->redirect()->toRoute('home');
     }
 
+    /**
+     * Assigns a purchase to a given account.
+     * This action uses the query parameter "new_account" to identify to which account the purchase should be assigned.
+     */
+    public function assignAction()
+    {
+        $newAccountId = $this->params()->fromQuery('new_account', 0);
+        $accountRepo = $this->em->getRepository('Application\Entity\Account');
+        $newAccount = $accountRepo->find($newAccountId);
+        if ($newAccount == null) {
+            return $this->redirect()->toRoute('accounts');
+        }
+
+        // Assign the purchase to the new account
+        $purchase = $this->getPurchase();
+        $purchase->setAccount($newAccount);
+        $this->em->flush();
+
+        return $this->redirect()->toRoute('accounts');
+    }
+
 }
