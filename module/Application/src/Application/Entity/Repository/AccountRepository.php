@@ -7,6 +7,7 @@
 
 namespace Application\Entity\Repository;
 
+use Application\Entity\Account;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -17,6 +18,7 @@ class AccountRepository extends EntityRepository
 
 	/**
 	 * Finds the account to which all unassigned purchases are automatically assigned.
+	 * @return Account
 	 */
 	public function findUnassignedAccount()
 	{

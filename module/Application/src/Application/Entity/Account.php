@@ -96,9 +96,18 @@ class Account extends AbstractEntity implements ResourceInterface
         $this->purchases[] = $purchase;
     }
 
-    public function getPurchases()
+    /**
+     * Get purchases (optional only purchases of a given user)
+     * @param null $user
+     * @return array
+     */
+    public function getPurchases($user = null)
     {
-        return $this->purchases->toArray();
+        $purchases = $this->purchases->toArray();
+        if ($user != null) {
+            $purchases = array_filter($purchases, function($x) use ($user) {return $x->getUser()->getId() == $user->getId(); });
+        }
+        return $purchases;
     }
 
     public function setName($name)

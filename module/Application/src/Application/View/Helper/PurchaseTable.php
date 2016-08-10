@@ -95,4 +95,30 @@ class PurchaseTable extends Table
             ));
         }
     }
+
+    /**
+     * Adds a column showing the amount of each purchase.
+     * This method makes no differentiation between different users. So only one
+     * column is added. If you want to use different columns for different users, use addUserColumns.
+     */
+    public function addAmountColumn()
+    {
+        $this->addColumn([
+            'headTitle' => 'Amount',
+            'dataMethod' => function(Purchase $purchase) {
+                $currency = $purchase->getAccount()->getCurrency();
+                return $this->view->currency($purchase->getAmount(), false, $currency);
+            }
+        ]);
+    }
+
+    public function addDescriptionColumn()
+    {
+        $this->addColumn([
+            'headTitle' => 'Description',
+            'dataMethod' => function(Purchase $purchase) {
+                return $purchase->getDescription();
+            }
+        ]);
+    }
 }

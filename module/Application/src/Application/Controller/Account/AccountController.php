@@ -36,13 +36,16 @@ class AccountController extends AbstractAccountController
         }
         /** @var $repo \Application\Entity\Repository\AccountRepository */
         $repo = $this->em->getRepository('Application\Entity\Account');
-        var_dump($repo->findUnassignedAccount());
-        die();
         $accounts = $repo->findForUser($this->identity());
 
-        return array(
+        // We also need to get all unassigned purchases of the current user.
+        $unassignedAccount = $repo->findUnassignedAccount();
+        $unassignedPurchases = $unassignedAccount->getPurchases($this->identity());
+
+        return [
             'accounts' => $accounts,
-        );
+            'unassignedPurchases' => $unassignedPurchases,
+        ];
     }
 
     /**

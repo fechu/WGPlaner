@@ -1,5 +1,6 @@
 <?php
 use Application\Entity\Account;
+use Application\View\Helper\PurchaseTable;
 use SMCommon\View\Helper\FormatDate;
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
 echo $this->pageHeader('Account');
@@ -76,8 +77,21 @@ $table->addColumn(array(
 
 $addAccountUrl = $this->url('accounts/action', array('action' => 'create'));
 
+$purchaseTable = $this->purchasetable();
+$purchaseTable->addDescriptionColumn();
+$purchaseTable->addAmountColumn();
+$purchaseTable->setData($this->unassignedPurchases);
+
+
+
 ?>
 
+<?php if (count($this->unassignedPurchases) > 0): ?>
+	<h3>Unassigned Purchases</h3>
+	<?php echo $this->prettyprint()->alert('The purchases listed below are not assigned to an account. Please assign them to an account by clicking on the appropriate button.') ?>
+	<?php echo $purchaseTable; ?>
+	<h3>Accounts</h3>
+<?php endif ?>
 
 <?php echo $table; ?>
 <span class="pull-right">
