@@ -1,12 +1,14 @@
 <?php
 use Application\Entity\Account;
+use Application\Entity\Purchase;
 use Application\View\Helper\PurchaseTable;
 use SMCommon\View\Helper\FormatDate;
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
 echo $this->pageHeader('Account');
 
+$accounts = $this->accounts;
 $table = $this->table();
-$table->setData($this->accounts);
+$table->setData($accounts);
 
 $table->addColumn(array(
 	'headTitle' 	=> 'Name',
@@ -81,6 +83,24 @@ $purchaseTable = $this->purchasetable();
 $purchaseTable->addDescriptionColumn();
 $purchaseTable->addAmountColumn();
 $purchaseTable->setData($this->unassignedPurchases);
+
+// Add the assign action buttons
+$purchaseTable->addColumn([
+	'headTitle' => 'Assign',
+	'dataMethod' => function(Purchase $purchase) use ($accounts) {
+		$html = '';
+		foreach ($accounts as $account) {
+			$url = $this->url('accounts/purchases', [
+				'accountid' => $purchase->getAccount()->getId(),
+				'purchaseid' => $purchase->getId(),
+				'action' => 'assign'
+			]);
+			$url .= '?new_account=' . $account->getId();
+			$html .= $this->prettyprint()->button($url, $account->getName(), 'primary');
+		}
+		return $html;
+	}
+]);
 
 
 
