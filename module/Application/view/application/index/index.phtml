@@ -1,6 +1,8 @@
 <?php
 /* @var $this SMCommon\View\Renderer\PhpRenderer */
-echo $this->pageHeader('Not verified purchases');
+$allUrl = '<a href="?all=1">All purchases</a>';
+$myUrl = '<a href="?all=0">My purchases</a>';
+echo $this->pageHeader('Not verified purchases', $allUrl . " | " . $myUrl);
 
 $purchases = $this->purchases;
 ?>
@@ -30,7 +32,6 @@ foreach ($purchases as $purchase):
 </div>
 <div class="row">
     <div class="well">
-	    <?php if ($this->acl($this->identity(), $purchase, 'edit')) :?>
 		<?php
 		$params = array(
 		    'action' => 'edit',
@@ -50,7 +51,6 @@ foreach ($purchases as $purchase):
 		echo $this->prettyprint()->button($deleteUrl, 'Delete', 'danger');
 
 		?>
-	    <?php endif; ?>
 	    <?php
 	    $params = array(
 		'action' => 'verify',

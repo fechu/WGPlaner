@@ -39,6 +39,17 @@ $purchase = $this->purchase;
 		</td>
 	</tr>
 	<tr>
+		<td>Account</td>
+		<td>
+			<?php
+			$accountUrl = $this->url('accounts/list-action', array(
+				'accountid' => $purchase->getAccount()->getId(),
+			));
+			echo $this->prettyprint()->link($accountUrl, $purchase->getAccount()->getName());
+			?>
+		</td>
+	</tr>
+	<tr>
 		<td>Created</td>
 		<td>
 			<?php echo $this->formatDate($purchase->getCreated());?>
