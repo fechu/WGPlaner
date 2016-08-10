@@ -8,6 +8,7 @@
 
 namespace API\Controller;
 
+use Application\Entity\Repository\AccountRepository;
 use Application\Form\PurchaseForm;
 use Application\Entity\Purchase;
 
@@ -21,34 +22,39 @@ class PurchaseController extends AbstractRestfulController {
      * Create a new purchase.
      * @todo Deny adding of purchases to lists that do not belong to the user.
      */
-    public function create($data) {
-	$user = $this->identity();
-	$account = $this->getAccount();
+	public function create($data) {
+		$user = $this->identity();
+		$account = $this->getAccount();
+		if ($account == null) {
+			/** @var AccountRepository $repo */
+			$repo = $this->em->getRepository('Application\Entity\Account');
+			$account = $repo->findUnassignedAccount();
+		}
 
-	// Form for validating the data.
-	$form = new PurchaseForm($this->em);
-	$form->includeVerifiedField(true);
+		// Form for validating the data.
+		$form = new PurchaseForm($this->em);
+		$form->includeVerifiedField(true);
 
-	$purchase = new Purchase();
-	$form->bind($purchase);
+		$purchase = new Purchase();
+		$form->bind($purchase);
 
-	/* @var $request \Zend\Http\Request */
-	$request = $this->getRequest();
-	$form->setData(array('PurchaseFieldset' => $data));
-	if ($form->isValid()) {
-	    // Set the logged in user user who did the purchase.
-	    $purchase->setUser($user);
-	    $purchase->setAccount($account); // Add the purchase to this list.
-	    $purchase->setCreatedWithAPI(true);
-	    $this->em->persist($purchase);
-	    $this->em->flush();
+		/* @var $request \Zend\Http\Request */
+		$request = $this->getRequest();
+		$form->setData(array('PurchaseFieldset' => $data));
+		if ($form->isValid()) {
+			// Set the logged in user user who did the purchase.
+			$purchase->setUser($user);
+			$purchase->setAccount($account); // Add the purchase to this list.
+			$purchase->setCreatedWithAPI(true);
+			$this->em->persist($purchase);
+			$this->em->flush();
 
-	    // Success!
-	    return $this->createdResponse($purchase->getId());
-	} else {
-	    return $this->badRequestResponse($form->getMessages());
+			// Success!
+			return $this->createdResponse($purchase->getId());
+		} else {
+			return $this->badRequestResponse($form->getMessages());
+		}
 	}
-    }
 
     /**
      * Add a receipt to a purchase. 
