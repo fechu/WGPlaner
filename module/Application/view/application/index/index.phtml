@@ -32,6 +32,7 @@ foreach ($purchases as $purchase):
 </div>
 <div class="row">
     <div class="well">
+	    <?php if ($this->acl($this->identity(), $purchase, 'edit')) :?>
 		<?php
 		$params = array(
 		    'action' => 'edit',
@@ -51,6 +52,7 @@ foreach ($purchases as $purchase):
 		echo $this->prettyprint()->button($deleteUrl, 'Delete', 'danger');
 
 		?>
+	    <?php endif; ?>
 	    <?php
 	    $params = array(
 		'action' => 'verify',
