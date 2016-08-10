@@ -37,6 +37,8 @@ class AccountRepository extends EntityRepository
 		$queryBuilder = $this->createQueryBuilder('account');
 		$this->restrictUser($queryBuilder, $user);
 		$queryBuilder->andWhere('account.archived = 0');
+		$queryBuilder->andWhere('account.name != :name');
+		$queryBuilder->setParameter('name', 'unassigned');
 
 		if ($returnQueryBuilder) {
 			return $queryBuilder;
