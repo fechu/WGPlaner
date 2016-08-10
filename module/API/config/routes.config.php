@@ -116,6 +116,21 @@ return array(
 							'action'		=> null,
 						),
 					),
+					'child_routes' => array(
+						'actions' => array(
+							'type' => 'Segment',
+							'options' => array(
+								'route' => '/:purchaseid/:action',
+								'constraints' => array(
+									'purchaseid' => '[0-9]+'
+								),
+								'defaults' => array(
+									'__NAMESPACE__' => 'API\Controller',
+									'controller' => 'Purchase',
+								)
+							)
+						)
+					)
 				),
 			),
 		),

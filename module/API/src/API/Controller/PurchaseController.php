@@ -56,59 +56,59 @@ class PurchaseController extends AbstractRestfulController {
 		}
 	}
 
-    /**
-     * Add a receipt to a purchase. 
-     * 
-     * This method will overwrite any previous purchases without warning. 
-     */
-    public function receiptAction() {
-	// Check if the given purchase exists
-	$purchase = $this->getPurchase();
-	if ($purchase == NULL) {
-	    return $this->badRequestResponse("Purchase does not exist.");
-	}
-
-	// If it is a GET request, we just return the image.
-	$request = $this->getRequest();
-	if ($request->isGet()) {
-	    $imagePath = './data/receipts/' . $purchase->getId() . '.jpg';
-	    $response = $this->getResponse();
-	    $response->getHeaders()->addHeaders(array(
-		'Content-Type' => 'image/jpg'
-	    ));
-	    $response->setContent(file_get_contents($imagePath));
-	    return $response;
-	}
-
-	$form = new \SMCommon\Form\UploadForm('upload-form', 'receipt');
-
-	if ($request->isPost()) {
-	    // Merge data and files
-	    $post = array_merge_recursive(
-		    $request->getPost()->toArray(), $request->getFiles()->toArray()
-	    );
-
-	    $form->setData($post);
-	    if ($form->isValid()) {
-		$data = $form->getData();
-		$file = $data['receipt'];
-
-		if ($file == NULL) {
-		    return $this->badRequestResponse('Received file is NULL.');
+	/**
+	 * Add a receipt to a purchase.
+	 *
+	 * This method will overwrite any previous purchases without warning.
+	 */
+	public function receiptAction() {
+		// Check if the given purchase exists
+		$purchase = $this->getPurchase();
+		if ($purchase == NULL) {
+			return $this->badRequestResponse("Purchase does not exist.");
 		}
 
-		// Move the file to the right folder
-		$dest = './data/receipts/' . $purchase->getId() . '.jpg';
-		move_uploaded_file($file['tmp_name'], $dest);
+		// If it is a GET request, we just return the image.
+		$request = $this->getRequest();
+		if ($request->isGet()) {
+			$imagePath = './data/receipts/' . $purchase->getId() . '.jpg';
+			$response = $this->getResponse();
+			$response->getHeaders()->addHeaders(array(
+				'Content-Type' => 'image/jpg'
+			));
+			$response->setContent(file_get_contents($imagePath));
+			return $response;
+		}
 
-		// Save that the purchase has a receipt now.
-		$purchase->setHasReceipt(true);
-		$this->em->flush();
+		$form = new \SMCommon\Form\UploadForm('upload-form', 'receipt');
 
-		return $this->createdResponse();
-	    }
+		if ($request->isPost()) {
+			// Merge data and files
+			$post = array_merge_recursive(
+				$request->getPost()->toArray(), $request->getFiles()->toArray()
+			);
 
-	    return $this->badRequestResponse($form->getMessages());
+			$form->setData($post);
+			if ($form->isValid()) {
+				$data = $form->getData();
+				$file = $data['receipt'];
+
+				if ($file == NULL) {
+					return $this->badRequestResponse('Received file is NULL.');
+				}
+
+				// Move the file to the right folder
+				$dest = './data/receipts/' . $purchase->getId() . '.jpg';
+				move_uploaded_file($file['tmp_name'], $dest);
+
+				// Save that the purchase has a receipt now.
+				$purchase->setHasReceipt(true);
+				$this->em->flush();
+
+				return $this->createdResponse();
+			}
+
+			return $this->badRequestResponse($form->getMessages());
+		}
 	}
-    }
 }
