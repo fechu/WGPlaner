@@ -1,5 +1,4 @@
 FROM php:5.6-apache
-COPY . /src/
 
 # Install dependency for GD
 RUN apt-get update && apt-get install -y libpng-dev
@@ -21,3 +20,7 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
 RUN a2enmod rewrite
 RUN service apache2 restart 
+
+# Copy the source code
+COPY . /src/
+RUN rm /src/config/autoload/zenddevelopertools.local.php
